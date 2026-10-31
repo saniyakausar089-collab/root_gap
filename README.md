@@ -17,6 +17,9 @@ After every answer the app shows a **🧭 Why this happens next** panel (mistake
 ## Targeted feedback and class-aware difficulty
 A wrong answer now shows the specific mistake behind the option picked, how to fix it, and a step-by-step solution for that exact question (the full chapter lesson is one tap away). Every question has a class-appropriate level (1 to 3), and practice starts higher for students above the chapter's class (for example Class 10 on quadratics starts at level 2).
 
+## App experience
+Student sign-up with avatar and PIN, XP, levels, daily goal ring, badges, celebration effects, bottom navigation (Home, Learn, Practise, Revise, Me). Teacher: assign work to a class (with completion counts), add or edit or remove students, bulk add, and a demo button that simulates a class period so the dashboard updates live.
+
 ## What is built and what is not
 Built: Learn (21 lessons), Solve (hints, levels, language retry), Test (Boss Battle, prerequisite probe), Revise (spaced review), teacher plan, evidence trail and override, paper entry, question editor, student management, English/Telugu/Hindi interface.
 Not built: other subjects and most of the syllabus, real accounts and server-side security, tested offline mode on real phones, real classroom validation. Demo PINs: students 1111, teacher 1234.
