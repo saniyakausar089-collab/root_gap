@@ -1,0 +1,10 @@
+{
+  "name": "root_gap",
+  "version": "1.0.0",
+  "description": "RootGap: confidence-aware adaptive learning platform",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  }
+}
