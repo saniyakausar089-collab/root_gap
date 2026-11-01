@@ -1114,6 +1114,9 @@ h2, h3, h4 { margin: 8px 0; color: #fff; }
 <main id="app"></main>
 <script src="three.min.js"></script>
 <script src="elevenlabs-client.js"></script>
+<script src="content/real_life_scenarios.js"></script>
+<script src="content/story_quests.js"></script>
+<script src="content/practice_bank.js"></script>
 <script>
 // --- CORE CURRICULUM & KNOWLEDGE GRAPH (Classes 6-10) ---
 var SK={
@@ -1176,6 +1179,43 @@ Z(22,"quad",SV("x² − 25 = 0"),[["x = 5","oneRoot"],["x = ±5"],["x = 12.5","h
 Z(23,"quad",SV("(x + 1)(x − 4) = 0"),[["x = 1 or −4","rootFlip"],["x = −1 or 4"],["x = −1 or −4","rootFlip"]],1,2);
 Z(24,"quad",SV("x² = 49"),[["x = 7","oneRoot"],["x = ±7"],["x = 24.5","halve"]],1,1);
 Z(25,"quad",SV("x(x + 5) = 0"),[["x = 5 only","oneRoot"],["x = 0 or −5"],["x = 0 or 5","rootFlip"]],1,3);
+
+// Dynamic loader for comprehensive Practice Question Bank across Classes 6-10
+function loadPracticeBankIntoQS(){
+  if(typeof PRACTICE_BANK==="undefined")return;
+  var nextId=101;
+  var skillMap={6:"frac",7:"neg",8:"lin",9:"quad",10:"quad"};
+  for(var cls in PRACTICE_BANK){
+    var list=PRACTICE_BANK[cls];
+    var sk=skillMap[cls]||"frac";
+    list.forEach(function(item){
+      if(QS.some(function(q){return q.codeId===item.id;}))return;
+      var qId=nextId++;
+      var opts=item.options.map(function(opt,idx){
+        if(idx===item.ans)return [opt];
+        return [opt,item.misconception?"conceptGap":"guess"];
+      });
+      var qObj={
+        id:qId,
+        codeId:item.id,
+        s:sk,
+        cls:parseInt(cls),
+        topic:item.topic,
+        chapter:item.chapter,
+        t:[item.q,item.q,item.q],
+        o:opts,
+        a:item.ans,
+        d:item.difficulty||2,
+        hint:item.hint,
+        exp:item.exp,
+        format:item.format||"mcq"
+      };
+      QS.push(qObj);
+      if(item.exp&&typeof SOL!=="undefined")SOL[qId]=item.exp;
+    });
+  }
+}
+loadPracticeBankIntoQS();
 
 var LS={
   frac:["A bigger number under the line means the pizza is cut into more, smaller slices. So 1/2 (half) is bigger than 1/3 (one third). When adding, keep the denominator and add only the numerators: 2/5 + 1/5 = 3/5.","హారం (denominator) పెద్దదైతే ముక్కలు చిన్నవి అవుతాయి. 1/2 అంటే సగం, 1/3 అంటే మూడో వంతు, కాబట్టి 1/2 పెద్దది. కూడేటప్పుడు హారం అలాగే ఉంచి, లవాలను మాత్రమే కూడండి.","हर (denominator) बड़ा हो तो टुकड़े छोटे होते हैं। 1/2 आधा है और 1/3 एक-तिहाई, इसलिए 1/2 बड़ा है। जोड़ते समय हर वही रखें और केवल अंश जोड़ें: 2/5 + 1/5 = 3/5।"],
@@ -1596,9 +1636,27 @@ function begin(m,k){
 function nextQ(){
   S.fb=null;S.pick=null;S.lesson=null;S.hu=0;
   var sk=S.br||S.sk;
-  var pool=S.mode=="revise"
-    ?QS.filter(function(q){return S.rq.indexOf(q.id)>=0&&S.done.indexOf(q.id)<0})
-    :QS.filter(function(q){return q.s==sk&&S.done.indexOf(q.id)<0});
+  var studentCls=S.st?S.st.cls:6;
+  var pool;
+  if(S.mode=="revise"){
+    pool=QS.filter(function(q){return S.rq.indexOf(q.id)>=0&&S.done.indexOf(q.id)<0});
+  }else{
+    // Strictly prioritize questions matching student's exact class curriculum
+    pool=QS.filter(function(q){
+      if(S.done.indexOf(q.id)>=0)return false;
+      if(S.br)return q.s==sk;
+      var qClass=q.cls||(SK[q.s]?SK[q.s].c:null);
+      if(qClass){
+        if(studentCls==10&&(qClass==9||qClass==10))return q.s==sk;
+        if(qClass!==studentCls)return false;
+      }
+      return q.s==sk;
+    });
+    // Fallback if class pool exhausted
+    if(!pool.length&&!S.br){
+      pool=QS.filter(function(q){return q.s==sk&&S.done.indexOf(q.id)<0});
+    }
+  }
   if(!pool.length&&S.br)pool=QS.filter(function(q){return q.s==sk&&q!==S.cur});
   if(!pool.length){S.end=true;S.cur=null}
   else{
@@ -1872,63 +1930,366 @@ function loadRealLifeScenario(){
   });
 }
 
+// ==========================================
+// FEATURE 3: REAL-LIFE LEARNING MODE (CLASSES 6-10)
+// 75 Rich Scenarios across Cooking, Travel, Sports, Tech, Science, Construction, Money
+// ==========================================
+var RL_CATS=["all","Cooking","Shopping","Sports","Travel","Construction","Technology","Science","Everyday Decisions"];
+
+function setRlClass(c){
+  S.rlClass=c;S.rlActiveId=null;S.rlPick=null;S.rlShowHint=false;R();
+}
+function setRlCatIdx(i){
+  S.rlCat=RL_CATS[i]||"all";R();
+}
+function setRlActiveNull(){
+  S.rlActiveId=null;S.rlPick=null;S.rlShowHint=false;R();
+}
+function setRlIdx(idx){
+  var list=(typeof REAL_LIFE_SCENARIOS!=="undefined"&&REAL_LIFE_SCENARIOS[S.rlClass])?REAL_LIFE_SCENARIOS[S.rlClass]:[];
+  if(idx>=0&&idx<list.length){
+    S.rlActiveId=list[idx].id;
+    S.rlPick=null;
+    S.rlShowHint=false;
+    R();
+  }
+}
+function navRl(delta){
+  var list=(typeof REAL_LIFE_SCENARIOS!=="undefined"&&REAL_LIFE_SCENARIOS[S.rlClass])?REAL_LIFE_SCENARIOS[S.rlClass]:[];
+  var cur=list.findIndex(function(x){return x.id===S.rlActiveId});
+  var next=cur+delta;
+  if(next>=0&&next<list.length){
+    setRlIdx(next);
+  }
+}
+
 function rRealLife(){
-  var h='<div class="card"><div class="row" style="justify-content:space-between"><div><span class="tag">🌍 Feature 3: Real-Life Learning Mode</span><h3>Practical Mathematics</h3></div><button class="btn" onclick="S.mode=null;R()">← Back</button></div>';
-  if(S.scenarioLoading){
-    return h+'<p>⏳ Loading practical scenario with Google Gemini...</p></div>';
-  }
-  var sc=S.scenario;
-  if(!sc)return h+'<p>No scenario available.</p></div>';
-  
-  h+='<div class="card" style="border-left:4px solid var(--pri)">';
-  h+='<h3>'+sc.title+'</h3><p style="font-size:16px">'+sc.story+'</p>';
-  h+='<div class="card" style="background:var(--soft)"><b>Challenge:</b> '+sc.problem+'</div>';
-  sc.options.forEach(function(opt,idx){
-    var cs="opt";
-    if(S.scPick!=null){
-      if(idx==sc.correctIndex)cs+=" good";
-      else if(idx==S.scPick)cs+=" wrong";
-    }
-    h+='<button class="'+cs+'" onclick="pickScenario('+idx+')">'+opt+'</button>';
+  if(!S)return "";
+  var studentCls=(S.st&&S.st.cls)?S.st.cls:6;
+  if(!S.rlClass)S.rlClass=studentCls;
+  if(!S.rlCat)S.rlCat="all";
+
+  var h='<div class="card"><div class="row" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">';
+  h+='<div><span class="tag" style="background:linear-gradient(135deg,var(--pri),var(--uv));color:#fff">🌍 Feature 3: Real-Life Learning Hub</span>';
+  h+='<h3 style="margin:4px 0">Practical Mathematics in Action</h3><small class="mut">75 Real-World Scenarios Across Classes 6–10 (15 per Class)</small></div>';
+  h+='<button class="btn" onclick="S.mode=null;setRlActiveNull()">← Back to Dashboard</button></div>';
+
+  // Class Selection Tabs
+  h+='<div style="display:flex;gap:6px;margin:16px 0 12px 0;overflow-x:auto;padding-bottom:4px">';
+  [6,7,8,9,10].forEach(function(c){
+    var isSel=S.rlClass==c;
+    h+='<button class="btn'+(isSel?' p':'')+'" style="font-size:13px;padding:6px 14px;border-radius:20px;white-space:nowrap" onclick="setRlClass('+c+')">Class '+c+(c==studentCls?' ★ (Your Class)':'')+'</button>';
   });
-  if(S.scPick!=null){
-    var ok=S.scPick==sc.correctIndex;
-    h+='<p><b>'+(ok?'🎉 Brilliant!':'💡 Not quite.')+'</b> '+sc.conceptExplanation+'</p>';
-    h+='<button class="btn p" onclick="loadRealLifeScenario()">Try Another Scenario →</button>';
-  }
   h+='</div>';
+
+  var scenariosForClass=(typeof REAL_LIFE_SCENARIOS!=="undefined"&&REAL_LIFE_SCENARIOS[S.rlClass])?REAL_LIFE_SCENARIOS[S.rlClass]:[];
+
+  // If a specific scenario is selected, show the interactive scenario solver
+  if(S.rlActiveId){
+    var sc=scenariosForClass.find(function(x){return x.id===S.rlActiveId})||scenariosForClass[0];
+    if(!sc){S.rlActiveId=null;return rRealLife()}
+    var currentIdx=scenariosForClass.indexOf(sc);
+
+    h+='<div style="margin-bottom:12px"><button class="btn" style="padding:4px 10px;font-size:12px" onclick="setRlActiveNull()">← Browse All Class '+S.rlClass+' Scenarios</button></div>';
+
+    h+='<div class="card" style="border-left:4px solid var(--pri);background:linear-gradient(180deg,var(--card),rgba(15,12,30,0.95))">';
+    h+='<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px">';
+    h+='<span class="tag" style="background:var(--pri-soft);color:var(--pri)">'+(sc.category||'Practical')+'</span>';
+    h+='<span class="mut" style="font-size:12px">Scenario '+(currentIdx+1)+' of '+scenariosForClass.length+'</span></div>';
+    h+='<h2 style="margin:4px 0 10px 0;font-size:20px;color:var(--tx)">'+sc.title+'</h2>';
+
+    h+='<div style="background:var(--soft);padding:14px;border-radius:12px;margin:12px 0;line-height:1.6;font-size:15px;border:1px solid var(--card-border)">'+sc.story+'</div>';
+
+    h+='<div class="card" style="background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);margin:12px 0">';
+    h+='<b style="color:var(--pri)">🎯 Practical Challenge:</b><p style="margin:6px 0 0 0;font-size:15px;font-weight:500">'+sc.problem+'</p></div>';
+
+    // Hint toggle button
+    if(sc.hint){
+      h+='<div style="margin:8px 0">';
+      if(S.rlShowHint){
+        h+='<div style="background:rgba(245,158,11,0.12);border-left:3px solid var(--warn);padding:10px;border-radius:6px;font-size:13px;margin-bottom:8px">💡 <b>Practical Hint:</b> '+sc.hint+'</div>';
+      }else{
+        h+='<button class="btn" style="font-size:12px;padding:4px 10px" onclick="S.rlShowHint=true;R()">💡 Need a Hint?</button>';
+      }
+      h+='</div>';
+    }
+
+    // Answer options
+    sc.options.forEach(function(opt,idx){
+      var cs="opt";
+      if(S.rlPick!=null){
+        if(idx===sc.correctIndex)cs+=" good";
+        else if(idx===S.rlPick)cs+=" wrong";
+      }
+      h+='<button class="'+cs+'" style="margin:6px 0;text-align:left;line-height:1.4" onclick="pickRealLifeScenario('+idx+')">'+opt+'</button>';
+    });
+
+    // Feedback & explanations after selection
+    if(S.rlPick!=null){
+      var isOk=S.rlPick===sc.correctIndex;
+      h+='<div class="card" style="margin-top:14px;border-left:4px solid '+(isOk?'var(--ok)':'var(--bad)')+';background:'+(isOk?'var(--ok-soft)':'var(--bad-soft)')+'">';
+      h+='<h4 style="margin:0 0 6px 0">'+(isOk?'🎉 Excellent Solution! (+20 XP)':'💡 Almost there! Review the concept:')+'</h4>';
+      h+='<p style="margin:0 0 8px 0;line-height:1.5;font-size:14px"><b>Mathematical Insight:</b> '+sc.conceptExplanation+'</p>';
+      if(sc.realWorldApplication){
+        h+='<div style="background:rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px;font-size:13px;margin-top:6px">🌐 <b>Real-World Application:</b> '+sc.realWorldApplication+'</div>';
+      }
+      h+='</div>';
+
+      h+='<div class="row" style="margin-top:14px;gap:8px;justify-content:space-between">';
+      if(currentIdx>0){
+        h+='<button class="btn" onclick="navRl(-1)">← Previous</button>';
+      }else{
+        h+='<div></div>';
+      }
+      if(currentIdx<scenariosForClass.length-1){
+        h+='<button class="btn p" onclick="navRl(1)">Next Scenario →</button>';
+      }else{
+        h+='<button class="btn p" onclick="setRlActiveNull()">Browse All Class '+S.rlClass+' Scenarios</button>';
+      }
+      h+='</div>';
+    }
+
+    h+='</div>';
+    return h+'</div>';
+  }
+
+  // Otherwise, show the Scenario Explorer / Library View
+  h+='<div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px">';
+  RL_CATS.forEach(function(cat,catIdx){
+    var isSel=S.rlCat===cat;
+    var catLabel=cat==="all"?"All ("+scenariosForClass.length+")":cat;
+    h+='<button class="btn'+(isSel?' p':'')+'" style="font-size:12px;padding:4px 10px;border-radius:14px;white-space:nowrap" onclick="setRlCatIdx('+catIdx+')">'+catLabel+'</button>';
+  });
+  h+='</div>';
+
+  var filteredScenarios=scenariosForClass.filter(function(sc){
+    if(S.rlCat==="all")return true;
+    return sc.category&&sc.category.toLowerCase().indexOf(S.rlCat.toLowerCase())>=0;
+  });
+
+  if(!filteredScenarios.length){
+    h+='<div class="card" style="text-align:center;padding:24px"><p class="mut">No scenarios found for this category in Class '+S.rlClass+'.</p>';
+    h+='<button class="btn" onclick="setRlCatIdx(0)">View All Class '+S.rlClass+' Scenarios</button></div>';
+  }else{
+    h+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">';
+    filteredScenarios.forEach(function(sc){
+      var scIdx=scenariosForClass.indexOf(sc);
+      h+='<div class="card" style="border:1px solid var(--card-border);display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.2s">';
+      h+='<div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="tag" style="background:var(--soft);font-size:11px">'+(sc.category||'Real Life')+'</span><span class="mut" style="font-size:11px">Class '+S.rlClass+'</span></div>';
+      h+='<h4 style="margin:4px 0 6px 0;color:var(--tx);font-size:16px">'+sc.title+'</h4>';
+      var storySnippet=sc.story.length>110?sc.story.slice(0,110)+'...':sc.story;
+      h+='<p class="mut" style="font-size:13px;line-height:1.4;margin:0 0 10px 0">'+storySnippet+'</p></div>';
+      h+='<button class="btn p" style="width:100%;font-size:13px;padding:8px" onclick="setRlIdx('+scIdx+')">Solve Practical Challenge →</button>';
+      h+='</div>';
+    });
+    h+='</div>';
+  }
+
   return h+'</div>';
 }
-function pickScenario(i){
-  S.scPick=i;
-  if(i==S.scenario.correctIndex){
-    S.st.xp=(S.st.xp||0)+20;
-    toast("+20 XP! Real-life math solved!");
+
+function pickRealLifeScenario(i){
+  if(S.rlPick!=null)return;
+  S.rlPick=i;
+  var scenarios=(typeof REAL_LIFE_SCENARIOS!=="undefined"&&REAL_LIFE_SCENARIOS[S.rlClass])?REAL_LIFE_SCENARIOS[S.rlClass]:[];
+  var sc=scenarios.find(function(x){return x.id===S.rlActiveId});
+  if(sc&&i===sc.correctIndex){
+    if(S.st)S.st.xp=(S.st.xp||0)+20;
+    save();
+    toast("+20 XP! Real-life scenario solved!");
     boom();
   }
   R();
 }
 
-function initStory(){
-  S.storyStep=1;S.storyScore=0;R();
+// ==========================================
+// FEATURE 18: ADAPTIVE STORY-BASED LEARNING (CLASSES 6-10)
+// 50 Epic Multi-Stage Quests (10 Quests per Class, 3 Chapters each)
+// ==========================================
+function setSqClass(c){
+  S.sqClass=c;S.sqActiveId=null;S.sqPick=null;S.sqShowHint=false;S.sqDone=false;R();
 }
-function rStory(){
-  var h='<div class="card"><div class="row" style="justify-content:space-between"><div><span class="tag">🏰 Feature 18: Adaptive Story-Based Learning</span><h3>The Lost Formula of Golconda</h3></div><button class="btn" onclick="S.mode=null;R()">← Back</button></div>';
-  if(S.storyStep==1){
-    h+='<p>You stand before the ancient vault of Golconda Fort. The carved stone door reads:</p>';
-    h+='<div class="card" style="background:var(--soft)"><i>"To enter without triggering the sand trap, find the secret balance value: <b>2x + 6 = 20</b>."</i></div>';
-    h+='<button class="opt" onclick="S.storyStep=2;S.storyScore++;R()">A. x = 7 (Balance is true)</button>';
-    h+='<button class="opt" onclick="S.storyStep=2;R()">B. x = 13 (Moved 6 without flipping sign)</button>';
-  }else if(S.storyStep==2){
-    h+='<p>The heavy stone door slides open! Inside is a cavern with glowing crystals. A bridge of floating stepping stones requires you to cross only stepping on negative roots:</p>';
-    h+='<div class="card" style="background:var(--soft)"><i>"The magic guardian asks: Solve <b>x² = 25</b>. Which step is safe?"</i></div>';
-    h+='<button class="opt" onclick="S.storyStep=3;S.storyScore++;boom();R()">A. Stepping on both +5 and −5 (Both are legitimate roots)</button>';
-    h+='<button class="opt" onclick="S.storyStep=3;R()">B. Stepping only on +5 (Forgetting negative root)</button>';
-  }else{
-    h+='<h3>🎉 Quest Complete!</h3><p>You recovered the golden manuscript of Indian Mathematics! Score: '+S.storyScore+'/2.</p>';
-    h+='<button class="btn p" onclick="S.mode=null;R()">Return Home</button>';
+function setSqActiveNull(){
+  S.sqActiveId=null;S.sqPick=null;S.sqShowHint=false;S.sqDone=false;R();
+}
+function setSqIdx(idx){
+  var list=(typeof STORY_QUESTS!=="undefined"&&STORY_QUESTS[S.sqClass])?STORY_QUESTS[S.sqClass]:[];
+  if(idx>=0&&idx<list.length){
+    S.sqActiveId=list[idx].id;
+    S.sqStage=0;
+    S.sqScore=0;
+    S.sqPick=null;
+    S.sqShowHint=false;
+    S.sqDone=false;
+    R();
   }
+}
+
+function initStory(){
+  if(!S)return;
+  var studentCls=(S.st&&S.st.cls)?S.st.cls:6;
+  if(!S.sqClass)S.sqClass=studentCls;
+  setSqActiveNull();
+}
+
+function rStory(){
+  if(!S)return "";
+  var studentCls=(S.st&&S.st.cls)?S.st.cls:6;
+  if(!S.sqClass)S.sqClass=studentCls;
+
+  var h='<div class="card"><div class="row" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">';
+  h+='<div><span class="tag" style="background:linear-gradient(135deg,var(--sec),var(--pri));color:#fff">🏰 Feature 18: Story Quest Library</span>';
+  h+='<h3 style="margin:4px 0">Mathematical Narrative Adventures</h3><small class="mut">50 Epic Multi-Stage Quests across Classes 6–10 (10 per Class)</small></div>';
+  h+='<button class="btn" onclick="S.mode=null;setSqActiveNull()">← Back to Dashboard</button></div>';
+
+  // Class Selection Tabs
+  h+='<div style="display:flex;gap:6px;margin:16px 0 12px 0;overflow-x:auto;padding-bottom:4px">';
+  [6,7,8,9,10].forEach(function(c){
+    var isSel=S.sqClass==c;
+    h+='<button class="btn'+(isSel?' p':'')+'" style="font-size:13px;padding:6px 14px;border-radius:20px;white-space:nowrap" onclick="setSqClass('+c+')">Class '+c+(c==studentCls?' ★ (Your Class)':'')+'</button>';
+  });
+  h+='</div>';
+
+  var questsForClass=(typeof STORY_QUESTS!=="undefined"&&STORY_QUESTS[S.sqClass])?STORY_QUESTS[S.sqClass]:[];
+
+  // If a quest is active
+  if(S.sqActiveId){
+    var q=questsForClass.find(function(x){return x.id===S.sqActiveId})||questsForClass[0];
+    if(!q){S.sqActiveId=null;return rStory()}
+
+    // Quest Victory Screen
+    if(S.sqDone){
+      h+='<div class="card" style="text-align:center;padding:32px 16px;border:2px solid var(--gold);background:radial-gradient(circle at center, rgba(251,191,36,0.12), transparent)">';
+      h+='<div style="font-size:48px;margin-bottom:8px">🏆</div>';
+      h+='<h2 style="color:var(--gold);margin:0 0 8px 0">Quest Complete: Victory!</h2>';
+      h+='<h3 style="margin:0 0 12px 0;color:var(--tx)">'+q.title+'</h3>';
+      h+='<p class="mut" style="font-size:16px;max-width:550px;margin:0 auto 16px auto">You solved all mathematical checkpoints across '+q.stages.length+' chapters, unlocking ancient secrets and restoring balance!</p>';
+      h+='<div class="row" style="justify-content:center;gap:16px;margin-bottom:20px">';
+      h+='<div class="card" style="padding:10px 20px;background:var(--soft)"><small class="mut">Score</small><h3 style="margin:4px 0">'+(S.sqScore||q.stages.length)+' / '+q.stages.length+'</h3></div>';
+      h+='<div class="card" style="padding:10px 20px;background:var(--soft)"><small class="mut">Quest Bonus</small><h3 style="margin:4px 0;color:var(--gold)">+50 XP</h3></div>';
+      h+='</div>';
+      h+='<div style="display:flex;gap:10px;justify-content:center">';
+      h+='<button class="btn p" onclick="setSqActiveNull()">Explore More Class '+S.sqClass+' Quests</button>';
+      h+='<button class="btn" onclick="S.mode=null;R()">Return Home</button>';
+      h+='</div>';
+      h+='</div>';
+      return h+'</div>';
+    }
+
+    var stageIdx=S.sqStage||0;
+    var currentStage=q.stages[stageIdx];
+    var pct=Math.round(((stageIdx+1)/q.stages.length)*100);
+
+    h+='<div style="margin-bottom:12px"><button class="btn" style="padding:4px 10px;font-size:12px" onclick="setSqActiveNull()">← Quest Hall (Class '+S.sqClass+')</button></div>';
+
+    h+='<div class="card" style="border:1px solid var(--card-border);background:linear-gradient(180deg,var(--card),rgba(15,12,30,0.95))">';
+    h+='<div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px">';
+    h+='<span class="tag" style="background:var(--sec-glow);color:#fff">⚔️ '+(q.theme||'Adventure')+'</span>';
+    h+='<span class="mut" style="font-size:13px">Chapter '+(stageIdx+1)+' of '+q.stages.length+'</span></div>';
+    h+='<h2 style="margin:4px 0 10px 0;font-size:20px;color:var(--tx)">'+q.title+'</h2>';
+
+    // Stage Progress Bar
+    h+='<div class="bar" style="height:6px;background:var(--soft);margin-bottom:16px"><i style="width:'+pct+'%;background:linear-gradient(90deg,var(--sec),var(--pri))"></i></div>';
+
+    // The Narrative Lore
+    h+='<div style="background:rgba(236,72,153,0.08);border-left:4px solid var(--sec);padding:14px;border-radius:8px;line-height:1.6;font-size:15px;margin-bottom:14px">';
+    h+='<p style="margin:0 0 6px 0;font-style:italic">'+currentStage.narrative+'</p></div>';
+
+    // The Mathematical Task
+    h+='<div class="card" style="background:var(--soft);border:1px solid var(--card-border);margin-bottom:14px">';
+    h+='<b style="color:var(--gold)">📜 Chapter Challenge:</b><p style="margin:6px 0 0 0;font-size:15px;font-weight:500">'+currentStage.challenge+'</p></div>';
+
+    // Hint toggle button
+    if(currentStage.hint){
+      h+='<div style="margin:8px 0">';
+      if(S.sqShowHint){
+        h+='<div style="background:rgba(245,158,11,0.12);border-left:3px solid var(--warn);padding:10px;border-radius:6px;font-size:13px;margin-bottom:8px">📜 <b>Ancient Scroll Hint:</b> '+currentStage.hint+'</div>';
+      }else{
+        h+='<button class="btn" style="font-size:12px;padding:4px 10px" onclick="S.sqShowHint=true;R()">📜 Consult Scroll Hint</button>';
+      }
+      h+='</div>';
+    }
+
+    // Decision options
+    currentStage.options.forEach(function(opt,idx){
+      var cs="opt";
+      if(S.sqPick!=null){
+        if(idx===currentStage.correctIndex)cs+=" good";
+        else if(idx===S.sqPick)cs+=" wrong";
+      }
+      h+='<button class="'+cs+'" style="margin:6px 0;text-align:left;line-height:1.4" onclick="pickStoryStage('+idx+')">'+opt+'</button>';
+    });
+
+    // Feedback on selection
+    if(S.sqPick!=null){
+      var isOk=S.sqPick===currentStage.correctIndex;
+      h+='<div class="card" style="margin-top:14px;border-left:4px solid '+(isOk?'var(--ok)':'var(--bad)')+';background:'+(isOk?'var(--ok-soft)':'var(--bad-soft)')+'">';
+      h+='<h4 style="margin:0 0 6px 0">'+(isOk?'✨ Success! Chapter Unlocked (+15 XP)':'⚠️ The Challenge Resists:')+'</h4>';
+      h+='<p style="margin:0;line-height:1.5;font-size:14px">'+(isOk?currentStage.feedbackOk:currentStage.feedbackBad)+'</p>';
+      h+='</div>';
+
+      if(isOk){
+        if(stageIdx<q.stages.length-1){
+          h+='<div style="margin-top:14px;text-align:right"><button class="btn p" style="padding:10px 20px" onclick="S.sqStage='+(stageIdx+1)+';S.sqPick=null;S.sqShowHint=false;R()">Advance to Chapter '+(stageIdx+2)+' →</button></div>';
+        }else{
+          h+='<div style="margin-top:14px;text-align:right"><button class="btn p" style="padding:10px 20px;background:var(--gold);color:#000;font-weight:bold" onclick="completeStoryQuest()">Complete Quest &amp; Claim Glory 🏆</button></div>';
+        }
+      }else{
+        h+='<div style="margin-top:12px"><button class="btn" onclick="S.sqPick=null;R()">Retry Chapter Challenge ↺</button></div>';
+      }
+    }
+
+    h+='</div>';
+    return h+'</div>';
+  }
+
+  // Otherwise, show the Quest Hall / Library
+  if(!questsForClass.length){
+    h+='<div class="card" style="text-align:center;padding:24px"><p class="mut">No quests found for Class '+S.sqClass+'.</p></div>';
+  }else{
+    h+='<p class="mut" style="font-size:14px;margin-bottom:14px">Select any of the 10 epic narrative quests below. Each quest features 3 chapters with mathematical checkpoints, lore and rewards.</p>';
+    h+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">';
+    questsForClass.forEach(function(q){
+      var qIdx=questsForClass.indexOf(q);
+      h+='<div class="card" style="border:1px solid var(--card-border);display:flex;flex-direction:column;justify-content:space-between;transition:transform 0.2s">';
+      h+='<div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="tag" style="background:rgba(236,72,153,0.15);color:var(--sec);font-size:11px">'+(q.theme||'Quest')+'</span><span class="mut" style="font-size:11px">📜 3 Chapters</span></div>';
+      h+='<h4 style="margin:4px 0 6px 0;color:var(--tx);font-size:16px">'+q.title+'</h4>';
+      var introSnippet=q.intro.length>110?q.intro.slice(0,110)+'...':q.intro;
+      h+='<p class="mut" style="font-size:13px;line-height:1.4;margin:0 0 10px 0">'+introSnippet+'</p></div>';
+      h+='<button class="btn p" style="width:100%;font-size:13px;padding:8px;background:linear-gradient(135deg,var(--sec),var(--pri))" onclick="setSqIdx('+qIdx+')">Embark on Quest →</button>';
+      h+='</div>';
+    });
+    h+='</div>';
+  }
+
   return h+'</div>';
+}
+
+function pickStoryStage(i){
+  if(S.sqPick!=null)return;
+  S.sqPick=i;
+  var quests=(typeof STORY_QUESTS!=="undefined"&&STORY_QUESTS[S.sqClass])?STORY_QUESTS[S.sqClass]:[];
+  var q=quests.find(function(x){return x.id===S.sqActiveId});
+  if(q){
+    var stage=q.stages[S.sqStage||0];
+    if(stage&&i===stage.correctIndex){
+      S.sqScore=(S.sqScore||0)+1;
+      if(S.st)S.st.xp=(S.st.xp||0)+15;
+      save();
+      toast("+15 XP! Chapter checkpoint cleared!");
+      boom();
+    }
+  }
+  R();
+}
+
+function completeStoryQuest(){
+  S.sqDone=true;
+  if(S.st)S.st.xp=(S.st.xp||0)+50;
+  save();
+  toast("🏆 +50 XP! Epic Quest Complete!");
+  boom();
+  R();
 }
 
 // ==========================================
@@ -2304,13 +2665,60 @@ function sendChat(customText){
     try{
       activeElevenLabsConv.sendUserMessage(txt);
     }catch(e){
-      console.warn("sendUserMessage error, reconnecting:", e);
-      pendingUserText = txt;
-      connectElevenLabsRooty();
+      console.warn("sendUserMessage error, falling back to Gemini:", e);
+      fallbackToGeminiTutor(txt);
     }
   } else {
-    pendingUserText = txt;
-    connectElevenLabsRooty();
+    connectElevenLabsRooty().catch(function(err){
+      console.warn("ElevenLabs connect failed, falling back to Gemini tutor:", err);
+      fallbackToGeminiTutor(txt);
+    });
+  }
+}
+
+async function fallbackToGeminiTutor(userText){
+  chatLoading = true;
+  updateRootyStatusUI();
+  try {
+    var stName = S && S.st ? S.st.name : "Student";
+    var stCls = S && S.st ? S.st.cls : 8;
+    var topic = S && S.sk && SK[S.sk] ? SK[S.sk].n[0] : "Mathematics";
+    var langCode = ["en", "te", "hi"][L] || "en";
+    var recentHistory = chatHistory.slice(-4).map(function(m){ return { role: m.sender === "user" ? "user" : "model", text: m.text }; });
+
+    var res = await fetch("/api/tutor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        question: userText,
+        studentClass: stCls,
+        topic: topic,
+        language: langCode,
+        history: recentHistory
+      })
+    });
+
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    var data = await res.json();
+    var botReply = data.answer || "I am thinking about your question! Let's review the core concept.";
+    chatLoading = false;
+    chatHistory.push({ sender: "bot", text: botReply });
+    appendChatMessageUI("bot", botReply);
+    updateRootyStatusUI();
+  } catch(err) {
+    console.warn("Gemini tutor fallback error:", err);
+    chatLoading = false;
+    var offlineAnswers = {
+      6: "In Class 6, remember: fractions represent equal parts of a whole. Always find a common denominator before adding or subtracting!",
+      7: "In Class 7, watch your signs with negative numbers: subtracting a negative makes it positive (e.g. 5 - (-3) = 8).",
+      8: "In Class 8, when solving linear equations, remember to flip the sign whenever you transpose a term across the '=' sign!",
+      9: "In Class 9, remember quadratic equations can have two roots (±√k), and polynomials can be factored by splitting the middle term.",
+      10: "In Class 10, the quadratic formula is x = (-b ± √(b² - 4ac)) / (2a). Check the discriminant D = b² - 4ac for root types!"
+    };
+    var fallbackReply = offlineAnswers[S && S.st ? S.st.cls : 6] || "Let's work through this step by step: identify what is given, write the equation, and solve for the unknown.";
+    chatHistory.push({ sender: "bot", text: fallbackReply });
+    appendChatMessageUI("bot", fallbackReply);
+    updateRootyStatusUI();
   }
 }
 
@@ -2527,9 +2935,14 @@ function boss(){
 }
 
 function hintBox(){
-  var k=S.cur.s,n=S.hu||0;
+  var k=S.cur.s,n=S.hu||0,q=S.cur;
   if(!n)return"";
-  return'<div class="lesson">'+(n>=1?"<p>💡 "+HN[k][0]+"</p>":"")+(n>=2?"<p>💡 "+HN[k][1]+"</p>":"")+(n>=3?"<p><b>Worked Example:</b> "+WE[k].join(" → ")+"</p>":"")+'</div>';
+  var hnList=HN[k]||["Think carefully about the operation.","Check your signs or operations."];
+  var weList=WE[k]||["Step 1: Simplify","Step 2: Solve"];
+  var h1 = (q && q.hint) ? q.hint : (hnList[0] || "Consider the core concept.");
+  var h2 = hnList[1] || hnList[0] || "Re-check calculation.";
+  var h3 = (q && q.exp) ? q.exp : weList.join(" → ");
+  return'<div class="lesson">'+(n>=1?"<p>💡 "+h1+"</p>":"")+(n>=2?"<p>💡 "+h2+"</p>":"")+(n>=3?"<p><b>Worked Example:</b> "+h3+"</p>":"")+'</div>';
 }
 function hint(){if(!S.fb&&(S.hu||0)<3){S.hu=(S.hu||0)+1;R()}}
 

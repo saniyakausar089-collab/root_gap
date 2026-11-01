@@ -158,6 +158,16 @@ function sendJSON(res, statusCode, data) {
 
 // Parse request body
 function parseBody(req) {
+  if (req.body) {
+    if (typeof req.body === 'object') return Promise.resolve(req.body);
+    if (typeof req.body === 'string') {
+      try {
+        return Promise.resolve(JSON.parse(req.body));
+      } catch (e) {
+        return Promise.reject(new Error('Invalid JSON'));
+      }
+    }
+  }
   return new Promise((resolve, reject) => {
     let body = '';
     req.on('data', chunk => {
@@ -216,7 +226,7 @@ Respond with structured, compassionate analysis and a 2-step remedy.`;
 
 // Server Router
 async function handleRequest(req, res) {
-  const ip = req.socket.remoteAddress || '127.0.0.1';
+  const ip = (req.headers && (req.headers['x-forwarded-for'] || req.headers['x-real-ip'])) || (req.socket && req.socket.remoteAddress) || '127.0.0.1';
   const urlObj = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   const pathname = urlObj.pathname;
 

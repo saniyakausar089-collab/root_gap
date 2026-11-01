@@ -1,5 +1,14 @@
-const C = "rootgap-v5";
-const F = ["./", "index.html", "manifest.json", "three.min.js", "elevenlabs-client.js"];
+const C = "rootgap-v6";
+const F = [
+  "./",
+  "index.html",
+  "manifest.json",
+  "three.min.js",
+  "elevenlabs-client.js",
+  "content/real_life_scenarios.js",
+  "content/story_quests.js",
+  "content/practice_bank.js"
+];
 
 self.addEventListener("install", e => {
   self.skipWaiting();
