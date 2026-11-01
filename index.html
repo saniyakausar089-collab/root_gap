@@ -1113,6 +1113,7 @@ h2, h3, h4 { margin: 8px 0; color: #fff; }
 </header>
 <main id="app"></main>
 <script src="three.min.js"></script>
+<script src="elevenlabs-client.js"></script>
 <script>
 // --- CORE CURRICULUM & KNOWLEDGE GRAPH (Classes 6-10) ---
 var SK={
@@ -1254,25 +1255,27 @@ var OPX={
   "10:2":"They are not equal: 2/3 = 10/15 but 3/5 = 9/15.",
   "11:2":"2/6 adds the tops (1 + 1) without first making the denominators equal. Make both 6: 3/6 + 2/6."
 };
-var LES={
-  frac:[
-    ['What is a fraction?',['A fraction shows part of a whole. In 3/4, the bottom number (denominator) tells how many equal parts the whole is cut into, and the top number (numerator) tells how many of those parts we take.','Example: a roti is cut into 4 equal parts and you eat 3. You ate 3/4 of the roti.'],['Shade 2/5 of a chocolate bar','Break the bar into 5 equal pieces.','Colour 2 of the pieces.','2 out of 5 equal parts are shaded, so that is 2/5.'],['In 5/8, what does the 8 tell us?','Parts we take','Total equal parts in the whole','Size of each part',1,'The denominator is the total number of equal parts in the whole.']],
-    ['Proper, improper and mixed fractions',['In a proper fraction the numerator is smaller than the denominator (3/7). In an improper fraction it is equal or larger (9/5). A mixed number has a whole part and a fraction part (1 4/5).','To change improper to mixed, divide the numerator by the denominator.'],['Convert 11/4 to a mixed number','Divide 11 by 4: quotient 2, remainder 3.','The whole part is 2 and the fraction part is 3/4.','So 11/4 = 2 3/4.'],['Which is an improper fraction?','3/7','9/5','1/2',1,'9/5 has a numerator larger than its denominator.']],
-    ['Equivalent fractions and simplest form',['Fractions that show the same amount are equivalent. Multiply or divide the numerator and denominator by the same number: 1/2 = 2/4 = 3/6.','A fraction is in simplest form when the numerator and denominator share no common factor except 1.'],['Simplify 12/18','The HCF of 12 and 18 is 6.','12 ÷ 6 = 2 and 18 ÷ 6 = 3.','So 12/18 = 2/3.'],['Which fraction equals 2/3?','4/6','3/2','2/6',0,'Multiply top and bottom of 2/3 by 2 to get 4/6.']]
-  ],
-  neg:[
-    ['Numbers on the number line',['Negative numbers lie to the left of zero. The further left, the smaller the number, so −7 < −3 < 0 < 2.'],['Order −2, 5, −6, 0','Place them on the number line.','Left to right: −6, −2, 0, 5.','Smallest is −6 and largest is 5.'],['Which is greater: −7 or −3?','−7','−3','They are equal',1,'−3 is closer to zero, so it is further right and greater.']],
-    ['Adding integers',['Same signs: add the sizes and keep the sign. (−3) + (−4) = −7.','Different signs: subtract smaller size from larger and keep sign of larger. −5 + 8 = +3.'],['Add −5 + 8','Signs are different, so subtract sizes: 8 − 5 = 3.','8 is larger and positive, so +3.'],['−4 + 9 = ?','−5','5','13',1,'Different signs: 9 − 4 = 5, positive because 9 is larger.']]
-  ],
-  lin:[
-    ['What is an equation?',['An equation says two expressions are equal, like a balanced scale: x + 3 = 7. Solving means finding x to keep the balance.'],['Is x = 4 a solution of x + 3 = 7?','Left side: 4 + 3 = 7. Right side: 7.','Both match, so x = 4 is the solution.'],['Is x = 5 a solution of x + 3 = 7?','Yes','No','Cannot say',1,'5 + 3 = 8 ≠ 7.']],
-    ['One-step equations',['Undo operations: add to undo subtract, subtract to undo add, divide to undo multiply.'],['Solve x + 5 = 2','Subtract 5: x = 2 − 5 = −3.'],['x − 6 = 4. Find x.','−2','10','24',1,'x = 4 + 6 = 10.']]
-  ],
-  quad:[
-    ['What is a quadratic equation?',['A quadratic equation has the form ax² + bx + c = 0, where the highest power of x is 2. It can have two solutions.'],['Is x² − 4 = 0 quadratic?','Highest power is 2, matches ax² + bx + c = 0. Yes!'],['Which equation is quadratic?','3x + 2 = 0','x² − 4 = 0','x³ = 8',1,'Only x² − 4 = 0 has power 2.']],
-    ['Solving x² = k by square roots',['If x² = k, then x = +√k or −√k.'],['Solve x² = 16','Square roots give x = +4 or −4.'],['x² = 25. Find x.','5','±5','12.5',1,'Both 5 and −5 square to 25.']]
-  ]
-};
+var LES={frac:[['What is a fraction?',['A fraction shows part of a whole. In 3/4, the bottom number (denominator) tells how many equal parts the whole is cut into, and the top number (numerator) tells how many of those parts we take.','Example: a roti is cut into 4 equal parts and you eat 3. You ate 3/4 of the roti.'],['Shade 2/5 of a chocolate bar','Break the bar into 5 equal pieces.','Colour 2 of the pieces.','2 out of 5 equal parts are shaded, so that is 2/5.'],['In 5/8, what does the 8 tell us?','Parts we take','Total equal parts in the whole','Size of each part',1,'The denominator is the total number of equal parts in the whole.']],
+['Proper, improper and mixed fractions',['In a proper fraction the numerator is smaller than the denominator (3/7). In an improper fraction it is equal or larger (9/5). A mixed number has a whole part and a fraction part (1 4/5).','To change improper to mixed, divide the numerator by the denominator: the quotient is the whole part and the remainder goes over the same denominator.'],['Convert 11/4 to a mixed number','Divide 11 by 4: quotient 2, remainder 3.','The whole part is 2 and the fraction part is 3/4.','So 11/4 = 2 3/4.'],['Which is an improper fraction?','3/7','9/5','1/2',1,'9/5 has a numerator larger than its denominator.']],
+['Equivalent fractions and simplest form',['Fractions that show the same amount are equivalent. Multiply or divide the numerator and denominator by the same number: 1/2 = 2/4 = 3/6.','A fraction is in simplest form when the numerator and denominator share no common factor except 1. Divide both by their HCF to get there.'],['Simplify 12/18','The HCF of 12 and 18 is 6.','12 ÷ 6 = 2 and 18 ÷ 6 = 3.','So 12/18 = 2/3.'],['Which fraction equals 2/3?','4/6','3/2','2/6',0,'Multiply top and bottom of 2/3 by 2 to get 4/6.']],
+['Comparing fractions',['Same denominator: the larger numerator is the larger fraction (5/9 > 4/9). Same numerator: the larger denominator is the smaller fraction (1/3 > 1/5), because the whole is cut into more pieces.','Different denominators: make them equal using the LCM, then compare numerators. Remember: a bigger denominator does not mean a bigger fraction.'],['Compare 2/3 and 3/5','LCM of 3 and 5 is 15.','2/3 = 10/15 and 3/5 = 9/15.','10/15 is more than 9/15, so 2/3 is larger.'],['Which is larger, 1/3 or 1/5?','1/3','1/5','They are equal',0,'Thirds are bigger pieces than fifths.']],
+['Adding and subtracting fractions',['With the same denominator, add or subtract the numerators and keep the denominator: 2/7 + 3/7 = 5/7. Never add the denominators.','With different denominators, first convert both to the LCM as the common denominator, then add or subtract.'],['Add 1/2 + 1/3','LCM of 2 and 3 is 6.','1/2 = 3/6 and 1/3 = 2/6.','3/6 + 2/6 = 5/6.'],['2/7 + 3/7 = ?','5/14','5/7','6/7',1,'Keep the denominator 7 and add the numerators: 2 + 3 = 5.']],
+['Multiplying fractions',['Multiply the numerators together and the denominators together. The word “of” means multiply: 1/2 of 10 is 1/2 × 10 = 5.'],['Multiply 2/3 × 3/4','Top × top: 2 × 3 = 6.','Bottom × bottom: 3 × 4 = 12.','6/12 simplifies to 1/2.'],['1/2 × 6 = ?','3','12','1/12',0,'Half of 6 is 3.']],
+['Dividing fractions',['To divide by a fraction, multiply by its reciprocal (flip it upside down). The reciprocal of 1/2 is 2/1.','Why? Dividing 1 by 1/2 asks how many halves fit in 1, and the answer is 2.'],['Divide 3/4 ÷ 1/2','Flip 1/2 to get 2/1.','Multiply: 3/4 × 2 = 6/4.','Simplify: 6/4 = 3/2 = 1 1/2.'],['1/2 ÷ 1/4 = ?','1/8','2','1/2',1,'Two quarters fit in a half: 1/2 × 4 = 2.']]],
+neg:[['Numbers on the number line',['Negative numbers lie to the left of zero. The further left, the smaller the number, so −7 < −3 < 0 < 2. Think of temperatures below zero or a bank balance in debt.'],['Order −2, 5, −6, 0','Place them on the number line.','Left to right: −6, −2, 0, 5.','The smallest is −6 and the largest is 5.'],['Which is greater: −7 or −3?','−7','−3','They are equal',1,'−3 is closer to zero, so it is further right and greater.']],
+['Adding integers',['Same signs: add the sizes and keep the sign. (−3) + (−4) = −7.','Different signs: subtract the smaller size from the larger and keep the sign of the larger. −5 + 8 = +3.'],['Add −5 + 8','Signs are different, so subtract sizes: 8 − 5 = 3.','8 is larger and positive, so the answer is positive.','−5 + 8 = 3.'],['−4 + 9 = ?','−5','5','13',1,'Different signs: 9 − 4 = 5, positive because 9 is larger.']],
+['Subtracting integers',['Subtracting a number is the same as adding its opposite: a − b = a + (−b). So 5 − (−2) = 5 + 2 = 7.','On the number line, subtracting a positive moves left; subtracting a negative moves right.'],['Calculate −3 − 4','Start at −3 on the number line.','Subtracting 4 moves 4 steps left.','−3 − 4 = −7.'],['5 − (−3) = ?','2','8','−8',1,'Subtracting −3 is adding 3: 5 + 3 = 8.']],
+['Multiplying and dividing integers',['Same signs give a positive answer; different signs give a negative answer. This works for both multiplication and division.','(−) × (−) = +, (+) × (−) = −, (−) ÷ (−) = +, (−) ÷ (+) = −.'],['Calculate (−2) × (−5) and (−12) ÷ 3','(−2) × (−5): same signs, so positive: 10.','(−12) ÷ 3: different signs, so negative: −4.','Answers: 10 and −4.'],['(−3) × 4 = ?','12','−12','−1',1,'Different signs give a negative answer: −12.']],
+['Negative numbers in real life',['Negative numbers describe temperatures below zero, depths below sea level and money owed. Turn the story into an integer sum, then solve it.'],['Temperature is −3°C and rises by 7°C','Write it as −3 + 7.','Different signs: 7 − 3 = 4.','The new temperature is 4°C.'],['−2°C falls by 5°C. New temperature?','3°C','−7°C','−3°C',1,'Falling means subtracting: −2 − 5 = −7.']]],
+lin:[['What is an equation?',['An equation says two expressions are equal, like a balanced scale: x + 3 = 7. Solving means finding the value of x that keeps the scale balanced.','Anything you do to one side, you must do to the other.'],['Is x = 4 a solution of x + 3 = 7?','Put x = 4 on the left: 4 + 3 = 7.','The right side is 7 too.','Both sides match, so x = 4 is the solution.'],['Is x = 5 a solution of x + 3 = 7?','Yes','No','Cannot say',1,'5 + 3 = 8, which is not 7, so it is not a solution.']],
+['One-step equations',['Undo the operation using its opposite: add to undo subtract, subtract to undo add, divide to undo multiply. Do it on both sides.','Moving a term across the equals sign changes its sign.'],['Solve x + 5 = 2','Subtract 5 from both sides: x = 2 − 5.','x = −3.','Check: −3 + 5 = 2.'],['x − 6 = 4. Find x.','−2','10','24',1,'Add 6 to both sides: x = 4 + 6 = 10.']],
+['Two-step equations',['First remove the added or subtracted number, then divide by the number multiplying x. Do the addition or subtraction first.'],['Solve 3x − 4 = 5','Add 4 to both sides: 3x = 9.','Divide both sides by 3: x = 3.','Check: 3 × 3 − 4 = 5.'],['2x + 3 = 11. Find x.','7','4','14',1,'Subtract 3: 2x = 8, then divide by 2: x = 4.']],
+['Variables on both sides',['Collect all x terms on one side and plain numbers on the other, changing the sign of any term you move. Then solve as a two-step equation.'],['Solve 5x − 2 = 3x + 6','Move 3x to the left: 5x − 3x − 2 = 6.','Move −2 to the right: 2x = 8.','Divide by 2: x = 4.'],['4x = 2x + 10. Find x.','5','10','2.5',0,'Subtract 2x: 2x = 10, so x = 5.']],
+['Word problems',['Choose a letter for the unknown, write the story as an equation, solve it, and check it against the story.'],['Two consecutive numbers add up to 41','Let the numbers be x and x + 1.','x + (x + 1) = 41 gives 2x = 40.','x = 20, so the numbers are 20 and 21.'],['A number doubled, plus 3, makes 11. What is it?','4','7','14',0,'2x + 3 = 11, so 2x = 8 and x = 4.']]],
+quad:[['What is a quadratic equation?',['A quadratic equation has the form ax² + bx + c = 0, where the highest power of x is 2. It can have up to two solutions.','Linear equations have one answer; quadratics often have two, because both a number and its negative can square to the same value.'],['Is x² − 4 = 0 quadratic?','The highest power of x is 2.','It matches ax² + bx + c = 0 with a = 1, b = 0, c = −4.','Yes, it is quadratic.'],['Which equation is quadratic?','3x + 2 = 0','x² − 4 = 0','x³ = 8',1,'Only x² − 4 = 0 has x² as its highest power.']],
+['Solving x² = k by square roots',['If x² = k, then x = +√k or −√k, because (−4)² is also 16. Writing x = ±4 shows both answers.'],['Solve x² = 16','Take the square root of both sides.','x = +4 or x = −4.','Check: 4² = 16 and (−4)² = 16.'],['x² = 25. Find x.','5','±5','12.5',1,'Both 5 and −5 square to 25.']],
+['Factorised form',['If two things multiply to zero, at least one of them is zero. So (x − a)(x − b) = 0 gives x = a or x = b. Watch the signs: the bracket (x − 2) gives x = +2.'],['Solve (x − 2)(x + 3) = 0','x − 2 = 0 gives x = 2.','x + 3 = 0 gives x = −3.','Answer: x = 2 or x = −3.'],['(x + 1)(x − 4) = 0. Find x.','1 or −4','−1 or 4','−1 or −4',1,'x + 1 = 0 gives −1, and x − 4 = 0 gives 4.']],
+['Solving by factorising',['To solve x² + bx + c = 0, find two numbers whose product is c and whose sum is b. Write the brackets, then use the zero-product idea.'],['Solve x² + 5x + 6 = 0','Find two numbers with product 6 and sum 5: 2 and 3.','Factorise: (x + 2)(x + 3) = 0.','x = −2 or x = −3.'],['x² − 5x + 6 = 0. Find x.','2 or 3','−2 or −3','1 or 6',0,'Numbers with product 6 and sum −5 are −2 and −3, so x = 2 or 3.']]]};
 
 var T={
   stu:["Student","విద్యార్థి","विद्यार्थी"],
@@ -1293,24 +1296,35 @@ var CF=["😟","😐","😎"],CFN=["un","ok","su"];
 
 // Global Application State
 var DB,L=0,view="landing",S=null,tab="plan",sel=null,PS="neg",tok=false,S0={cls:null,sid:null,err:""},TP="1234",PP="5678",FC=0,SEEDING=0,CDB=null,currentRecognition=null,currentTutorRequestId=0;
+var AV=["🦊","🐼","🐯","🐸","🦉","🐙","🦄","🐢"];
 var chatOpen=false,chatHistory=[],chatLoading=false;
-var isOnline=navigator.onLine;
+var activeElevenLabsConv=null,elevenLabsStatus="idle",elevenLabsMode="listening",elevenLabsErrorMsg="",pendingUserText=null;
 
-function stopAllAudio(){
-  currentTutorRequestId++;
-  if("speechSynthesis" in window){
+function disconnectElevenLabsRooty(){
+  if(activeElevenLabsConv){
     try{
-      window.speechSynthesis.cancel();
-      if(window.speechSynthesis.speaking || window.speechSynthesis.pending){
-        window.speechSynthesis.cancel();
-      }
+      activeElevenLabsConv.endSession().catch(function(){});
     }catch(e){}
+    activeElevenLabsConv=null;
+  }
+  elevenLabsStatus="disconnected";
+  elevenLabsMode="listening";
+  chatLoading=false;
+  pendingUserText=null;
+  if("speechSynthesis" in window){
+    try{ window.speechSynthesis.cancel(); }catch(e){}
   }
   if(currentRecognition){
     try{ currentRecognition.abort(); }catch(e){}
     try{ currentRecognition.stop(); }catch(e){}
     currentRecognition=null;
   }
+}
+var isOnline=navigator.onLine;
+
+function stopAllAudio(){
+  currentTutorRequestId++;
+  disconnectElevenLabsRooty();
 }
 
 function t(k){return (T[k]&&T[k][L])||(T[k]&&T[k][0])||k}
@@ -1453,12 +1467,16 @@ function addExtra(){
     ["Kabir",10,[]]
   ];
   X.forEach(function(p,i){
-    var s=mk("x"+i,p[0],p[1]);
-    p[2].forEach(function(e){ans(s,e[0],e[1],e[2])});
-    DB.st.push(s);
+    var exists = DB.st.some(function(s){ return s.id === "x"+i || (s.name === p[0] && s.cls === p[1]); });
+    if(!exists){
+      var s=mk("x"+i,p[0],p[1]);
+      p[2].forEach(function(e){ans(s,e[0],e[1],e[2])});
+      DB.st.push(s);
+    }
   });
   DB.v=2;
   SEEDING=wasS;
+  save();
 }
 
 function save(){try{localStorage.setItem("rg1",JSON.stringify(DB))}catch(e){}}
@@ -1476,7 +1494,9 @@ function load(){
     {id:2,student:"Anil",classNum:9,text:"How to know which factor to pick when factorizing quadratics?"},
     {id:3,student:"Kiran",classNum:8,text:"I always forget to divide by 2 in 2x = 14."}
   ];
-  if(DB.v!=2)addExtra();
+  var cls6 = DB.st.filter(function(s){return s.cls==6});
+  var cls7 = DB.st.filter(function(s){return s.cls==7});
+  if(cls6.length === 0 || cls7.length === 0 || DB.v!=2) addExtra();
   DB.st.forEach(function(s){
     s.m=s.m||{frac:.5,neg:.5,lin:.5,quad:.5};
     s.log=s.log||[];
@@ -1658,6 +1678,7 @@ function tconf(c){
   if(S.res.length>=6||(l3.length==3&&l3.every(function(x){return x.ok&&x.c==2}))){
     S.end=true;
   }
+  (S.dlog=S.dlog||[]).push(twhy(r,c));
   if(S.end){
     S.cur=null;
     var okCount=S.res.filter(function(x){return x.ok}).length;
@@ -1958,133 +1979,365 @@ function replyPeer(id){
 // ==========================================
 // FEATURE 2, 7 & 20: AI TUTOR & VOICE ASSISTANT ("ROOTY")
 // ==========================================
-function toggleChat(){
-  chatOpen=!chatOpen;
+// ELEVENLABS CONVERSATIONAL AI ROOTY INTEGRATION
+// ==========================================
+
+var elevenLabsConnectPromise = null;
+var activeElevenLabsConv = null;
+var elevenLabsStatus = "idle";
+var elevenLabsMode = "listening";
+var elevenLabsErrorMsg = "";
+var pendingUserText = null;
+var micUserEnabled = false;
+
+function scrollChatToBottom(){
+  setTimeout(function(){
+    var el = document.getElementById("chat_scroll");
+    if(el) el.scrollTop = el.scrollHeight;
+  }, 30);
+}
+
+function updateRootyStatusUI(){
+  var badge = document.getElementById("rooty_status_badge");
+  var micBtn = document.getElementById("rooty_mic_btn");
+  var typingInd = document.getElementById("rooty_typing_ind");
+
+  if(badge){
+    if(elevenLabsStatus === "connected"){
+      if(elevenLabsMode === "speaking"){
+        badge.className = "pill g";
+        badge.innerHTML = "🔊 Speaking";
+      } else {
+        badge.className = "pill g";
+        badge.innerHTML = micUserEnabled ? "🎙️ Listening" : "🟢 Connected";
+      }
+    } else if(elevenLabsStatus === "connecting"){
+      badge.className = "pill l";
+      badge.innerHTML = "🟡 Connecting...";
+    } else if(elevenLabsStatus === "error"){
+      badge.className = "pill c";
+      badge.innerHTML = "⚠️ Error";
+    } else {
+      badge.className = "pill";
+      badge.innerHTML = "⚡ Ready";
+    }
+  }
+
+  if(micBtn){
+    if(elevenLabsStatus === "connected"){
+      if(elevenLabsMode === "speaking"){
+        micBtn.innerHTML = "🔊 Speaking";
+        micBtn.className = "btn sm";
+        micBtn.style.borderColor = "var(--ok)";
+      } else if(micUserEnabled){
+        micBtn.innerHTML = "🎙️ Mic On";
+        micBtn.className = "btn sm p";
+        micBtn.style.borderColor = "var(--pri)";
+      } else {
+        micBtn.innerHTML = "🔇 Mic Off";
+        micBtn.className = "btn sm";
+        micBtn.style.borderColor = "var(--ln)";
+      }
+    } else {
+      micBtn.innerHTML = "🎙️ Mic";
+      micBtn.className = "btn sm";
+    }
+  }
+
+  if(typingInd){
+    typingInd.style.display = chatLoading ? "block" : "none";
+  }
+}
+
+function appendChatMessageUI(sender, text){
+  var scrollEl = document.getElementById("chat_scroll");
+  if(scrollEl){
+    var msgDiv = document.createElement("div");
+    msgDiv.className = "msg " + (sender === "user" ? "user" : "bot");
+    msgDiv.innerHTML = text.replace(/\n/g, "<br>");
+    scrollEl.appendChild(msgDiv);
+    scrollChatToBottom();
+  }
+}
+
+function toggleMic(){
+  micUserEnabled = !micUserEnabled;
+  if(!activeElevenLabsConv){
+    connectElevenLabsRooty();
+    return;
+  }
+  try{
+    if(typeof activeElevenLabsConv.setMicMuted === "function"){
+      activeElevenLabsConv.setMicMuted(!micUserEnabled);
+    }
+  }catch(e){}
+  updateRootyStatusUI();
+  if(micUserEnabled){
+    toast("🎙️ Microphone unmuted - Speak your doubt!");
+  } else {
+    toast("🔇 Microphone muted");
+  }
+}
+
+function disconnectElevenLabsRooty(){
+  elevenLabsConnectPromise = null;
+  if(activeElevenLabsConv){
+    try{
+      if(typeof activeElevenLabsConv.setMicMuted === "function"){
+        activeElevenLabsConv.setMicMuted(true);
+      }
+      activeElevenLabsConv.endSession().catch(function(){});
+    }catch(e){}
+    activeElevenLabsConv = null;
+  }
+  elevenLabsStatus = "disconnected";
+  elevenLabsMode = "listening";
+  micUserEnabled = false;
+  chatLoading = false;
+  pendingUserText = null;
+
+  if("speechSynthesis" in window){
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+  }
+  if(currentRecognition){
+    try{ currentRecognition.abort(); }catch(e){}
+    currentRecognition = null;
+  }
+  updateRootyStatusUI();
+}
+
+function stopAllAudio(){
+  currentTutorRequestId++;
+  disconnectElevenLabsRooty();
+}
+
+function toggleChat(forceOpen){
+  if(forceOpen === true) chatOpen = true;
+  else if(forceOpen === false) chatOpen = false;
+  else chatOpen = !chatOpen;
+
   if(!chatOpen){
     stopAllAudio();
   } else {
     stopAllAudio();
     if(!chatHistory.length){
-      var stName=S&&S.st?S.st.name:"Friend";
-      var langGreet=["Hi "+stName+"! I am Rooty, your AI math tutor. What doubt can I solve for you today?","నమస్కారం "+stName+"! నేను రూటీని. మీకు గణితంలో ఏ సందేహం ఉందో అడగండి!","नमस्ते "+stName+"! मैं रूटी हूँ, आपका AI गणित साथी। आज आपको क्या समझना है?"][L];
-      chatHistory.push({sender:"bot",text:langGreet});
+      var stName = S && S.st ? S.st.name : "Friend";
+      var langGreet = [
+        "Hi " + stName + "! I am Rooty, your AI math companion. Type a doubt or tap the mic to speak!",
+        "నమస్కారం " + stName + "! నేను రూటీని. మీకు గణితంలో ఏ సందేహం ఉందో అడగండి!",
+        "नमस्ते " + stName + "! मैं रूटी हूँ। गणित में आपकी क्या सहायता करूँ?"
+      ][L];
+      chatHistory.push({ sender: "bot", text: langGreet });
     }
+    connectElevenLabsRooty();
   }
   R();
+}
+
+async function connectElevenLabsRooty(initialQuestion){
+  if(activeElevenLabsConv && activeElevenLabsConv.isOpen && activeElevenLabsConv.isOpen()){
+    if(initialQuestion) sendChat(initialQuestion);
+    return activeElevenLabsConv;
+  }
+
+  if(elevenLabsConnectPromise){
+    if(initialQuestion) pendingUserText = initialQuestion;
+    return elevenLabsConnectPromise;
+  }
+
+  elevenLabsStatus = "connecting";
+  elevenLabsErrorMsg = "";
+  updateRootyStatusUI();
+
+  elevenLabsConnectPromise = (async function(){
+    try {
+      var res = await fetch("/api/elevenlabs/conversation-credentials");
+      if(!res.ok){
+        var errData = await res.json().catch(function(){ return {}; });
+        throw new Error(errData.error || ("Server error (" + res.status + ")"));
+      }
+      var creds = await res.json();
+
+      if(!window.ElevenLabsClient || !window.ElevenLabsClient.Conversation){
+        throw new Error("ElevenLabs SDK is not loaded. Please ensure elevenlabs-client.js is loaded.");
+      }
+
+      var options = {
+        onConnect: function(props){
+          console.log("ElevenLabs Rooty connected:", props && props.conversationId);
+          elevenLabsStatus = "connected";
+          elevenLabsErrorMsg = "";
+
+          // Start with microphone muted by default to avoid ambient noise/feedback
+          if(activeElevenLabsConv && typeof activeElevenLabsConv.setMicMuted === "function"){
+            activeElevenLabsConv.setMicMuted(!micUserEnabled);
+          }
+
+          try{
+            var stName = S && S.st ? S.st.name : "Student";
+            var stCls = S && S.st ? S.st.cls : 8;
+            var topic = S && S.sk && SK[S.sk] ? SK[S.sk].n[0] : "Mathematics";
+            activeElevenLabsConv.sendContextualUpdate(
+              "The student is exploring ROOT_GAP. Grade: Class " + stCls + ". Current Topic: " + topic + ". Name: " + stName + "."
+            );
+          }catch(e){}
+
+          if(pendingUserText){
+            var q = pendingUserText;
+            pendingUserText = null;
+            sendChat(q);
+          }
+          updateRootyStatusUI();
+        },
+        onDisconnect: function(details){
+          console.log("ElevenLabs Rooty disconnected:", details);
+          elevenLabsStatus = "disconnected";
+          activeElevenLabsConv = null;
+          updateRootyStatusUI();
+        },
+        onMessage: function(payload){
+          if(!payload || !payload.message) return;
+          var text = payload.message.trim();
+          if(!text) return;
+
+          var isUser = (payload.role === "user" || payload.source === "user");
+          var sender = isUser ? "user" : "bot";
+
+          var isDuplicate = false;
+          if(chatHistory.length > 0){
+            var last = chatHistory[chatHistory.length - 1];
+            if(last.sender === sender && last.text.trim() === text){
+              isDuplicate = true;
+            }
+          }
+
+          if(!isDuplicate){
+            chatLoading = false;
+            chatHistory.push({ sender: sender, text: text });
+            appendChatMessageUI(sender, text);
+            updateRootyStatusUI();
+          }
+        },
+        onError: function(err, context){
+          console.error("ElevenLabs error callback:", err, context);
+          elevenLabsStatus = "error";
+          elevenLabsErrorMsg = typeof err === "string" ? err : (err && err.message ? err.message : "Connection error");
+          chatLoading = false;
+          updateRootyStatusUI();
+        },
+        onStatusChange: function(prop){
+          if(prop && prop.status) elevenLabsStatus = prop.status;
+          updateRootyStatusUI();
+        },
+        onModeChange: function(prop){
+          if(prop && prop.mode){
+            elevenLabsMode = prop.mode;
+            // CRITICAL FEEDBACK PREVENTION: Mute mic while Rooty speaks
+            if(activeElevenLabsConv && typeof activeElevenLabsConv.setMicMuted === "function"){
+              if(prop.mode === "speaking"){
+                activeElevenLabsConv.setMicMuted(true);
+              } else if(prop.mode === "listening" && micUserEnabled && chatOpen){
+                setTimeout(function(){
+                  if(activeElevenLabsConv && micUserEnabled && chatOpen){
+                    activeElevenLabsConv.setMicMuted(false);
+                  }
+                }, 350);
+              }
+            }
+          }
+          updateRootyStatusUI();
+        }
+      };
+
+      if(creds.signedUrl){
+        options.signedUrl = creds.signedUrl;
+      } else if(creds.conversationToken){
+        options.conversationToken = creds.conversationToken;
+      } else {
+        options.agentId = creds.agentId;
+      }
+
+      activeElevenLabsConv = await window.ElevenLabsClient.Conversation.startSession(options);
+      return activeElevenLabsConv;
+
+    } catch(err){
+      console.error("Failed to connect ElevenLabs Rooty:", err);
+      elevenLabsStatus = "error";
+      elevenLabsErrorMsg = err.message || "Failed to connect to ElevenLabs Conversational AI.";
+      chatLoading = false;
+      updateRootyStatusUI();
+      throw err;
+    } finally {
+      elevenLabsConnectPromise = null;
+    }
+  })();
+
+  return elevenLabsConnectPromise;
 }
 
 function sendChat(customText){
-  var txt=customText||document.getElementById("chat_input").value.trim();
-  if(!txt)return;
-  var reqId = ++currentTutorRequestId;
-  chatHistory.push({sender:"user",text:txt});
-  chatLoading=true;
-  R();
-  
-  var studentClass=S&&S.st?S.st.cls:8;
-  var topic=S&&S.sk?S.sk:"general";
-  var langCode=["en","te","hi"][L];
-
-  fetch("/api/tutor",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      question:txt,
-      studentClass:studentClass,
-      topic:topic,
-      language:langCode,
-      history:chatHistory.map(function(m){return {role:m.sender=="user"?"user":"assistant",text:m.text}})
-    })
-  }).then(function(r){return r.json()}).then(function(d){
-    if(reqId !== currentTutorRequestId) return;
-    chatLoading=false;
-    var ans=d.answer||"I am here to help you learn!";
-    chatHistory.push({sender:"bot",text:ans});
-    // Text-to-Speech (Feature 7) - read complete answer aloud if drawer is open
-    if(chatOpen){
-      speakText(ans);
+  var txt = customText;
+  if(!txt){
+    var inp = document.getElementById("chat_input");
+    if(inp){
+      txt = inp.value.trim();
+      inp.value = "";
     }
-    R();
-  }).catch(function(){
-    if(reqId !== currentTutorRequestId) return;
-    chatLoading=false;
-    chatHistory.push({sender:"bot",text:"Remember: every mistake is just a bridge to understanding! Review the prerequisite steps."});
-    R();
-  });
-}
-
-// Web Speech API: Voice-Based Learning Assistant (Feature 7)
-function startVoiceRecognition(){
-  if(!("webkitSpeechRecognition" in window)&&!("SpeechRecognition" in window)){
-    alert("Speech recognition is not supported in this browser. Please use text input.");
-    return;
   }
-  stopAllAudio();
-  var SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-  var recognition=new SpeechRecognition();
-  currentRecognition=recognition;
-  recognition.lang=["en-IN","te-IN","hi-IN"][L]||"en-IN";
-  recognition.interimResults=false;
-  toast("🎙️ Listening... Speak your doubt!");
-  recognition.onresult=function(event){
-    currentRecognition=null;
-    var text=event.results[0][0].transcript;
-    toast("Heard: \""+text+"\"");
-    sendChat(text);
-  };
-  recognition.onerror=function(event){
-    currentRecognition=null;
-    toast("Microphone error: "+event.error);
-  };
-  recognition.onend=function(){
-    currentRecognition=null;
-  };
-  recognition.start();
-}
+  if(!txt) return;
 
-function cleanForSpeech(txt){
-  if(!txt)return"";
-  return txt
-    .replace(/\\times/g, " times ")
-    .replace(/\\div/g, " divided by ")
-    .replace(/\\pm/g, " plus or minus ")
-    .replace(/[\$]/g, "")
-    .replace(/[\*\_#`~]/g, "")
-    .replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
+  var isDuplicate = false;
+  if(chatHistory.length > 0){
+    var last = chatHistory[chatHistory.length - 1];
+    if(last.sender === "user" && last.text.trim() === txt.trim()){
+      isDuplicate = true;
+    }
+  }
+  if(!isDuplicate){
+    chatHistory.push({ sender: "user", text: txt });
+    appendChatMessageUI("user", txt);
+  }
+  chatLoading = true;
+  updateRootyStatusUI();
 
-function speakText(txt){
-  if(!("speechSynthesis" in window) || !chatOpen)return;
-  try{
-    window.speechSynthesis.cancel();
-    var clean = cleanForSpeech(txt);
-    if(!clean)return;
-    var utt = new SpeechSynthesisUtterance(clean);
-    utt.lang = ["en-IN","te-IN","hi-IN"][L]||"en-IN";
-    utt.rate = 1.0;
-    utt.pitch = 1.0;
-    window.speechSynthesis.speak(utt);
-  }catch(e){}
+  if(activeElevenLabsConv && activeElevenLabsConv.isOpen && activeElevenLabsConv.isOpen()){
+    try{
+      activeElevenLabsConv.sendUserMessage(txt);
+    }catch(e){
+      console.warn("sendUserMessage error, reconnecting:", e);
+      pendingUserText = txt;
+      connectElevenLabsRooty();
+    }
+  } else {
+    pendingUserText = txt;
+    connectElevenLabsRooty();
+  }
 }
 
 function rChatDrawer(){
   if(!chatOpen)return"";
+  var statusBadgeClass = elevenLabsStatus==="connected"?"g":elevenLabsStatus==="connecting"?"l":elevenLabsStatus==="error"?"c":"";
+  var statusText = elevenLabsStatus==="connected"?(elevenLabsMode==="speaking"?"🔊 Speaking":micUserEnabled?"🎙️ Listening":"🟢 Connected"):elevenLabsStatus==="connecting"?"🟡 Connecting...":elevenLabsStatus==="error"?"⚠️ Error":"⚡ Ready";
+
   var h='<div class="drawer" onclick="if(event.target==this)toggleChat()">';
   h+='<div class="drawer-body">';
   h+='<div class="row" style="justify-content:space-between;border-bottom:1px solid var(--ln);padding-bottom:10px">';
-  h+='<div class="row"><div class="av" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font-weight:900">AI</div><div><b>Rooty AI Tutor</b><br><small class="mut">Classes 6–10 Intelligence · Google Gemini</small></div></div>';
-  h+='<button class="btn sm" onclick="toggleChat()">✕</button>';
+  h+='<div class="row"><div class="av" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font-weight:900">AI</div><div><b>Rooty AI Tutor</b> <span id="rooty_status_badge" class="pill '+statusBadgeClass+'" style="font-size:11px">'+statusText+'</span><br><small class="mut">Powered by ElevenLabs Conversational AI</small></div></div>';
+  h+='<button class="btn sm" onclick="toggleChat(false)">✕</button>';
   h+='</div>';
+
+  if(elevenLabsErrorMsg){
+    h+='<div class="lesson" style="border-left-color:var(--bad);background:var(--bad-soft);color:#fff;margin:8px 0;font-size:12.5px">';
+    h+='<b>⚠️ ElevenLabs Notice:</b> '+elevenLabsErrorMsg+'<br>';
+    h+='<button class="btn sm" onclick="connectElevenLabsRooty()" style="margin-top:6px;background:var(--card)">🔄 Retry Connection</button>';
+    h+='</div>';
+  }
 
   h+='<div class="chat-msgs" id="chat_scroll">';
   chatHistory.forEach(function(m){
     h+='<div class="msg '+(m.sender=="user"?"user":"bot")+'">'+m.text.replace(/\n/g,"<br>")+'</div>';
   });
-  if(chatLoading){
-    h+='<div class="msg bot"><i>Rooty is thinking... 🧠</i></div>';
-  }
+  h+='<div id="rooty_typing_ind" class="msg bot" style="display:'+(chatLoading?'block':'none')+'"><i>Rooty is thinking... 🧠</i></div>';
   h+='</div>';
 
   h+='<div class="row" style="gap:4px;margin-bottom:8px">';
@@ -2094,8 +2347,8 @@ function rChatDrawer(){
   h+='</div>';
 
   h+='<div class="row">';
-  h+='<input id="chat_input" placeholder="Ask your doubt in '+["English","Telugu","Hindi"][L]+'..." style="flex:1;padding:8px 10px;border:1px solid var(--ln);border-radius:8px" onkeydown="if(event.key===\'Enter\')sendChat()">';
-  h+='<button class="btn" onclick="startVoiceRecognition()" title="Voice input">🎙️</button>';
+  h+='<input id="chat_input" placeholder="Type your doubt or tap mic..." style="flex:1;padding:8px 10px;border:1px solid var(--ln);border-radius:8px" onkeydown="if(event.key===\'Enter\')sendChat()">';
+  h+='<button id="rooty_mic_btn" class="btn sm '+(micUserEnabled?'p':'')+'" onclick="toggleMic()" title="Toggle Microphone" style="font-weight:600">'+(elevenLabsMode==="speaking"?"🔊 Speaking":micUserEnabled?"🎙️ Mic On":"🔇 Mic Off")+'</button>';
   h+='<button class="btn p" onclick="sendChat()">Send</button>';
   h+='</div>';
 
@@ -2144,6 +2397,15 @@ function claimMissionBonus(){
 // ==========================================
 // STUDENT VIEWS
 // ==========================================
+function todayN(st){
+  var d=new Date(now()).toDateString();
+  return (st.log||[]).filter(function(l){return l.at&&new Date(l.at).toDateString()==d}).length;
+}
+function reviseBtn(st){
+  var d=dueList(st).length;
+  return d?'<div class="card" style="border:2px solid var(--accent);background:rgba(217,70,239,0.06);margin-bottom:12px"><div class="row" style="justify-content:space-between"><div><b>🔁 Spaced Revision Due!</b><br><small style="color:var(--accent);font-weight:600">'+d+' question'+(d>1?'s':'')+' due today for memory consolidation</small></div><button class="btn p" onclick="begin(\'revise\')">Start Revision ('+d+') →</button></div></div>':"";
+}
+
 function rHome(){
   var st=S.st,w=weakest(st),xp=st.xp||0,A=asgFor(st);
   var ms=st.missions||{m1:false,m2:false,m3:false,claimed:false};
@@ -2151,7 +2413,7 @@ function rHome(){
   var h='<div class="hero"><div class="av big">'+avOf(st)+'</div>';
   h+='<div style="flex:1"><div style="font-size:20px;font-weight:700">Hi '+st.name+' 👋</div><div class="mut">Class '+st.cls+' · Level '+lvOf(st)+' Explorer</div>';
   h+='<div class="bar" style="margin-top:6px"><i style="width:'+(xp%100)+'%"></i></div><small>'+xp+' XP · '+(100-xp%100)+' XP to next level</small></div>';
-  h+='<div class="ring" style="--p:'+Math.min(100,(st.n||0)/5*100)+'"><b>'+Math.min(st.n||0,5)+'/5</b><small>daily</small></div>';
+  h+='<div class="ring" style="--p:'+Math.min(100,todayN(st)/5*100)+'"><b>'+Math.min(todayN(st),5)+'/5</b><small>today</small></div>';
   h+='</div>';
 
   // Feature 17: Daily Missions Card
@@ -2173,6 +2435,7 @@ function rHome(){
     }).join("")+'</div>';
   }
 
+  h+=reviseBtn(st);
   // Feature Tiles
   var due=dueList(st).length;
   h+='<div class="tiles">';
@@ -2234,8 +2497,13 @@ function rStu(){
     }).join("")+'</div>';
   }
 
-  if(S.fb){
+  if(S.fb&&S.fb.ask){
+    h+='<div class="card" style="border:1px solid var(--accent);margin:12px 0;background:rgba(217,70,239,0.06)"><p><b>❌ '+t("bad")+'</b> Is the English the hard part? Read it in your language and try once more.</p><div class="row" style="gap:8px"><button class="btn p" onclick="tryLang(1)">తెలుగులో (Telugu)</button><button class="btn p" onclick="tryLang(2)">हिन्दी में (Hindi)</button><button class="btn" onclick="S.fb.ask=false;R()">No, show me why</button></div></div>';
+  }else if(S.fb){
     h+='<p><b>'+(S.fb.ok?"✅ "+t("good"):"❌ "+t("bad"))+'</b> '+(S.fb.ok&&S.fb.c==0?t("fr"):"")+(S.fb.msg=="back"?t("back"):"")+'</p>';
+    if(S.fb.lang){
+      h+='<p style="color:var(--accent)">🌐 <b>Home language mastery:</b> You got it right in your home language! The English wording was the hard part, not the maths. Language flag recorded for your teacher.</p>';
+    }
     if(!S.fb.ok){
       h+='<div class="row" style="margin-bottom:8px">';
       h+='<button class="btn sm" onclick="inspectMisconception()">🤖 Diagnose Misconception with Gemini</button>';
@@ -2287,28 +2555,46 @@ function lesson(r){
   return'<div class="lesson"><b>🔧 '+t("br")+': '+SK[r].n[L]+' (Class '+SK[r].c+')</b>'+(x?'<p><b>Why it went wrong:</b> '+(OPX[q.id+":"+S.pick]||x[0])+'</p><p><b>How to fix it:</b> '+x[1]+'</p>':'')+(sol?'<p><b>This question, step by step:</b> '+sol+'</p>':'')+'<details'+(x||sol?'':' open')+'><summary>Full lesson notes: '+SK[r].n[0]+'</summary><p>'+LS[r][L]+'</p></details></div>';
 }
 
+function twhy(r,c){
+  var n=S.res.length,cn=["unsure","okay","sure"][c];
+  return "Q"+n+": "+(r.ok?"correct":"wrong")+" and "+cn+(r.ok?"":", mistake “"+(MC[r.tag]?MC[r.tag].n:r.tag)+"”")+(S.br?" → probing prerequisite <b>"+SK[S.br].n[0]+"</b> next":S.end?(n>=6?" → test ends (6 questions)":" → 3 sure and correct in a row, test ends early"):" → next question at level "+S.dl);
+}
+function declog(){
+  return S.dlog&&S.dlog.length?'<div class="lesson" style="margin-top:12px">🧭 <b>Decision Log: Why the test did what it did</b><ul>'+S.dlog.map(function(x){return"<li>"+x+"</li>"}).join("")+"</ul></div>":"";
+}
+
 function rEndSummary(){
-  var Q=S.res,ok=Q.filter(function(x){return x.ok}).length;
-  var h='<div class="card"><h3>📝 Session Summary</h3>';
-  h+='<p><b>'+ok+' / '+(Q.length||S.done.length)+'</b> correct answers.</p>';
-  h+='<b>Updated Skill Mastery:</b>'+bars(S.st.m)+pathHtml();
-  h+='<p><button class="btn p" onclick="S.mode=null;S.end=false;S.res=[];R()">Back to Home</button></p></div>';
+  var Q=S.res,f=function(p){return Q.filter(p).length},ok=f(function(x){return x.ok}),gp=[];
+  Q.forEach(function(x){if(!x.ok&&x.tag){var r=MC[x.tag]&&MC[x.tag].r;if(r&&gp.indexOf(r)<0)gp.push(r)}});
+  var isDefeated = ok>=4||(Q.length&&Q.length<6);
+  var h='<div class="card"><h3>📝 Battle & Diagnostic Result</h3>'+(isDefeated?'<p style="color:var(--good);font-weight:700">🏆 Gap Monster Defeated!</p>':'<p style="color:var(--bad);font-weight:700">👾 The Gap Monster survived. Master the recommended lessons and try again!</p>')+'<p><b>'+ok+' / '+Q.length+'</b> correct answers'+(Q.length&&Q.length<6?' · ended early because mastery was confirmed!':'')+'</p>';
+  h+='<div class="m4" style="margin:12px 0"><div><span class="stat">'+f(function(x){return x.ok&&x.c==2})+'</span><br><small class="mut">Mastered (Sure & Correct)</small></div><div><span class="stat">'+f(function(x){return x.ok&&x.c==0})+'</span><br><small class="mut">Fragile (Lucky Guess)</small></div><div><span class="stat">'+f(function(x){return !x.ok&&x.c==2})+'</span><br><small class="mut">Deep Misconception</small></div></div>';
+  if(gp.length){
+    h+='<div class="lesson" style="margin:10px 0"><b>Root Gap Identified:</b> We traced mistakes to <b>'+SK[gp[0]].n[0]+'</b> (Class '+SK[gp[0]].c+'). Recommended next step: review this prerequisite foundation.<div style="margin-top:8px"><button class="btn p" onclick="S.mode=null;S.end=false;S.res=[];begin(\'learn\',\''+gp[0]+'\')">Study '+SK[gp[0]].n[0]+' →</button></div></div>';
+  }
+  h+=pathHtml()+declog()+'<b>Updated Skill Mastery:</b>'+bars(S.st.m);
+  h+='<p style="margin-top:14px"><button class="btn p" onclick="S.mode=null;S.end=false;S.res=[];R()">Back to Home</button></p></div>';
   return h;
 }
 
 function rLearn(){
-  var k=S.lk||weakest(S.st),A=LES[k]||[],st=S.st,ls=st.ls||{};
+  var k=S.lk||weakest(S.st),A=LES[k]||[],st=S.st,ls=st.ls||{},pc=pace(k),pl={fast:"⚡ fast track",slow:"🐢 step-by-step",std:"standard pace"}[pc];
   if(S.li==null){
+    var nx=A.findIndex(function(x,i){return !ls[k+i]}),dn=A.filter(function(x,i){return ls[k+i]}).length;
     return'<div class="card"><span class="tag">📖 Learn · Concepts & Worked Examples</span><div class="row" style="margin:8px 0">'+ORD.map(function(c){
       return'<button class="'+(c==k?"tab on":"tab")+'" onclick="S.lk=\''+c+'\';S.li=null;R()">'+SK[c].n[0]+'</button>';
-    }).join("")+'</div><h3>'+SK[k].n[L]+' (Class '+SK[k].c+')</h3><p class="mut">'+REF[k]+'</p>'+A.map(function(l,i){
-      return'<button class="opt" onclick="openL('+i+')">'+(ls[k+i]?"✅":"○")+' '+(i+1)+'. '+l[0]+'</button>';
-    }).join("")+'<div class="row" style="margin-top:10px"><button class="btn p" onclick="begin(\'solve\',\''+k+'\')">Practise This Topic →</button><button class="btn" onclick="S.mode=null;R()">Home</button></div></div>';
+    }).join("")+'</div><h3>'+SK[k].n[L]+' (Class '+SK[k].c+')</h3><p class="mut">'+(REF[k]||"")+'</p><p class="mut">'+A.length+' lessons · '+dn+' completed · '+pl+'</p>'+A.map(function(l,i){
+      return'<div class="row" style="gap:8px;margin-bottom:6px"><button class="opt" style="flex:1;margin:0" onclick="openL('+i+')">'+(ls[k+i]?"✅":i==nx?"⭐":"○")+' '+(i+1)+'. '+l[0]+'</button>'+(pc=="fast"&&!ls[k+i]?'<button class="btn" style="white-space:nowrap" onclick="skipL('+i+')">⚡ Skip with check</button>':'')+'</div>';
+    }).join("")+'<div class="row" style="margin-top:10px"><button class="btn p" onclick="begin(\'solve\',\''+k+'\')">Practise This Topic →</button><button class="btn" onclick="S.mode=null;R()">Home</button></div></div>'+bars(st.m);
   }
-  var l=A[S.li],c=l[3];
-  var h='<div class="card"><span class="tag">📖 '+SK[k].n[0]+' · Lesson '+(S.li+1)+' of '+A.length+'</span><h3>'+l[0]+'</h3>';
-  h+=l[1].map(function(x){return"<p>"+x+"</p>"}).join("");
-  h+='<div class="lesson"><b>Worked example: '+l[2][0]+'</b><ol>'+l[2].slice(1).map(function(x){return"<li>"+x+"</li>"}).join("")+'</ol></div>';
+  var l=A[S.li],c=l[3],n=l[2].length-1,sh=pc=="slow"?Math.min(n,S.stp||1):n;
+  var h='<div class="card"><span class="tag">📖 '+SK[k].n[0]+' · Lesson '+(S.li+1)+' of '+A.length+' · '+pl+'</span><h3>'+l[0]+'</h3>';
+  if(!S.fast){
+    h+=l[1].map(function(x){return"<p>"+x+"</p>"}).join("")+(pc=="slow"?'<p class="lesson">💡 Step-by-step guidance: study each part carefully.</p>':'');
+    h+='<div class="lesson"><b>Worked example: '+l[2][0]+'</b><ol>'+l[2].slice(1,1+sh).map(function(x){return"<li>"+x+"</li>"}).join("")+'</ol></div>'+(sh<n?'<p><button class="btn" onclick="S.stp=(S.stp||1)+1;R()">Show next step ('+sh+'/'+n+')</button></p>':'');
+  } else {
+    h+='<p class="mut">⚡ Fast track: solve the check question correctly to skip this lesson.</p>';
+  }
   h+='<h3>Check yourself</h3><p>'+c[0]+'</p>';
   for(var j=0;j<3;j++){
     var cs="opt";
@@ -2319,10 +2605,13 @@ function rLearn(){
     h+='<button class="'+cs+'" onclick="chkL('+j+')">'+"ABC"[j]+". "+c[j+1]+"</button>";
   }
   if(S.lp!=null)h+="<p>"+(S.lp==c[4]?"✅ Correct!":"❌ ")+c[5]+"</p>";
-  h+='<div class="row"><button class="btn" onclick="S.li=null;R()">← All lessons</button>'+(S.li<A.length-1?'<button class="btn p" onclick="openL('+(S.li+1)+')">Next lesson →</button>':'<button class="btn p" onclick="begin(\'solve\',\''+k+'\')">Practise this chapter →</button>')+'</div></div>';
+  h+='<div class="row" style="margin-top:12px;gap:8px"><button class="btn" onclick="S.li=null;R()">← All lessons</button>'+(S.li<A.length-1?'<button class="btn p" onclick="openL('+(S.li+1)+')">Next lesson →</button>':'<button class="btn p" onclick="begin(\'solve\',\''+k+'\')">Practise this chapter →</button>')+'</div></div>';
   return h;
 }
-function openL(i){S.li=i;S.lp=null;R()}
+
+function openL(i){S.li=i;S.lp=null;S.fast=0;S.stp=1;R()}
+function skipL(i){S.li=i;S.lp=null;S.fast=1;S.stp=1;R()}
+function pace(k){var m=(S.st&&S.st.m&&S.st.m[k])||.5;return m>=.75?"fast":m<.4?"slow":"std"}
 function chkL(i){
   var c=LES[S.lk][S.li][3];
   S.lp=i;
@@ -2378,14 +2667,30 @@ function chkPin(){
   if(document.getElementById("pin").value==(s.pin||"1111"))start(s.id);
   else{S0.err="Wrong PIN, try again.";R()}
 }
+function keepNew(){
+  var n=document.getElementById("nn_n"),c=document.getElementById("nn_c");
+  if(n)S0.nn=n.value;if(c)S0.nc=+c.value;
+}
 function rNew(){
-  return'<div class="card"><h3>➕ Create your student profile</h3><p><input id="nn_n" placeholder="Your name" style="width:100%;padding:10px;font-size:16px"></p><p>Class <select id="nn_c">'+[6,7,8,9,10].map(function(c){return"<option>"+c+"</option>"}).join("")+'</select></p><p>PIN <input id="nn_p" type="password" maxlength="4" value="1111" style="font-size:18px;width:100px;padding:6px"></p><p style="color:var(--bad)">'+(S0.err||"")+'</p><button class="btn p" onclick="signup()">Create Profile</button> <button class="btn" onclick="S0.mode=null;R()">Back</button></div>';
+  var av=S0.av||AV[0];
+  return'<div class="card"><h3>➕ Create your student profile</h3><p><input id="nn_n" value="'+(S0.nn||"")+'" placeholder="Your first name" style="width:100%;padding:10px;font:inherit;font-size:16px"></p><p>Class <select id="nn_c">'+[6,7,8,9,10].map(function(c){return"<option"+(c==(S0.nc||S0.cls||9)?" selected":"")+">"+c+"</option>"}).join("")+'</select></p><p>Pick your avatar</p><div class="row" style="gap:8px;margin:8px 0">'+AV.map(function(a){return'<button class="chip'+(a==av?" sel":"")+'" style="font-size:24px;cursor:pointer" onclick="keepNew();S0.av=\''+a+'\';R()">'+a+'</button>'}).join("")+'</div><p>4-digit PIN <input id="nn_p" type="password" inputmode="numeric" maxlength="4" value="1111" style="font-size:18px;width:100px;padding:6px"></p><p style="color:var(--bad)">'+(S0.err||"")+'</p><button class="btn p" onclick="signup()">Start learning</button> <button class="btn" onclick="S0.mode=null;S0.err=\'\';R()">Back</button></div>';
 }
 function signup(){
-  var n=document.getElementById("nn_n").value.trim(),c=+document.getElementById("nn_c").value,p=document.getElementById("nn_p").value;
+  var n=(document.getElementById("nn_n")?document.getElementById("nn_n").value:"").trim();
+  var c=+(document.getElementById("nn_c")?document.getElementById("nn_c").value:9);
+  var p=(document.getElementById("nn_p")?document.getElementById("nn_p").value:"1111");
+  S0.nn=n;S0.nc=c;
   if(!n){S0.err="Please type your name.";R();return}
-  var s=mk("u"+Date.now(),n,c);s.pin=p||"1111";
-  DB.st.push(s);save();start(s.id);toast("Welcome to RootGap, "+n+"!");
+  var s=mk("u"+Date.now(),n,c);
+  s.pin=p||"1111";
+  s.av=S0.av||AV[0];
+  s.ts=Date.now();
+  DB.st.push(s);
+  save();
+  var id=s.id;
+  S0={cls:null,sid:null,err:""};
+  start(id);
+  toast("Welcome to RootGap, "+n+"! 🎉");
 }
 
 // ==========================================
@@ -3274,12 +3579,14 @@ function R(){
 }
 
 function stuNav(){
+  var m=S.mode;
   var it=[
-    ["🏠","Home",true,"stopAllAudio();S.mode=null;R()"],
-    ["🗺️","Map",false,"stopAllAudio();begin(\'cmap\')"],
-    ["⚔️","Battle",false,"stopAllAudio();begin(\'battle\')"],
-    ["🔁","Revise",false,"stopAllAudio();begin(\'revise\')"],
-    ["👤","Me",false,"stopAllAudio();S.mode=\'me\';R()"]
+    ["🏠","Home",!m,"stopAllAudio();S.mode=null;R()"],
+    ["📖","Learn",m=="learn","stopAllAudio();begin('learn',weakest(S.st))"],
+    ["✏️","Practise",m=="solve","stopAllAudio();begin('solve',CLS[S.st.cls])"],
+    ["⚔️","Battle",m=="battle"||m=="test","stopAllAudio();begin('battle')"],
+    ["🔁","Revise",m=="revise","stopAllAudio();begin('revise')"],
+    ["👤","Me",m=="me","stopAllAudio();S.mode='me';R()"]
   ];
   return'<div class="spacer"></div><nav class="snav">'+it.map(function(x){
     return'<button class="'+(x[2]?"on":"")+'" onclick="'+x[3]+'"><span>'+x[0]+'</span>'+x[1]+'</button>';

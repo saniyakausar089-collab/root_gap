@@ -29,6 +29,8 @@ loadEnv();
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
+const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY || '';
+const ELEVENLABS_AGENT_ID = process.env.ELEVENLABS_AGENT_ID || 'agent_0101m6bb7qwkemyty7444cwtt0cp';
 
 // Supported Gemini models in priority order for resilience
 const GEMINI_MODELS = [
@@ -55,7 +57,7 @@ function checkRateLimit(ip) {
 }
 
 // Clean up stale rate limit entries every 5 minutes
-setInterval(() => {
+const cleanupInterval = setInterval(() => {
   const now = Date.now();
   for (const [ip, times] of rateLimitMap.entries()) {
     const valid = times.filter(t => now - t < RATE_LIMIT_WINDOW_MS);
@@ -63,6 +65,9 @@ setInterval(() => {
     else rateLimitMap.set(ip, valid);
   }
 }, 300000);
+if (cleanupInterval && cleanupInterval.unref) {
+  cleanupInterval.unref();
+}
 
 // Safe Gemini Call with model fallback and timeout
 async function callGemini(prompt, systemInstruction = '', temperature = 0.4) {
@@ -210,7 +215,7 @@ Identify whether the student is:
 Respond with structured, compassionate analysis and a 2-step remedy.`;
 
 // Server Router
-const server = http.createServer(async (req, res) => {
+async function handleRequest(req, res) {
   const ip = req.socket.remoteAddress || '127.0.0.1';
   const urlObj = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   const pathname = urlObj.pathname;
@@ -238,8 +243,70 @@ const server = http.createServer(async (req, res) => {
       sendJSON(res, 200, {
         status: 'online',
         aiConfigured: !!GEMINI_API_KEY,
+        elevenlabsConfigured: !!ELEVENLABS_API_KEY,
+        elevenlabsAgentId: ELEVENLABS_AGENT_ID ? (ELEVENLABS_AGENT_ID.slice(0, 12) + '...') : null,
         models: GEMINI_MODELS,
         timestamp: Date.now()
+      });
+      return;
+    }
+
+    // ElevenLabs Conversation Credentials (Feature 2 & 20 - Conversational AI)
+    if (pathname === '/api/elevenlabs/conversation-credentials' && (req.method === 'GET' || req.method === 'POST')) {
+      let signedUrl = null;
+      let conversationToken = null;
+
+      // 1. If an API key is provided, try getting signedUrl and/or token with xi-api-key
+      if (ELEVENLABS_API_KEY) {
+        try {
+          const signedUrlRes = await fetch(`https://api.elevenlabs.io/v1/convai/conversation/get_signed_url?agent_id=${encodeURIComponent(ELEVENLABS_AGENT_ID)}`, {
+            headers: { 'xi-api-key': ELEVENLABS_API_KEY }
+          });
+          if (signedUrlRes.ok) {
+            const data = await signedUrlRes.json();
+            signedUrl = data.signed_url;
+          }
+        } catch (err) {
+          console.warn('Signed URL fetch error:', err.message);
+        }
+
+        try {
+          const tokenRes = await fetch(`https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=${encodeURIComponent(ELEVENLABS_AGENT_ID)}`, {
+            headers: { 'xi-api-key': ELEVENLABS_API_KEY }
+          });
+          if (tokenRes.ok) {
+            const data = await tokenRes.json();
+            conversationToken = data.token;
+          }
+        } catch (err) {
+          console.warn('Token fetch error:', err.message);
+        }
+      }
+
+      // 2. Fallback to public agent conversation token (for public agents with enable_auth: false)
+      if (!conversationToken && !signedUrl) {
+        try {
+          const publicTokenRes = await fetch(`https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=${encodeURIComponent(ELEVENLABS_AGENT_ID)}`);
+          if (publicTokenRes.ok) {
+            const data = await publicTokenRes.json();
+            conversationToken = data.token;
+          }
+        } catch (err) {
+          console.warn('Public token fetch error:', err.message);
+        }
+      }
+
+      if (!signedUrl && !conversationToken) {
+        sendJSON(res, 502, {
+          error: 'Failed to authenticate with ElevenLabs API. Please verify your ELEVENLABS_API_KEY has convai_write permissions or check ELEVENLABS_AGENT_ID.'
+        });
+        return;
+      }
+
+      sendJSON(res, 200, {
+        signedUrl,
+        conversationToken,
+        agentId: ELEVENLABS_AGENT_ID
       });
       return;
     }
@@ -514,7 +581,9 @@ ${JSON.stringify(doubts)}
       res.end(content);
     });
   });
-});
+}
+
+const server = http.createServer(handleRequest);
 
 let activePort = PORT;
 
@@ -540,4 +609,8 @@ server.on('error', (err) => {
   }
 });
 
-startServer(PORT);
+if (require.main === module) {
+  startServer(PORT);
+}
+
+module.exports = handleRequest;
