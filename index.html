@@ -1347,28 +1347,7 @@ var CF=["😟","😐","😎"],CFN=["un","ok","su"];
 var DB,L=0,view="landing",S=null,tab="plan",sel=null,PS="neg",tok=false,S0={cls:null,sid:null,err:""},TP="1234",PP="5678",FC=0,SEEDING=0,CDB=null,currentRecognition=null,currentTutorRequestId=0;
 var AV=["🦊","🐼","🐯","🐸","🦉","🐙","🦄","🐢"];
 var chatOpen=false,chatHistory=[],chatLoading=false;
-var activeElevenLabsConv=null,elevenLabsStatus="idle",elevenLabsMode="listening",elevenLabsErrorMsg="",pendingUserText=null;
-
-function disconnectElevenLabsRooty(){
-  if(activeElevenLabsConv){
-    try{
-      activeElevenLabsConv.endSession().catch(function(){});
-    }catch(e){}
-    activeElevenLabsConv=null;
-  }
-  elevenLabsStatus="disconnected";
-  elevenLabsMode="listening";
-  chatLoading=false;
-  pendingUserText=null;
-  if("speechSynthesis" in window){
-    try{ window.speechSynthesis.cancel(); }catch(e){}
-  }
-  if(currentRecognition){
-    try{ currentRecognition.abort(); }catch(e){}
-    try{ currentRecognition.stop(); }catch(e){}
-    currentRecognition=null;
-  }
-}
+var activeElevenLabsConv=null,elevenLabsStatus="idle",elevenLabsMode="listening",elevenLabsErrorMsg="",pendingUserText=null,elevenLabsConnectPromise=null,micUserEnabled=false;
 var isOnline=navigator.onLine;
 
 function stopAllAudio(){
@@ -1713,6 +1692,10 @@ function conf(c){
 
 function nxt(){
   stopAllAudio();
+  if(S && S.prevL !== undefined){
+    L = S.prevL;
+    delete S.prevL;
+  }
   if(S.skip){S.end=true;S.cur=null}else nextQ();
   R();
 }
@@ -2436,21 +2419,21 @@ function appendChatMessageUI(sender, text){
 
 function toggleMic(){
   micUserEnabled = !micUserEnabled;
-  if(!activeElevenLabsConv){
-    connectElevenLabsRooty();
-    return;
-  }
-  try{
-    if(typeof activeElevenLabsConv.setMicMuted === "function"){
-      activeElevenLabsConv.setMicMuted(!micUserEnabled);
-    }
-  }catch(e){}
-  updateRootyStatusUI();
   if(micUserEnabled){
     toast("🎙️ Microphone unmuted - Speak your doubt!");
+    if(!activeElevenLabsConv || activeElevenLabsConv.textOnly){
+      disconnectElevenLabsRooty();
+      connectElevenLabsRooty();
+    } else if(typeof activeElevenLabsConv.setMicMuted === "function"){
+      activeElevenLabsConv.setMicMuted(false);
+    }
   } else {
     toast("🔇 Microphone muted");
+    if(activeElevenLabsConv && typeof activeElevenLabsConv.setMicMuted === "function"){
+      activeElevenLabsConv.setMicMuted(true);
+    }
   }
+  updateRootyStatusUI();
 }
 
 function disconnectElevenLabsRooty(){
@@ -2537,12 +2520,14 @@ async function connectElevenLabsRooty(initialQuestion){
       }
 
       var options = {
+        agentId: creds.agentId || "agent_0101m6bb7qwkemyty7444cwtt0cp",
+        connectionType: creds.connectionType || "websocket",
+        textOnly: !micUserEnabled,
         onConnect: function(props){
           console.log("ElevenLabs Rooty connected:", props && props.conversationId);
           elevenLabsStatus = "connected";
           elevenLabsErrorMsg = "";
 
-          // Start with microphone muted by default to avoid ambient noise/feedback
           if(activeElevenLabsConv && typeof activeElevenLabsConv.setMicMuted === "function"){
             activeElevenLabsConv.setMicMuted(!micUserEnabled);
           }
@@ -2606,7 +2591,6 @@ async function connectElevenLabsRooty(initialQuestion){
         onModeChange: function(prop){
           if(prop && prop.mode){
             elevenLabsMode = prop.mode;
-            // CRITICAL FEEDBACK PREVENTION: Mute mic while Rooty speaks
             if(activeElevenLabsConv && typeof activeElevenLabsConv.setMicMuted === "function"){
               if(prop.mode === "speaking"){
                 activeElevenLabsConv.setMicMuted(true);
@@ -2627,8 +2611,6 @@ async function connectElevenLabsRooty(initialQuestion){
         options.signedUrl = creds.signedUrl;
       } else if(creds.conversationToken){
         options.conversationToken = creds.conversationToken;
-      } else {
-        options.agentId = creds.agentId;
       }
 
       activeElevenLabsConv = await window.ElevenLabsClient.Conversation.startSession(options);
@@ -2674,7 +2656,52 @@ function sendChat(customText){
   chatLoading = true;
   updateRootyStatusUI();
 
-  // Direct, reliable connection to Google Gemini AI Tutor
+  // 1. If ElevenLabs is actively connected and open, send text directly to Rooty agent
+  if(activeElevenLabsConv && activeElevenLabsConv.isOpen && activeElevenLabsConv.isOpen()){
+    try {
+      activeElevenLabsConv.sendUserMessage(txt);
+      // Safety timeout: if agent doesn't respond in 8s, fallback to Gemini tutor
+      var prevHistoryLen = chatHistory.length;
+      setTimeout(function(){
+        if(chatLoading && chatHistory.length === prevHistoryLen){
+          console.warn("ElevenLabs agent response timeout, falling back to Gemini tutor...");
+          fallbackToGeminiTutor(txt);
+        }
+      }, 8000);
+      return;
+    } catch(e) {
+      console.warn("sendUserMessage failed, falling back to Gemini:", e);
+      fallbackToGeminiTutor(txt);
+      return;
+    }
+  }
+
+  // 2. If connection is in progress, queue text
+  if(elevenLabsConnectPromise){
+    pendingUserText = txt;
+    return;
+  }
+
+  // 3. If not yet connected, initiate connection and send message upon connect
+  if(elevenLabsStatus !== "connected"){
+    pendingUserText = txt;
+    connectElevenLabsRooty().then(function(conv){
+      if(conv && conv.isOpen && conv.isOpen()){
+        conv.sendUserMessage(txt);
+      }
+    }).catch(function(err){
+      console.warn("ElevenLabs connect failed, falling back to Gemini tutor:", err);
+      fallbackToGeminiTutor(txt);
+    });
+    return;
+  }
+
+  fallbackToGeminiTutor(txt);
+}
+
+function fallbackToGeminiTutor(userText){
+  chatLoading = true;
+  updateRootyStatusUI();
   var stName = S && S.st ? S.st.name : "Student";
   var stCls = S && S.st ? S.st.cls : 8;
   var topic = S && S.sk && SK[S.sk] ? SK[S.sk].n[0] : "Mathematics";
@@ -2685,7 +2712,7 @@ function sendChat(customText){
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      question: txt,
+      question: userText,
       studentClass: stCls,
       topic: topic,
       language: langCode,
@@ -2702,17 +2729,10 @@ function sendChat(customText){
     chatHistory.push({ sender: "bot", text: botReply });
     appendChatMessageUI("bot", botReply);
     updateRootyStatusUI();
-
-    // If active ElevenLabs voice session is connected, update it with context
-    if(activeElevenLabsConv && activeElevenLabsConv.isOpen && activeElevenLabsConv.isOpen()){
-      try{
-        activeElevenLabsConv.sendContextualUpdate("Student asked: " + txt + ". Tutor answered: " + botReply);
-      }catch(e){}
-    }
   }).catch(function(err){
-    console.error("Rooty AI request error:", err);
+    console.error("Rooty tutor error:", err);
     chatLoading = false;
-    var errMsg = "⚠️ Rooty AI notice: " + (err.message || "Network issue connecting to AI service. Please try again.");
+    var errMsg = "⚠️ Rooty: " + (err.message || "Network issue connecting to AI service. Please try again.");
     chatHistory.push({ sender: "bot", text: errMsg });
     appendChatMessageUI("bot", errMsg);
     updateRootyStatusUI();
@@ -2947,13 +2967,18 @@ function hint(){if(!S.fb&&(S.hu||0)<3){S.hu=(S.hu||0)+1;R()}}
 function qwhy(){
   return S.mode=="revise"?"due for review":S.br?(S.mode=="test"?"prerequisite check":"bridge practice"):S.mode=="test"?"test question":"chosen for your level";
 }
-function tryLang(i){L=i;S.fb=null;S.pick=null;S.rt=1;R()}
+function tryLang(i){S.prevL=L;L=i;S.fb=null;S.pick=null;S.rt=1;R()}
 function rtconf(c){
   var q=S.cur,ok=S.pick==q.a,st=S.st;
   S.rt=null;
   var langName=L===1?"Telugu":L===2?"Hindi":"Regional";
   var studentPickText=(q.o&&q.o[S.pick])?q.o[S.pick][0]:("Option "+S.pick);
   var correctText=(q.o&&q.o[q.a])?q.o[q.a][0]:"";
+
+  // Find student's previous English attempt for this question in st.log
+  var prevAttempt = (st.log||[]).slice().reverse().find(function(l){ return l.q === q.id && !l.ok; });
+  var englishPickIndex = prevAttempt ? prevAttempt.o : null;
+  var englishPickText = (englishPickIndex !== null && q.o && q.o[englishPickIndex]) ? q.o[englishPickIndex][0] : "Incorrect in English";
 
   // LANGUAGE GAP LOGIC:
   // Language barrier ONLY identified when student demonstrates conceptual understanding (ok === true in home language)
@@ -2964,6 +2989,7 @@ function rtconf(c){
     qLang:q.t[L]||q.t[0],
     lang:langName,
     langCode:L,
+    englishPick:englishPickText,
     pick:S.pick,
     pickText:studentPickText,
     correctText:correctText,
@@ -3472,26 +3498,49 @@ function rTeacherWorksheet(){
 function generateWorksheet(){
   var top=document.getElementById("ws_topic").value;
   var cls=+document.getElementById("ws_cls").value;
-  var cnt=+document.getElementById("ws_cnt").value;
-  toast("Generating worksheet with Gemini...");
+  var cnt=(+document.getElementById("ws_cnt").value===3)?3:5;
+  toast("Generating worksheet with Gemini ("+cnt+" questions)...");
   fetch("/api/worksheet",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({topic:top,studentClass:cls,count:cnt})
   }).then(function(r){return r.json()}).then(function(d){
-    DB.currentWorksheet=d.worksheet;
-    save();R();
+    if(d && d.worksheet && Array.isArray(d.worksheet.questions) && d.worksheet.questions.length){
+      DB.currentWorksheet=d.worksheet;
+      save();R();
+    } else {
+      throw new Error("Invalid worksheet response");
+    }
   }).catch(function(){
-    toast("Generated fallback worksheet.");
+    toast("Generated fallback worksheet ("+cnt+" questions).");
+    var matched = QS.filter(function(q){return q.s==top});
+    var qs = matched.slice(0, cnt).map(function(q, i){
+      return {
+        id: i+1,
+        text: q.t[0],
+        options: q.o.map(function(o){return o[0]}),
+        correctIndex: q.a,
+        explanation: "Correct answer: Option " + ("ABCD"[q.a]) + "."
+      };
+    });
+    if(qs.length < cnt){
+      var extra = [
+        {text:"Solve: 2x + 5 = 15",options:["x = 5","x = 10","x = 2","x = 20"],correctIndex:0,explanation:"Subtract 5 from both sides: 2x = 10, then divide by 2: x = 5."},
+        {text:"What is the value of (-4) × (-3)?",options:["-12","12","-7","7"],correctIndex:1,explanation:"Two negative numbers multiplied always equal a positive number."},
+        {text:"Simplify: 3/4 + 1/4",options:["4/8","1","3/8","2/4"],correctIndex:1,explanation:"3/4 + 1/4 = 4/4 = 1."},
+        {text:"Solve for y: y - 8 = 12",options:["y = 4","y = 20","y = -4","y = 96"],correctIndex:1,explanation:"Add 8 to both sides: y = 20."},
+        {text:"Evaluate: -10 + 6",options:["-16","-4","4","16"],correctIndex:1,explanation:"Different signs: subtract absolute values and keep sign of greater number: -4."}
+      ];
+      while(qs.length < cnt && extra.length){
+        qs.push(extra.shift());
+      }
+    }
     DB.currentWorksheet={
-      title:"Targeted Foundations Worksheet: "+SK[top].n[0],
+      title:"Targeted Foundations Worksheet: "+((SK[top]&&SK[top].n)?SK[top].n[0]:"Mathematics"),
       class:cls,
-      questions:[
-        {text:"Solve: 2x + 5 = 15",options:["x = 5","x = 10","x = 2"],correctIndex:0,explanation:"Subtract 5 from both sides: 2x = 10, then divide by 2: x = 5."},
-        {text:"What is the value of (-4) × (-3)?",options:["-12","12","-7"],correctIndex:1,explanation:"Two negative numbers multiplied always equal a positive number."}
-      ]
+      questions:qs.slice(0, cnt)
     };
-    R();
+    save();R();
   });
 }
 
@@ -3560,7 +3609,10 @@ function langCard(){
       h+='<div class="card" style="border:1px solid rgba(16,185,129,0.3);background:rgba(16,185,129,0.06);margin-bottom:8px;padding:10px">';
       h+='<div class="row" style="justify-content:space-between"><b>'+item.student.name+' (Class '+item.student.cls+')</b><span class="pill g">'+item.entry.lang+' Attempt · Solved Correctly</span></div>';
       h+='<div style="font-size:13px;margin:6px 0"><b>Question (English):</b> "'+item.entry.qEng+'"<br><b>Presented In '+item.entry.lang+':</b> "'+item.entry.qLang+'"</div>';
-      h+='<div style="font-size:13px;color:var(--ok)"><b>Student Response:</b> '+item.entry.pickText+'</div>';
+      if(item.entry.englishPick){
+        h+='<div style="font-size:13px;color:var(--bad)"><b>Struggled in English:</b> Picked "'+item.entry.englishPick+'" (Incorrect ❌)</div>';
+      }
+      h+='<div style="font-size:13px;color:var(--ok)"><b>Solved in '+item.entry.lang+':</b> Picked "'+item.entry.pickText+'" (Correct ✅)</div>';
       h+='<small class="mut" style="display:block;margin-top:4px">💡 <b>Diagnostic Insight:</b> Student understands the underlying concept but stumbled on English phrasing. Provide mathematical vocabulary guidance.</small>';
       h+='</div>';
     });
@@ -3575,8 +3627,11 @@ function langCard(){
     conceptLogs.forEach(function(item){
       h+='<div class="card" style="border:1px solid rgba(244,63,94,0.3);background:rgba(244,63,94,0.06);margin-bottom:8px;padding:10px">';
       h+='<div class="row" style="justify-content:space-between"><b>'+item.student.name+' (Class '+item.student.cls+')</b><span class="pill c">'+item.entry.lang+' Attempt · Still Incorrect</span></div>';
-      h+='<div style="font-size:13px;margin:6px 0"><b>Question ('+item.entry.lang+'):</b> "'+item.entry.qLang+'"</div>';
-      h+='<div style="font-size:13px;color:var(--bad)"><b>Student Picked:</b> '+item.entry.pickText+' (Correct: '+item.entry.correctText+')</div>';
+      h+='<div style="font-size:13px;margin:6px 0"><b>Question (English):</b> "'+item.entry.qEng+'"<br><b>Presented In '+item.entry.lang+':</b> "'+item.entry.qLang+'"</div>';
+      if(item.entry.englishPick){
+        h+='<div style="font-size:13px;color:var(--bad)"><b>English Attempt:</b> Picked "'+item.entry.englishPick+'" (Incorrect ❌)</div>';
+      }
+      h+='<div style="font-size:13px;color:var(--bad)"><b>Student Picked in '+item.entry.lang+':</b> '+item.entry.pickText+' (Correct: '+item.entry.correctText+')</div>';
       h+='<small class="mut" style="display:block;margin-top:4px">🔧 <b>Diagnostic Insight:</b> Student answered incorrectly in their home language too. This is a foundational mathematics gap requiring prerequisite lesson remediation.</small>';
       h+='</div>';
     });
@@ -3618,7 +3673,6 @@ function demoAdd(){
   N.forEach(function(nm,i){
     var s=mk("d"+Date.now()+i,nm,6+Math.floor(Math.random()*5));
     s.pin="1111";
-    fakeAns(s,4);
     s.ts=Date.now();
     DB.st.push(s);
   });

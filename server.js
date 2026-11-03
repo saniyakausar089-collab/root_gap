@@ -95,7 +95,7 @@ async function callGemini(prompt, systemInstruction = '', temperature = 0.4) {
       }
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 18000);
+      const timeoutId = setTimeout(() => controller.abort(), 28000);
 
       const res = await fetch(url, {
         method: 'POST',
@@ -263,60 +263,9 @@ async function handleRequest(req, res) {
 
     // ElevenLabs Conversation Credentials (Feature 2 & 20 - Conversational AI)
     if (pathname === '/api/elevenlabs/conversation-credentials' && (req.method === 'GET' || req.method === 'POST')) {
-      let signedUrl = null;
-      let conversationToken = null;
-
-      // 1. If an API key is provided, try getting signedUrl and/or token with xi-api-key
-      if (ELEVENLABS_API_KEY) {
-        try {
-          const signedUrlRes = await fetch(`https://api.elevenlabs.io/v1/convai/conversation/get_signed_url?agent_id=${encodeURIComponent(ELEVENLABS_AGENT_ID)}`, {
-            headers: { 'xi-api-key': ELEVENLABS_API_KEY }
-          });
-          if (signedUrlRes.ok) {
-            const data = await signedUrlRes.json();
-            signedUrl = data.signed_url;
-          }
-        } catch (err) {
-          console.warn('Signed URL fetch error:', err.message);
-        }
-
-        try {
-          const tokenRes = await fetch(`https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=${encodeURIComponent(ELEVENLABS_AGENT_ID)}`, {
-            headers: { 'xi-api-key': ELEVENLABS_API_KEY }
-          });
-          if (tokenRes.ok) {
-            const data = await tokenRes.json();
-            conversationToken = data.token;
-          }
-        } catch (err) {
-          console.warn('Token fetch error:', err.message);
-        }
-      }
-
-      // 2. Fallback to public agent conversation token (for public agents with enable_auth: false)
-      if (!conversationToken && !signedUrl) {
-        try {
-          const publicTokenRes = await fetch(`https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=${encodeURIComponent(ELEVENLABS_AGENT_ID)}`);
-          if (publicTokenRes.ok) {
-            const data = await publicTokenRes.json();
-            conversationToken = data.token;
-          }
-        } catch (err) {
-          console.warn('Public token fetch error:', err.message);
-        }
-      }
-
-      if (!signedUrl && !conversationToken) {
-        sendJSON(res, 502, {
-          error: 'Failed to authenticate with ElevenLabs API. Please verify your ELEVENLABS_API_KEY has convai_write permissions or check ELEVENLABS_AGENT_ID.'
-        });
-        return;
-      }
-
       sendJSON(res, 200, {
-        signedUrl,
-        conversationToken,
-        agentId: ELEVENLABS_AGENT_ID
+        agentId: ELEVENLABS_AGENT_ID,
+        connectionType: 'websocket'
       });
       return;
     }
@@ -415,17 +364,27 @@ Identified error tag: ${mistakeTag}
     if (pathname === '/api/worksheet' && req.method === 'POST') {
       try {
         const body = await parseBody(req);
-        const { topic = 'fractions', studentClass = 8, difficulty = 'standard', count = 5 } = body;
+        const { topic = 'frac', studentClass = 8, difficulty = 'standard', count = 5 } = body;
+        const requestedCount = (parseInt(count, 10) === 3) ? 3 : 5;
+
+        const topicTitles = {
+          frac: 'Fractions & Rational Operations',
+          neg: 'Integers & Directed Numbers',
+          lin: 'Linear Equations & Expressions',
+          quad: 'Quadratic Equations & Polynomials'
+        };
+        const topicName = topicTitles[topic] || topic;
 
         const prompt = `Generate a high quality practice worksheet for Indian CBSE/State board Class ${studentClass} students.
-Topic: ${topic}
+Topic: ${topicName} (${topic})
 Difficulty: ${difficulty}
-Number of questions: ${count}
+You MUST generate EXACTLY ${requestedCount} multiple choice questions (no more, no less).
+Each question must include a clear mathematical problem, 4 options, a zero-based correctIndex (0-3), and a concise 1-sentence step-by-step explanation.
 
 Format requirement:
 Return valid JSON only in this exact structure:
 {
-  "title": "Practice Worksheet: ${topic}",
+  "title": "Practice Worksheet: ${topicName}",
   "class": ${studentClass},
   "questions": [
     {
@@ -433,10 +392,58 @@ Return valid JSON only in this exact structure:
       "text": "Question text here",
       "options": ["Option A", "Option B", "Option C", "Option D"],
       "correctIndex": 0,
-      "explanation": "Step by step solution here"
+      "explanation": "Concise 1-sentence explanation"
     }
   ]
 }`;
+
+        // Complete 5-question curriculum banks for ALL topics
+        const fallbackWorksheets = {
+          frac: {
+            title: "Fractions Mastery Worksheet",
+            class: studentClass,
+            questions: [
+              { id: 1, text: "Which fraction is equivalent to 3/4?", options: ["6/8", "9/15", "4/3", "3/8"], correctIndex: 0, explanation: "Multiply numerator and denominator by 2: 3×2 / 4×2 = 6/8." },
+              { id: 2, text: "Solve: 2/7 + 3/7", options: ["5/14", "5/7", "6/7", "1/7"], correctIndex: 1, explanation: "When denominators match, add only the numerators: 2+3=5, so 5/7." },
+              { id: 3, text: "Which is greater: 1/4 or 1/3?", options: ["1/4", "1/3", "They are equal", "Cannot be determined"], correctIndex: 1, explanation: "Cutting a whole into 3 pieces produces bigger slices than cutting into 4 pieces. So 1/3 > 1/4." },
+              { id: 4, text: "Multiply: 2/5 × 3/4 in lowest terms", options: ["6/20", "3/10", "5/9", "8/15"], correctIndex: 1, explanation: "Multiply numerators and denominators: 6/20 = 3/10." },
+              { id: 5, text: "What is 3/4 ÷ 1/2?", options: ["3/8", "3/2", "2/3", "1/4"], correctIndex: 1, explanation: "Multiply by the reciprocal: 3/4 × 2/1 = 6/4 = 3/2." }
+            ]
+          },
+          neg: {
+            title: "Integers & Sign Rules Worksheet",
+            class: studentClass,
+            questions: [
+              { id: 1, text: "Calculate: -5 + (-7)", options: ["-12", "12", "-2", "2"], correctIndex: 0, explanation: "Same signs: add the absolute values (5+7=12) and keep the negative sign: -12." },
+              { id: 2, text: "Calculate: (-4) × (-6)", options: ["-24", "24", "-10", "10"], correctIndex: 1, explanation: "Two negative numbers multiplied always produce a positive product: 24." },
+              { id: 3, text: "Solve: 8 - (-3)", options: ["5", "11", "-11", "-5"], correctIndex: 1, explanation: "Subtracting a negative number is equivalent to addition: 8 + 3 = 11." },
+              { id: 4, text: "Calculate: (-15) ÷ 3", options: ["5", "-5", "-12", "12"], correctIndex: 1, explanation: "A negative divided by a positive yields a negative: -5." },
+              { id: 5, text: "Which integer has the greatest value?", options: ["-100", "-2", "0", "-5"], correctIndex: 2, explanation: "0 is greater than any negative integer." }
+            ]
+          },
+          lin: {
+            title: "Linear Equations & Expressions Worksheet",
+            class: studentClass,
+            questions: [
+              { id: 1, text: "Solve for x: 2x + 5 = 15", options: ["x = 5", "x = 10", "x = 2", "x = 20"], correctIndex: 0, explanation: "Subtract 5 from both sides: 2x = 10, then divide by 2: x = 5." },
+              { id: 2, text: "Solve: 3y - 4 = 11", options: ["y = 3", "y = 5", "y = 7", "y = 15"], correctIndex: 1, explanation: "Add 4 to both sides: 3y = 15, then divide by 3: y = 5." },
+              { id: 3, text: "If 5x = 40, what is the value of x?", options: ["6", "7", "8", "9"], correctIndex: 2, explanation: "Divide 40 by 5 to get x = 8." },
+              { id: 4, text: "Solve: x/3 + 2 = 5", options: ["x = 9", "x = 7", "x = 15", "x = 21"], correctIndex: 0, explanation: "Subtract 2: x/3 = 3, then multiply by 3: x = 9." },
+              { id: 5, text: "What is the value of 4p - 3 when p = 2?", options: ["5", "8", "1", "11"], correctIndex: 0, explanation: "Substitute p = 2: 4(2) - 3 = 8 - 3 = 5." }
+            ]
+          },
+          quad: {
+            title: "Quadratic Equations & Polynomials Worksheet",
+            class: studentClass,
+            questions: [
+              { id: 1, text: "What are the roots of x² - 9 = 0?", options: ["x = 3 only", "x = ±3", "x = 9", "x = ±9"], correctIndex: 1, explanation: "Take square roots of both sides: x² = 9 => x = ±3." },
+              { id: 2, text: "What is the degree of the polynomial 4x³ + 2x² - 7?", options: ["1", "2", "3", "4"], correctIndex: 2, explanation: "The degree is the highest exponent of the variable: 3." },
+              { id: 3, text: "Factorize: x² + 5x + 6", options: ["(x+1)(x+6)", "(x+2)(x+3)", "(x-2)(x-3)", "(x+5)(x+1)"], correctIndex: 1, explanation: "Find factors of 6 that add to 5: 2 and 3." },
+              { id: 4, text: "Solve: x² - 4x = 0", options: ["x = 0, 4", "x = 4 only", "x = 0, -4", "x = 2, -2"], correctIndex: 0, explanation: "Factor out x: x(x - 4) = 0 => x = 0 or x = 4." },
+              { id: 5, text: "Find the discriminant of x² + 4x + 4 = 0", options: ["16", "0", "8", "-16"], correctIndex: 1, explanation: "D = b² - 4ac = 4² - 4(1)(4) = 16 - 16 = 0." }
+            ]
+          }
+        };
 
         try {
           const result = await callGemini(prompt, 'You are an NCERT mathematics question designer. Return JSON only.');
@@ -444,30 +451,28 @@ Return valid JSON only in this exact structure:
           if (jsonText.startsWith('```json')) jsonText = jsonText.replace(/^```json/, '').replace(/```$/, '').trim();
           else if (jsonText.startsWith('```')) jsonText = jsonText.replace(/^```/, '').replace(/```$/, '').trim();
           const worksheet = JSON.parse(jsonText);
+
+          if (Array.isArray(worksheet.questions)) {
+            if (worksheet.questions.length > requestedCount) {
+              worksheet.questions = worksheet.questions.slice(0, requestedCount);
+            } else if (worksheet.questions.length < requestedCount) {
+              const fb = fallbackWorksheets[topic] || fallbackWorksheets.frac;
+              for (const q of fb.questions) {
+                if (worksheet.questions.length >= requestedCount) break;
+                if (!worksheet.questions.some(existing => existing.text === q.text)) {
+                  worksheet.questions.push({ ...q, id: worksheet.questions.length + 1 });
+                }
+              }
+            }
+          }
           sendJSON(res, 200, { worksheet, model: result.model });
         } catch (aiErr) {
-          // Deterministic fallback worksheet
-          const fallbackWorksheets = {
-            frac: {
-              title: "Fractions Mastery Worksheet",
-              class: studentClass,
-              questions: [
-                { id: 1, text: "Which fraction is equivalent to 3/4?", options: ["6/8", "9/15", "4/3", "3/8"], correctIndex: 0, explanation: "Multiply numerator and denominator by 2: 3×2 / 4×2 = 6/8." },
-                { id: 2, text: "Solve: 2/7 + 3/7", options: ["5/14", "5/7", "6/7", "1/7"], correctIndex: 1, explanation: "When denominators match, add only the numerators: 2+3=5, so 5/7." },
-                { id: 3, text: "Which is greater: 1/4 or 1/3?", options: ["1/4", "1/3", "They are equal", "Cannot be determined"], correctIndex: 1, explanation: "Cutting a whole into 3 pieces produces bigger slices than cutting into 4 pieces. So 1/3 > 1/4." }
-              ]
-            },
-            neg: {
-              title: "Integers & Sign Rules Worksheet",
-              class: studentClass,
-              questions: [
-                { id: 1, text: "Calculate: -5 + (-7)", options: ["-12", "12", "-2", "2"], correctIndex: 0, explanation: "Same signs: add the absolute values (5+7=12) and keep the negative sign: -12." },
-                { id: 2, text: "Calculate: (-4) × (-6)", options: ["-24", "24", "-10", "10"], correctIndex: 1, explanation: "Two negative numbers multiplied always produce a positive product: 24." },
-                { id: 3, text: "Solve: 8 - (-3)", options: ["5", "11", "-11", "-5"], correctIndex: 1, explanation: "Subtracting a negative number is equivalent to addition: 8 + 3 = 11." }
-              ]
-            }
+          const baseWs = fallbackWorksheets[topic] || fallbackWorksheets.frac;
+          const ws = {
+            title: baseWs.title,
+            class: studentClass,
+            questions: baseWs.questions.slice(0, requestedCount)
           };
-          const ws = fallbackWorksheets[topic] || fallbackWorksheets.frac;
           sendJSON(res, 200, { worksheet: ws, fallback: true });
         }
       } catch (err) {
