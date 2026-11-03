@@ -1119,6 +1119,15 @@ h2, h3, h4 { margin: 8px 0; color: #fff; }
 <script src="content/practice_bank.js"></script>
 <script>
 // --- CORE CURRICULUM & KNOWLEDGE GRAPH (Classes 6-10) ---
+// Official NCERT Syllabus Chapters across Classes 6-10
+var SYLLABUS_CHAPTERS = {
+  6: ["Knowing Our Numbers", "Playing With Numbers", "Basic Geometrical Ideas", "Understanding Elementary Shapes", "Integers", "Fractions", "Decimals", "Data Handling", "Mensuration", "Algebra", "Ratio and Proportion"],
+  7: ["Integers", "Fractions and Decimals", "Data Handling", "Simple Equations", "Lines and Angles", "The Triangle and its Properties", "Comparing Quantities", "Rational Numbers", "Perimeter and Area", "Algebraic Expressions", "Exponents and Powers"],
+  8: ["Rational Numbers", "Linear Equations in One Variable", "Understanding Quadrilaterals", "Data Handling", "Squares and Square Roots", "Cubes and Cube Roots", "Comparing Quantities", "Algebraic Expressions and Identities", "Mensuration", "Exponents and Powers", "Direct and Inverse Proportions", "Factorisation"],
+  9: ["Number Systems", "Polynomials", "Coordinate Geometry", "Linear Equations in Two Variables", "Lines and Angles", "Triangles", "Quadrilaterals", "Circles", "Heron's Formula", "Surface Areas and Volumes", "Statistics"],
+  10: ["Real Numbers", "Polynomials", "Pair of Linear Equations in Two Variables", "Quadratic Equations", "Arithmetic Progressions", "Triangles", "Coordinate Geometry", "Introduction to Trigonometry", "Some Applications of Trigonometry", "Circles", "Areas Related to Circles", "Surface Areas and Volumes", "Statistics", "Probability"]
+};
+
 var SK={
   frac:{n:["Fractions","భిన్నాలు","भिन्न"],c:6,desc:"Equal parts of a whole, numerator & denominator, comparing, adding & subtracting.",icon:"🍕"},
   neg:{n:["Negative numbers","రుణ సంఖ్యలు","ऋणात्मक संख्याएँ"],c:7,desc:"Number line position, addition & subtraction signs, multiplication rules.",icon:"❄️"},
@@ -1468,54 +1477,43 @@ function checkMissions(st,ok,cf){
 
 function seed(){
   SEEDING=1;
+  // Genuine, clean registered student profiles across Classes 6-10 (No fabricated answer logs or fake history)
   var P=[
-    ["Ravi",9,[[1,1,2],[2,1,2],[7,0,2],[8,1,2]]],
-    ["Anil",9,[[5,0,2],[6,0,2],[3,0,2]]],
-    ["Sneha",9,[[7,0,2],[3,2,1],[4,0,2]]],
-    ["Kiran",9,[[5,0,1],[6,0,2],[4,0,2]]],
-    ["Meena",8,[[1,0,2],[2,0,1],[6,1,1]]],
-    ["Farhan",8,[[1,0,1],[2,0,2]]],
-    ["Divya",9,[[7,1,2],[8,1,2],[9,1,2]]],
-    ["Suresh",9,[[7,1,0],[8,1,0],[6,1,0]]],
-    ["Priya",9,[[3,1,2],[4,1,2],[6,1,1]]]
+    ["Aarav",6],
+    ["Isha",6],
+    ["Rohan",7],
+    ["Nisha",7],
+    ["Arjun",8],
+    ["Pooja",8],
+    ["Ravi",9],
+    ["Sneha",9],
+    ["Tarun",10],
+    ["Ananya",10]
   ];
-  DB={st:[],ov:{},peerDiscussions:[],classDoubts:[]};
+  DB={
+    st:[],
+    ov:{},
+    peerDiscussions:[],
+    classDoubts:[],
+    activeChapters:{
+      6:"Fractions",
+      7:"Integers",
+      8:"Linear Equations in One Variable",
+      9:"Polynomials",
+      10:"Quadratic Equations"
+    }
+  };
   P.forEach(function(p,i){
     var s=mk(i+1,p[0],p[1]);
-    p[2].forEach(function(e){ans(s,e[0],e[1],e[2])});
     DB.st.push(s);
   });
-  addExtra();
+  DB.v=3;
   SEEDING=0;
   save();
 }
 
 function addExtra(){
-  var wasS=SEEDING;
-  SEEDING=1;
-  var X=[
-    ["Aarav",6,[[1,1,2],[2,1,2]]],
-    ["Isha",6,[[1,0,2],[2,0,1]]],
-    ["Zoya",6,[]],
-    ["Rohan",7,[[3,0,2],[4,0,1],[14,0,2]]],
-    ["Nisha",7,[[3,1,2],[4,1,2],[15,1,1]]],
-    ["Vikram",7,[]],
-    ["Arjun",8,[[5,0,2],[18,0,2],[19,1,1]]],
-    ["Pooja",8,[[5,1,2],[6,1,2],[18,1,2]]],
-    ["Tarun",10,[[7,1,2],[8,0,1],[22,0,2]]],
-    ["Ananya",10,[[7,1,2],[8,1,2],[22,1,2]]],
-    ["Kabir",10,[]]
-  ];
-  X.forEach(function(p,i){
-    var exists = DB.st.some(function(s){ return s.id === "x"+i || (s.name === p[0] && s.cls === p[1]); });
-    if(!exists){
-      var s=mk("x"+i,p[0],p[1]);
-      p[2].forEach(function(e){ans(s,e[0],e[1],e[2])});
-      DB.st.push(s);
-    }
-  });
-  DB.v=2;
-  SEEDING=wasS;
+  DB.v=3;
   save();
 }
 
@@ -1529,11 +1527,8 @@ function load(){
   DB.peerDiscussions=DB.peerDiscussions||[
     {id:1,author:"Anil",topic:"lin",text:"Why does the sign change when moving across '='? Can someone explain step by step?",replies:[{author:"Divya",text:"Think of a balance scale! If you remove +5 from one side, you have to subtract 5 from the other side too: x + 5 - 5 = 2 - 5."}]}
   ];
-  DB.classDoubts=DB.classDoubts||[
-    {id:1,student:"Sneha",classNum:9,text:"Why is (-2) * (-5) = +10 instead of -10?"},
-    {id:2,student:"Anil",classNum:9,text:"How to know which factor to pick when factorizing quadratics?"},
-    {id:3,student:"Kiran",classNum:8,text:"I always forget to divide by 2 in 2x = 14."}
-  ];
+  DB.classDoubts=DB.classDoubts||[];
+  DB.activeChapters=DB.activeChapters||{6:"Fractions",7:"Integers",8:"Linear Equations in One Variable",9:"Polynomials",10:"Quadratic Equations"};
   var cls6 = DB.st.filter(function(s){return s.cls==6});
   var cls7 = DB.st.filter(function(s){return s.cls==7});
   if(cls6.length === 0 || cls7.length === 0 || DB.v!=2) addExtra();
@@ -1624,6 +1619,7 @@ function begin(m,k){
   if(m=="reallife"){S.mode="reallife";S.sk=k||weakest();loadRealLifeScenario();R();return}
   if(m=="story"){S.mode="story";S.sk=k||CLS[S.st.cls];initStory();R();return}
   if(m=="passport"){S.mode="passport";R();return}
+  if(m=="doubts"){S.mode="doubts";R();return}
   if(m=="peers"){S.mode="peers";R();return}
   if(m=="conf-tracker"){S.mode="conf-tracker";R();return}
 
@@ -1640,8 +1636,9 @@ function nextQ(){
   var pool;
   if(S.mode=="revise"){
     pool=QS.filter(function(q){return S.rq.indexOf(q.id)>=0&&S.done.indexOf(q.id)<0});
+    if(!pool.length){S.end=true;S.cur=null;return}
   }else{
-    // Strictly prioritize questions matching student's exact class curriculum
+    // Prioritize questions matching student's class curriculum or active chapter
     pool=QS.filter(function(q){
       if(S.done.indexOf(q.id)>=0)return false;
       if(S.br)return q.s==sk;
@@ -1652,14 +1649,20 @@ function nextQ(){
       }
       return q.s==sk;
     });
-    // Fallback if class pool exhausted
-    if(!pool.length&&!S.br){
+    // Fallback 1: Any un-attempted question in this skill
+    if(!pool.length){
       pool=QS.filter(function(q){return q.s==sk&&S.done.indexOf(q.id)<0});
     }
+    // Fallback 2: Recycle pool excluding current question so session never freezes midway
+    if(!pool.length){
+      pool=QS.filter(function(q){return q.s==sk&&(q.id!==(S.cur&&S.cur.id))});
+    }
   }
-  if(!pool.length&&S.br)pool=QS.filter(function(q){return q.s==sk&&q!==S.cur});
-  if(!pool.length){S.end=true;S.cur=null}
-  else{
+
+  // End only if truly no questions exist at all in system
+  if(!pool.length){
+    S.end=true;S.cur=null;
+  }else{
     var dl=S.dl||1;
     if(S.mode=="revise")pool.sort(function(a,b){return S.rq.indexOf(a.id)-S.rq.indexOf(b.id)});
     else pool.sort(function(a,b){return Math.abs((a.d||2)-dl)-Math.abs((b.d||2)-dl)||a.id-b.id});
@@ -1677,6 +1680,9 @@ function conf(c){
   save();
   S.done.push(q.id);
   S.path.push({k:q.s,ok:r.ok,c:c,b:!!S.br});
+  // Track genuine practice results in S.res
+  S.res=S.res||[];
+  S.res.push({k:q.s,ok:r.ok,c:c,tag:r.tag,q:q.id});
   S.dl=Math.max(1,Math.min(3,(S.dl||1)+(r.ok&&c==2?1:(!r.ok?-1:0))));
   if(r.ok){
     S.streak=c==2?S.streak+1:0;
@@ -1692,7 +1698,14 @@ function conf(c){
       if(rt!=S.sk&&!S.br&&S.mode=="solve"){S.br=rt;S.bn=0;S.dl=1}
     }
   }
-  if(S.streak>=3&&!S.br&&S.mode=="solve")S.skip=true;
+  // Celebrate 3 sure streak without aborting practice session
+  if(S.streak>=3&&!S.br&&S.mode=="solve"){
+    toast("⭐ Level Up! 3 Sure & Correct in a row!");
+  }
+  // Complete the full intended 6 practice questions
+  if(S.mode=="solve"&&S.res.length>=6){
+    S.end=true;
+  }
   S.fb={ok:r.ok,tag:r.tag,c:c,msg:msg,ask:!r.ok&&L==0&&q.t.length>1&&S.mode=="solve",why:why(r,c)};
   xpFx(r,c);
   R();
@@ -1724,23 +1737,23 @@ function tconf(c){
   var q=S.cur,r=ans(S.st,q.id,S.pick,c);
   S.dl=Math.max(1,Math.min(3,(S.dl||1)+(r.ok&&c==2?1:(!r.ok?-1:0))));
   save();
-  S.done.push(q.id);
-  S.path.push({k:q.s,ok:r.ok,c:c,b:!!S.br});
-  S.res.push({k:q.s,ok:r.ok,c:c,tag:r.tag});
-  var l3=S.res.slice(-3);
+  (S.done=S.done||[]).push(q.id);
+  (S.path=S.path||[]).push({k:q.s,ok:r.ok,c:c,b:!!S.br});
+  (S.res=S.res||[]).push({k:q.s,ok:r.ok,c:c,tag:r.tag,q:q.id});
   if(S.br){S.br=null}
   else if(!r.ok){
     var rt=MC[r.tag]&&MC[r.tag].r;
     if(rt&&rt!=S.sk&&S.pr.indexOf(rt)<0){S.pr.push(rt);S.br=rt}
   }
-  if(S.res.length>=6||(l3.length==3&&l3.every(function(x){return x.ok&&x.c==2}))){
+  // Complete the full intended 6 diagnostic questions in battle session
+  if(S.res.length>=6){
     S.end=true;
   }
   (S.dlog=S.dlog||[]).push(twhy(r,c));
   if(S.end){
     S.cur=null;
     var okCount=S.res.filter(function(x){return x.ok}).length;
-    if(okCount>=4||S.res.length<6){
+    if(okCount>=4){
       S.st.boss=(S.st.boss||0)+1;
       S.st.xp=(S.st.xp||0)+30;
       boom();
@@ -1866,7 +1879,7 @@ function rConfTracker(){
 // FEATURE 5: LEARNING BATTLES
 // ==========================================
 function startBattle(){
-  S.streak=0;S.res=[];S.dlog=[];S.done=[];S.cur=null;
+  S.streak=0;S.res=[];S.dlog=[];S.done=[];S.path=[];S.pr=[];S.cur=null;
   nextQ();R();
 }
 function rBattle(){
@@ -2661,65 +2674,49 @@ function sendChat(customText){
   chatLoading = true;
   updateRootyStatusUI();
 
-  if(activeElevenLabsConv && activeElevenLabsConv.isOpen && activeElevenLabsConv.isOpen()){
-    try{
-      activeElevenLabsConv.sendUserMessage(txt);
-    }catch(e){
-      console.warn("sendUserMessage error, falling back to Gemini:", e);
-      fallbackToGeminiTutor(txt);
+  // Direct, reliable connection to Google Gemini AI Tutor
+  var stName = S && S.st ? S.st.name : "Student";
+  var stCls = S && S.st ? S.st.cls : 8;
+  var topic = S && S.sk && SK[S.sk] ? SK[S.sk].n[0] : "Mathematics";
+  var langCode = ["en", "te", "hi"][L] || "en";
+  var recentHistory = chatHistory.slice(-4).map(function(m){ return { role: m.sender === "user" ? "user" : "model", text: m.text }; });
+
+  fetch("/api/tutor", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      question: txt,
+      studentClass: stCls,
+      topic: topic,
+      language: langCode,
+      history: recentHistory
+    })
+  }).then(function(res){
+    if(!res.ok){
+      return res.json().then(function(e){ throw new Error(e.error || ("AI service returned HTTP " + res.status)); });
     }
-  } else {
-    connectElevenLabsRooty().catch(function(err){
-      console.warn("ElevenLabs connect failed, falling back to Gemini tutor:", err);
-      fallbackToGeminiTutor(txt);
-    });
-  }
-}
-
-async function fallbackToGeminiTutor(userText){
-  chatLoading = true;
-  updateRootyStatusUI();
-  try {
-    var stName = S && S.st ? S.st.name : "Student";
-    var stCls = S && S.st ? S.st.cls : 8;
-    var topic = S && S.sk && SK[S.sk] ? SK[S.sk].n[0] : "Mathematics";
-    var langCode = ["en", "te", "hi"][L] || "en";
-    var recentHistory = chatHistory.slice(-4).map(function(m){ return { role: m.sender === "user" ? "user" : "model", text: m.text }; });
-
-    var res = await fetch("/api/tutor", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        question: userText,
-        studentClass: stCls,
-        topic: topic,
-        language: langCode,
-        history: recentHistory
-      })
-    });
-
-    if(!res.ok) throw new Error("HTTP " + res.status);
-    var data = await res.json();
-    var botReply = data.answer || "I am thinking about your question! Let's review the core concept.";
+    return res.json();
+  }).then(function(data){
     chatLoading = false;
+    var botReply = data.answer || "I reviewed your math question! Let's examine the core concept together.";
     chatHistory.push({ sender: "bot", text: botReply });
     appendChatMessageUI("bot", botReply);
     updateRootyStatusUI();
-  } catch(err) {
-    console.warn("Gemini tutor fallback error:", err);
+
+    // If active ElevenLabs voice session is connected, update it with context
+    if(activeElevenLabsConv && activeElevenLabsConv.isOpen && activeElevenLabsConv.isOpen()){
+      try{
+        activeElevenLabsConv.sendContextualUpdate("Student asked: " + txt + ". Tutor answered: " + botReply);
+      }catch(e){}
+    }
+  }).catch(function(err){
+    console.error("Rooty AI request error:", err);
     chatLoading = false;
-    var offlineAnswers = {
-      6: "In Class 6, remember: fractions represent equal parts of a whole. Always find a common denominator before adding or subtracting!",
-      7: "In Class 7, watch your signs with negative numbers: subtracting a negative makes it positive (e.g. 5 - (-3) = 8).",
-      8: "In Class 8, when solving linear equations, remember to flip the sign whenever you transpose a term across the '=' sign!",
-      9: "In Class 9, remember quadratic equations can have two roots (±√k), and polynomials can be factored by splitting the middle term.",
-      10: "In Class 10, the quadratic formula is x = (-b ± √(b² - 4ac)) / (2a). Check the discriminant D = b² - 4ac for root types!"
-    };
-    var fallbackReply = offlineAnswers[S && S.st ? S.st.cls : 6] || "Let's work through this step by step: identify what is given, write the equation, and solve for the unknown.";
-    chatHistory.push({ sender: "bot", text: fallbackReply });
-    appendChatMessageUI("bot", fallbackReply);
+    var errMsg = "⚠️ Rooty AI notice: " + (err.message || "Network issue connecting to AI service. Please try again.");
+    chatHistory.push({ sender: "bot", text: errMsg });
+    appendChatMessageUI("bot", errMsg);
     updateRootyStatusUI();
-  }
+  });
 }
 
 function rChatDrawer(){
@@ -2855,7 +2852,7 @@ function rHome(){
   h+='<button class="tile" onclick="begin(\'story\')"><span class="e">🏰</span><b>Story Quest</b><small>interactive adventure</small></button>';
   h+='<button class="tile" onclick="begin(\'conf-tracker\')"><span class="e">🎯</span><b>Confidence</b><small>accuracy analytics</small></button>';
   h+='<button class="tile" onclick="'+(due?"begin(\'revise\')":"")+'"><span class="e">🔁</span><b>Revise</b><small>'+(due?due+" due now":"none due")+'</small></button>';
-  h+='<button class="tile" onclick="begin(\'peers\')"><span class="e">👥</span><b>Peer Hub</b><small>collaborative rooms</small></button>';
+  h+='<button class="tile" onclick="begin(\'doubts\')"><span class="e">💡</span><b>Ask Doubt</b><small>teacher Q&A</small></button>\n    <button class="tile" onclick="begin(\'peers\')"><span class="e">👥</span><b>Peer Hub</b><small>collaborative rooms</small></button>';
   h+='<button class="tile" onclick="begin(\'passport\')"><span class="e">🛂</span><b>Passport</b><small>badges & timeline</small></button>';
   h+='</div>';
 
@@ -2870,6 +2867,7 @@ function rStu(){
   if(S.mode=="passport")return rPassport();
   if(S.mode=="reallife")return rRealLife();
   if(S.mode=="story")return rStory();
+  if(S.mode=="doubts")return rStudentDoubts();
   if(S.mode=="peers")return rPeers();
   if(S.mode=="learn")return rLearn();
   if(S.mode=="me")return rMe();
@@ -2953,11 +2951,39 @@ function tryLang(i){L=i;S.fb=null;S.pick=null;S.rt=1;R()}
 function rtconf(c){
   var q=S.cur,ok=S.pick==q.a,st=S.st;
   S.rt=null;
-  (st.lgl=st.lgl||[]).push({q:q.id,ok:ok});
+  var langName=L===1?"Telugu":L===2?"Hindi":"Regional";
+  var studentPickText=(q.o&&q.o[S.pick])?q.o[S.pick][0]:("Option "+S.pick);
+  var correctText=(q.o&&q.o[q.a])?q.o[q.a][0]:"";
+
+  // LANGUAGE GAP LOGIC:
+  // Language barrier ONLY identified when student demonstrates conceptual understanding (ok === true in home language)
+  // If still wrong in home language, classify as CONCEPTUAL GAP (ok === false)
+  (st.lgl=st.lgl||[]).push({
+    qId:q.id,
+    qEng:q.t[0],
+    qLang:q.t[L]||q.t[0],
+    lang:langName,
+    langCode:L,
+    pick:S.pick,
+    pickText:studentPickText,
+    correctText:correctText,
+    ok:ok,
+    type:ok?"barrier":"concept",
+    ts:Date.now()
+  });
   st.ts=Date.now();
   save();
   if(ok){S.br=null;S.bn=0}
-  S.fb={ok:ok,tag:null,c:c,msg:"",lang:ok,why:ok?["🌐 Right in your home language, so the English wording was the hard part, not the maths.","No bridge lesson is needed. Your teacher sees a language flag."]:["Still wrong in your home language, so this is a maths gap: the lesson is shown below."]};
+  S.fb={
+    ok:ok,
+    tag:null,
+    c:c,
+    msg:"",
+    lang:ok,
+    why:ok
+      ? ["🌐 Right in your home language ("+langName+")! The English phrasing was the obstacle, not the mathematics.","No bridge lesson needed. Your teacher sees a language-comprehension flag."]
+      : ["Still incorrect in "+langName+". This is a mathematical concept gap, not a language barrier: the foundational lesson is shown below."]
+  };
   R();
 }
 function pace(k){var m=S.st.m[k];return m>=.75?"fast":m<.4?"slow":"std"}
@@ -3111,8 +3137,9 @@ function signup(){
 // ==========================================
 function rTea(){
   if(!tok)return rLog();
-  var h='<div class="row" style="margin-bottom:10px"><button class="tab'+(tab=="heatmap"?" on":"")+'" onclick="tab=\'heatmap\';R()">📊 Class Heatmap</button><button class="tab'+(tab=="plan"?" on":"")+'" onclick="tab=\'plan\';R()">📋 Class Plan</button><button class="tab'+(tab=="doubts"?" on":"")+'" onclick="tab=\'doubts\';R()">💡 Doubt Analytics</button><button class="tab'+(tab=="worksheet"?" on":"")+'" onclick="tab=\'worksheet\';R()">📄 AI Worksheet</button><button class="tab'+(tab=="pap"?" on":"")+'" onclick="tab=\'pap\';R()">📝 Paper Entry</button><button class="tab'+(tab=="qs"?" on":"")+'" onclick="tab=\'qs\';R()">❓ Questions</button><button class="tab'+(tab=="sd"?" on":"")+'" onclick="tab=\'sd\';R()">👥 Students</button><button class="tab'+(tab=="as"?" on":"")+'" onclick="tab=\'as\';R()">📌 Assign</button><button class="btn" onclick="stopAllAudio();tok=false;R()">Log out</button></div>';
+  var h='<div class="row" style="margin-bottom:10px"><button class="tab'+(tab=="chapters"?" on":"")+'" onclick="tab=\'chapters\';R()">📚 Chapter Control</button><button class="tab'+(tab=="heatmap"?" on":"")+'" onclick="tab=\'heatmap\';R()">📊 Class Heatmap</button><button class="tab'+(tab=="plan"?" on":"")+'" onclick="tab=\'plan\';R()">📋 Class Plan</button><button class="tab'+(tab=="doubts"?" on":"")+'" onclick="tab=\'doubts\';R()">💡 Doubt Analytics</button><button class="tab'+(tab=="worksheet"?" on":"")+'" onclick="tab=\'worksheet\';R()">📄 AI Worksheet</button><button class="tab'+(tab=="pap"?" on":"")+'" onclick="tab=\'pap\';R()">📝 Paper Entry</button><button class="tab'+(tab=="qs"?" on":"")+'" onclick="tab=\'qs\';R()">❓ Questions</button><button class="tab'+(tab=="sd"?" on":"")+'" onclick="tab=\'sd\';R()">👥 Students</button><button class="tab'+(tab=="as"?" on":"")+'" onclick="tab=\'as\';R()">📌 Assign</button><button class="btn" onclick="stopAllAudio();tok=false;R()">Log out</button></div>';
   
+  if(tab=="chapters")return h+rTeacherChapters();
   if(tab=="heatmap")return h+rHeatmap();
   if(tab=="doubts")return h+rTeacherDoubts();
   if(tab=="worksheet")return h+rTeacherWorksheet();
@@ -3158,13 +3185,86 @@ function rTea(){
   });
 
   h+='<div class="card"><span class="tag">Fragile list · correct but unsure</span><p class="mut">Invisible in marks, visible here.</p>'+(F.length?F.map(function(x){return"<div><b>"+x[0].name+"</b>: "+x[1].map(function(k){return SK[k].n[0]}).join(", ")+"</div>"}).join(""):"None yet.")+"</div>";
-  h+=simCard();
   h+=revCard();
   h+=langCard();
   return h+'<button class="btn" onclick="localStorage.removeItem(\'rg1\');S=null;sel=null;seed();QS=QS.filter(function(q){return q.id<=25});R()">Reset demo data</button>';
 }
 
 // Classroom Learning Heatmap (Feature 6)
+// ==========================================
+// FEATURE 4: TEACHER-CONTROLLED CHAPTER SELECTION & CHAPTER ANALYTICS
+// ==========================================
+function rTeacherChapters(){
+  var cls = FC || 6;
+  var chapters = SYLLABUS_CHAPTERS[cls] || SYLLABUS_CHAPTERS[6];
+  var activeCh = (DB.activeChapters && DB.activeChapters[cls]) || chapters[0];
+
+  var h='<div class="card"><span class="tag">Teacher Syllabus Control</span><h3>Active Chapter &amp; Curriculum Management</h3>';
+  h+='<p class="mut">Manage the active syllabus chapter for your students. Update the chapter as your classroom lessons progress throughout the term.</p>';
+
+  h+='<div style="display:flex;gap:6px;margin:12px 0 16px 0">';
+  [6,7,8,9,10].forEach(function(c){
+    h+='<button class="btn'+(cls==c?' p':'')+'" onclick="FC='+c+';R()">Class '+c+'</button>';
+  });
+  h+='</div>';
+
+  h+='<div class="card" style="border:1px solid var(--card-border);background:var(--soft);margin-bottom:16px">';
+  h+='<div class="row" style="justify-content:space-between"><div><small class="mut">Currently Active in Class '+cls+'</small><h2 style="margin:4px 0;color:var(--pri)">'+activeCh+'</h2></div><span class="pill g">🟢 Ongoing Chapter</span></div>';
+  h+='<div class="row" style="margin-top:12px;gap:8px;flex-wrap:wrap">';
+  h+='<select id="tc_new_ch" style="padding:8px 12px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);font-size:14px;flex:1">';
+  chapters.forEach(function(ch){
+    h+='<option value="'+ch+'"'+(ch===activeCh?' selected':'')+'>'+ch+'</option>';
+  });
+  h+='</select>';
+  h+='<button class="btn p" onclick="updateActiveChapter('+cls+')">Update Active Chapter</button>';
+  h+='</div></div>';
+
+  // Chapter-wise Student Performance Matrix
+  h+='<div class="card"><h4>Chapter-Wise Student Performance Matrix (Class '+cls+')</h4>';
+  var studentsInClass = DB.st.filter(function(s){ return s.cls == cls; });
+
+  if(!studentsInClass.length){
+    h+='<p class="mut">No students enrolled in Class '+cls+' yet.</p>';
+  }else{
+    h+='<div class="tbl"><table><tr><th>Chapter Name</th><th>Status</th><th>Questions Solved</th><th>Accuracy</th><th>Active Learners</th></tr>';
+    chapters.forEach(function(ch){
+      var isCur = (ch === activeCh);
+      var totalAttempts = 0, correctAttempts = 0, activeLearners = 0;
+
+      studentsInClass.forEach(function(s){
+        var chLogs = (s.log||[]).filter(function(l){
+          var q = QS.find(function(x){ return x.id == l.q; });
+          return (l.chapter === ch) || (q && q.chapter === ch);
+        });
+        if(chLogs.length){
+          activeLearners++;
+          totalAttempts += chLogs.length;
+          correctAttempts += chLogs.filter(function(x){ return x.ok; }).length;
+        }
+      });
+
+      var acc = totalAttempts ? Math.round((correctAttempts / totalAttempts) * 100) + '%' : '–';
+      var statusTag = isCur ? '<span class="pill g">Active</span>' : totalAttempts ? '<span class="pill l">Historical</span>' : '<span class="mut">Upcoming</span>';
+
+      h+='<tr><td><b>'+ch+'</b></td><td>'+statusTag+'</td><td>'+totalAttempts+'</td><td>'+acc+'</td><td>'+activeLearners+' student(s)</td></tr>';
+    });
+    h+='</table></div>';
+  }
+  h+='</div></div>';
+  return h;
+}
+
+function updateActiveChapter(cls){
+  var el = document.getElementById("tc_new_ch");
+  if(!el) return;
+  var newCh = el.value;
+  DB.activeChapters = DB.activeChapters || {};
+  DB.activeChapters[cls] = newCh;
+  save();
+  toast("Class " + cls + " active chapter set to: " + newCh);
+  R();
+}
+
 function rHeatmap(){
   var sts=STF();
   var h='<div class="card"><span class="tag">Feature 6: Classroom Learning Heatmap</span><h3>Class-Wide Concept Mastery Matrix</h3><p class="mut">Color intensity reveals mastery: Red (<50%), Yellow (50-74%), Green (≥75%). Instantly spot systemic root gaps.</p>';
@@ -3183,31 +3283,168 @@ function rHeatmap(){
 }
 
 // Teacher Doubt Analytics (Feature 19)
-function rTeacherDoubts(){
-  var h='<div class="card"><span class="tag">Feature 19: Smart Doubt Analysis</span><h3>AI Curriculum & Doubt Analytics</h3><p class="mut">Clusters frequently asked student questions to detect blind spots in teaching.</p>';
-  h+='<button class="btn p" onclick="runDoubtAnalytics()">Analyze Class Doubts with Gemini</button>';
-  if(DB.doubtAnalysisResult){
-    h+='<div class="card" style="background:var(--soft);margin-top:12px;white-space:pre-wrap">'+DB.doubtAnalysisResult+'</div>';
-  }
-  h+='<div class="card" style="margin-top:12px"><h4>Recent Student Doubts</h4><ul>';
-  (DB.classDoubts||[]).forEach(function(d){
-    h+='<li><b>'+d.student+' (Class '+d.classNum+'):</b> "'+d.text+'"</li>';
+// ==========================================
+// FEATURE 3: STUDENT DOUBT SUBMISSION & TEACHER DOUBT ANALYTICS
+// ==========================================
+function rStudentDoubts(){
+  var st = S.st;
+  var activeCh = (DB.activeChapters && DB.activeChapters[st.cls]) || (st.cls==6?"Fractions":st.cls==7?"Integers":st.cls==8?"Linear Equations in One Variable":st.cls==9?"Polynomials":"Quadratic Equations");
+  var syllabus = SYLLABUS_CHAPTERS[st.cls] || SYLLABUS_CHAPTERS[6];
+
+  var h='<div class="card"><div class="row" style="justify-content:space-between"><div><span class="tag">💡 Academic Doubt Portal</span><h3>Ask a Doubt to Your Teacher</h3><small class="mut">Direct academic support from your school teacher</small></div><button class="btn" onclick="S.mode=null;R()">← Back</button></div>';
+
+  // Submission Form
+  h+='<div class="card" style="border:1px solid var(--card-border);background:var(--soft);margin:14px 0">';
+  h+='<h4 style="margin:0 0 8px 0">Submit a New Doubt</h4>';
+  h+='<div style="margin-bottom:10px"><label style="font-size:13px;color:var(--mut);display:block;margin-bottom:4px">Related Syllabus Chapter</label>';
+  h+='<select id="std_doubt_ch" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--tx)">';
+  syllabus.forEach(function(ch){
+    h+='<option value="'+ch+'"'+(ch===activeCh?' selected':'')+'>'+ch+'</option>';
   });
-  h+='</ul></div></div>';
+  h+='</select></div>';
+
+  h+='<div style="margin-bottom:10px"><label style="font-size:13px;color:var(--mut);display:block;margin-bottom:4px">Your Mathematical Question or Doubt</label>';
+  h+='<textarea id="std_doubt_txt" placeholder="Explain what problem or concept you are stuck on..." style="width:100%;box-sizing:border-box;min-height:80px;padding:10px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);font-family:inherit;font-size:14px"></textarea></div>';
+  h+='<button class="btn p" onclick="submitStudentDoubt()">Submit Doubt to Teacher 📨</button>';
+  h+='</div>';
+
+  // Student's Submitted Doubts
+  var myDoubts = (DB.classDoubts || []).filter(function(d){
+    return d.studentId === st.id || d.studentName === st.name;
+  });
+
+  h+='<div class="card"><h4>My Submitted Doubts ('+myDoubts.length+')</h4>';
+  if(!myDoubts.length){
+    h+='<p class="mut" style="font-size:14px">No records available yet. When you submit a doubt above, you can track your teacher\'s response right here.</p>';
+  }else{
+    myDoubts.forEach(function(d){
+      var isAnswered = !!d.reply;
+      h+='<div class="card" style="border:1px solid var(--card-border);background:rgba(255,255,255,0.02);margin-bottom:12px">';
+      h+='<div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="tag" style="background:var(--soft)">'+d.chapter+'</span><span class="pill '+(isAnswered?'g':'l')+'">'+(isAnswered?'✅ Answered':'⏳ Awaiting Response')+'</span></div>';
+      h+='<p style="margin:4px 0 8px 0;font-size:15px;font-weight:500">"'+d.text+'"</p>';
+      h+='<small class="mut">Submitted on '+new Date(d.ts || Date.now()).toLocaleDateString()+'</small>';
+
+      if(d.reply){
+        h+='<div class="card" style="margin-top:10px;border-left:4px solid var(--ok);background:rgba(16,185,129,0.08);padding:10px 14px">';
+        h+='<b style="color:var(--ok)">👨‍🏫 Teacher\'s Guidance:</b>';
+        h+='<p style="margin:4px 0 0 0;font-size:14px;line-height:1.5">'+d.reply+'</p>';
+        if(d.replyTs){
+          h+='<small class="mut" style="display:block;margin-top:4px">Answered on '+new Date(d.replyTs).toLocaleDateString()+'</small>';
+        }
+        h+='</div>';
+      }
+      h+='</div>';
+    });
+  }
+  h+='</div></div>';
   return h;
 }
+
+function submitStudentDoubt(){
+  var txtEl = document.getElementById("std_doubt_txt");
+  var chEl = document.getElementById("std_doubt_ch");
+  if(!txtEl || !txtEl.value.trim()){
+    toast("Please type your doubt before submitting.");
+    return;
+  }
+  var txt = txtEl.value.trim();
+  var ch = chEl ? chEl.value : "General Mathematics";
+
+  DB.classDoubts = DB.classDoubts || [];
+  var newDoubt = {
+    id: "d_" + Date.now(),
+    studentId: S.st.id,
+    studentName: S.st.name,
+    classNum: S.st.cls,
+    chapter: ch,
+    text: txt,
+    ts: Date.now(),
+    reply: null,
+    replyTs: null
+  };
+  DB.classDoubts.unshift(newDoubt);
+  save();
+  toast("Doubt submitted to teacher!");
+  R();
+}
+
+function rTeacherDoubts(){
+  var cls = FC || 0;
+  var allDoubts = DB.classDoubts || [];
+  var filteredDoubts = cls ? allDoubts.filter(function(d){ return d.classNum == cls; }) : allDoubts;
+
+  var h='<div class="card"><span class="tag">Feature 19: Smart Doubt Analysis</span><h3>AI Curriculum &amp; Doubt Analytics</h3>';
+  h+='<p class="mut">View real academic doubts submitted by students. Respond directly or run AI cluster analysis with Google Gemini to identify classroom blind spots.</p>';
+
+  h+='<div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap">';
+  h+='<span>Filter Class:</span> <select onchange="FC=+this.value;R()" style="padding:6px 10px;border-radius:6px;border:1px solid var(--ln);background:var(--bg);color:var(--tx)"><option value="0">All Classes</option>'+[6,7,8,9,10].map(function(c){return'<option value="'+c+'"'+(FC==c?' selected':'')+'>Class '+c+'</option>'}).join("")+'</select>';
+  h+='<button class="btn p" onclick="runDoubtAnalytics()" '+(filteredDoubts.length?'':'disabled')+'>Analyze Doubts with Gemini</button>';
+  h+='</div>';
+
+  if(DB.doubtAnalysisResult){
+    h+='<div class="card" style="background:var(--soft);margin-bottom:14px;white-space:pre-wrap;border-left:4px solid var(--pri)"><b>🤖 Gemini Doubt Synthesis:</b>\n'+DB.doubtAnalysisResult+'</div>';
+  }
+
+  h+='<div class="card"><h4>Submitted Student Doubts ('+filteredDoubts.length+')</h4>';
+  if(!filteredDoubts.length){
+    h+='<div class="card" style="text-align:center;padding:24px;background:var(--soft)"><p class="mut" style="margin:0 0 4px 0">No records available yet.</p><small class="mut">When students submit doubts from their dashboard, they will appear here with student details, chapter mapping, and a response box.</small></div>';
+  }else{
+    filteredDoubts.forEach(function(d){
+      h+='<div class="card" style="border:1px solid var(--card-border);background:rgba(255,255,255,0.02);margin-bottom:12px">';
+      h+='<div class="row" style="justify-content:space-between"><div><b>'+d.studentName+' (Class '+d.classNum+')</b> <span class="tag">'+d.chapter+'</span></div><small class="mut">'+new Date(d.ts || Date.now()).toLocaleDateString()+'</small></div>';
+      h+='<p style="margin:8px 0;font-size:15px"><b>Doubt:</b> "'+d.text+'"</p>';
+
+      if(d.reply){
+        h+='<div style="background:rgba(16,185,129,0.08);border-left:3px solid var(--ok);padding:8px 12px;border-radius:6px;margin:8px 0">';
+        h+='<b style="color:var(--ok)">Your Answer:</b> '+d.reply;
+        h+='</div>';
+      }
+
+      h+='<div style="margin-top:8px">';
+      h+='<textarea id="rep_'+d.id+'" placeholder="Write response to '+d.studentName+'..." style="width:100%;box-sizing:border-box;padding:8px;border-radius:6px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);min-height:50px;font-family:inherit;font-size:13px"></textarea>';
+      h+='<button class="btn p" style="margin-top:6px;font-size:12px;padding:6px 12px" onclick="replyToStudentDoubt(\''+d.id+'\')">Send Response to Student</button>';
+      h+='</div>';
+      h+='</div>';
+    });
+  }
+  h+='</div></div>';
+  return h;
+}
+
+function replyToStudentDoubt(id){
+  var el = document.getElementById("rep_" + id);
+  if(!el || !el.value.trim()){
+    toast("Please enter a response before sending.");
+    return;
+  }
+  var replyTxt = el.value.trim();
+  var d = (DB.classDoubts || []).find(function(x){ return x.id == id; });
+  if(d){
+    d.reply = replyTxt;
+    d.replyTs = Date.now();
+    save();
+    toast("Response sent to " + d.studentName + "!");
+    R();
+  }
+}
+
 function runDoubtAnalytics(){
+  var doubts = DB.classDoubts || [];
+  if(!doubts.length){
+    toast("No student doubts submitted yet to analyze.");
+    return;
+  }
   toast("Synthesizing student queries with Google Gemini...");
   fetch("/api/doubt-analytics",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({doubts:DB.classDoubts,classNumber:FC||8})
+    body:JSON.stringify({doubts:doubts,classNumber:FC||8})
   }).then(function(r){return r.json()}).then(function(d){
-    DB.doubtAnalysisResult=d.insights;
+    DB.doubtAnalysisResult=d.insights || "Analysis complete.";
     save();R();
-  }).catch(function(){
-    DB.doubtAnalysisResult="AI Doubt Analytics:\n1. 65% of students struggle with negative signs during subtraction.\n2. Root gap: number line left/right moves.\n3. Recommended 15-min activity: Giant classroom number-line walk.";
-    R();
+  }).catch(function(err){
+    DB.doubtAnalysisResult="Unable to run AI analysis: " + (err.message || "Network error. Please try again.");
+    save();R();
   });
 }
 
@@ -3278,35 +3515,6 @@ function asgDone(st,a){return (st.log||[]).filter(function(l){var q=QS.find(func
 
 function ov(k,v){DB.ov[k]=v;save();if(v=="no")sel=null;R()}
 
-function fakeAns(s,n){
-  var sk=CLS[s.cls];
-  for(var i=0;i<n;i++){
-    var pool=QS.filter(function(q){return q.s==sk||(ORD.indexOf(q.s)<ORD.indexOf(sk)&&Math.random()<.25)});
-    var q=pool[Math.floor(Math.random()*pool.length)];
-    if(!q)continue;
-    var good=Math.random()<(.35+s.m[q.s]*.55);
-    var wr=[0,1,2].filter(function(j){return j!=q.a});
-    var oi=good?q.a:wr[Math.floor(Math.random()*2)];
-    var cf=good?(Math.random()<.5?2:1):(Math.random()<.55?2:0);
-    if(Math.random()<.15)cf=0;
-    ans(s,q.id,oi,cf,0);
-  }
-}
-function simClass(){
-  var n=0;
-  STF().forEach(function(s){
-    if(Math.random()<.2)return;
-    var k=3+Math.floor(Math.random()*3);
-    fakeAns(s,k);
-    n+=k;
-  });
-  save();
-  toast(n+" answers simulated");
-  R();
-}
-function simCard(){
-  return'<div class="card"><span class="tag">Live class (demo)</span><p class="mut">Simulates a class period so you can watch groups, evidence, fragile list and revision queue update. Demo only, not real students.</p><button class="btn p" onclick="simClass()">🎲 Simulate a class period</button></div>';
-}
 function revCard(){
   var tt=now();
   var rows=STF().map(function(s){
@@ -3317,9 +3525,66 @@ function revCard(){
   }).filter(function(r){return r.n||r.u}).sort(function(a,b){return b.n-a.n});
   return'<div class="card"><span class="tag">Revision queue (spaced practice)</span><p class="mut">Wrong answers return in 1 day; fragile answers (unsure or hints) in 2 days. The system manages reviews automatically.</p>'+(rows.length?'<div class="tbl"><table><tr><th>Student</th><th>Due today</th><th>Why</th><th>Coming soon</th></tr>'+rows.map(function(r){return"<tr><td>"+r.s.name+'</td><td><span class="pill '+(r.n?"c":"g")+'">'+r.n+" questions</span></td><td>"+(r.w?r.w+" wrong ":"")+(r.f?r.f+" fragile":"")+"</td><td>"+r.u+" in 48h</td></tr>"}).join("")+"</table></div>":"All clear! No revisions due today.")+"</div>";
 }
+// LANGUAGE GAP ANALYTICS FOR TEACHERS (Features 1 & 5)
 function langCard(){
-  var a=STF().filter(function(s){return(s.lgl||[]).some(function(x){return x.ok})});
-  return'<div class="card"><span class="tag">Language flag · wrong in English, right in home language</span><p class="mut">These students may understand the maths but need help with the English wording.</p>'+(a.length?a.map(function(s){return"<div><b>"+s.name+"</b>: "+s.lgl.filter(function(x){return x.ok}).length+" question(s)</div>"}).join(""):"None yet. They appear when a student gets a question wrong in English, then right after viewing it in Telugu or Hindi.")+"</div>";
+  var sts=STF();
+  var barrierLogs=[];
+  var conceptLogs=[];
+
+  sts.forEach(function(s){
+    (s.lgl||[]).forEach(function(entry){
+      if(entry.type==="barrier"||entry.ok===true){
+        barrierLogs.push({student:s,entry:entry});
+      }else{
+        conceptLogs.push({student:s,entry:entry});
+      }
+    });
+  });
+
+  var h='<div class="card" style="border-left:4px solid var(--pri)"><span class="tag" style="background:linear-gradient(135deg,var(--pri),var(--uv));color:#fff">🌐 Language vs Conceptual Gap Analytics</span>';
+  h+='<h3 style="margin:4px 0 6px 0">Bilingual Learning Comprehension Evidence</h3>';
+  h+='<p class="mut" style="font-size:13px;line-height:1.5">Distinguishes between students struggling with English phrasing (Language Barrier) versus students with foundational mathematical misconceptions (Conceptual Gap).</p>';
+
+  if(!barrierLogs.length && !conceptLogs.length){
+    h+='<div class="card" style="text-align:center;padding:20px;background:var(--soft)"><p class="mut" style="margin:0 0 4px 0">No records available yet.</p><small class="mut">When students attempt questions in their home language (Hindi / Telugu), diagnostic evidence will be analyzed and displayed here.</small></div>';
+    h+='</div>';
+    return h;
+  }
+
+  // Section A: Language Barriers (Understands Math Concept)
+  h+='<div style="margin-top:12px"><h4 style="margin:6px 0;color:var(--ok)">✅ Language Barriers (Understands Math Concept)</h4>';
+  if(!barrierLogs.length){
+    h+='<p class="mut" style="font-size:13px">No language barrier records detected.</p>';
+  }else{
+    barrierLogs.forEach(function(item){
+      h+='<div class="card" style="border:1px solid rgba(16,185,129,0.3);background:rgba(16,185,129,0.06);margin-bottom:8px;padding:10px">';
+      h+='<div class="row" style="justify-content:space-between"><b>'+item.student.name+' (Class '+item.student.cls+')</b><span class="pill g">'+item.entry.lang+' Attempt · Solved Correctly</span></div>';
+      h+='<div style="font-size:13px;margin:6px 0"><b>Question (English):</b> "'+item.entry.qEng+'"<br><b>Presented In '+item.entry.lang+':</b> "'+item.entry.qLang+'"</div>';
+      h+='<div style="font-size:13px;color:var(--ok)"><b>Student Response:</b> '+item.entry.pickText+'</div>';
+      h+='<small class="mut" style="display:block;margin-top:4px">💡 <b>Diagnostic Insight:</b> Student understands the underlying concept but stumbled on English phrasing. Provide mathematical vocabulary guidance.</small>';
+      h+='</div>';
+    });
+  }
+  h+='</div>';
+
+  // Section B: Conceptual Gaps (Struggles in Both Languages)
+  h+='<div style="margin-top:14px"><h4 style="margin:6px 0;color:var(--bad)">⚠️ Foundational Conceptual Gaps (Not a Language Barrier)</h4>';
+  if(!conceptLogs.length){
+    h+='<p class="mut" style="font-size:13px">No conceptual gap records in home languages.</p>';
+  }else{
+    conceptLogs.forEach(function(item){
+      h+='<div class="card" style="border:1px solid rgba(244,63,94,0.3);background:rgba(244,63,94,0.06);margin-bottom:8px;padding:10px">';
+      h+='<div class="row" style="justify-content:space-between"><b>'+item.student.name+' (Class '+item.student.cls+')</b><span class="pill c">'+item.entry.lang+' Attempt · Still Incorrect</span></div>';
+      h+='<div style="font-size:13px;margin:6px 0"><b>Question ('+item.entry.lang+'):</b> "'+item.entry.qLang+'"</div>';
+      h+='<div style="font-size:13px;color:var(--bad)"><b>Student Picked:</b> '+item.entry.pickText+' (Correct: '+item.entry.correctText+')</div>';
+      h+='<small class="mut" style="display:block;margin-top:4px">🔧 <b>Diagnostic Insight:</b> Student answered incorrectly in their home language too. This is a foundational mathematics gap requiring prerequisite lesson remediation.</small>';
+      h+='</div>';
+    });
+  }
+  h+='</div>';
+
+  h+='</div>';
+  return h;
 }
 
 function rStd(){
