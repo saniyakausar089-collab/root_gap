@@ -1145,6 +1145,7 @@ var PREREQ={
 };
 
 var MC={
+  conceptGap:{r:"frac",n:"Foundational mathematical concept gap"},
   bigDen:{r:"frac",n:"Thinks a bigger denominator means a bigger fraction"},
   addDen:{r:"frac",n:"Adds the denominators too when adding fractions"},
   guess:{r:"frac",n:"Guessing, no clear conceptual method"},
@@ -1543,8 +1544,8 @@ function ans(st,qid,oi,cf,hu){
   var ok=oi==q.a,tag=q.o[oi]&&q.o[oi][1];
   st.m[q.s]=cl(st.m[q.s]+(ok?[.1,.18,.25][cf]*(hu?.5:1):[-.1,-.2,-.3][cf]));
   if(!ok&&tag){
-    var r=MC[tag].r;
-    if(r!=q.s)st.m[r]=cl(st.m[r]-.15);
+    var r=(MC[tag]&&MC[tag].r)||q.s;
+    if(r&&r!=q.s)st.m[r]=cl(st.m[r]-.15);
   }
   st.log.push({q:qid,o:oi,ok:ok,cf:cf,tag:tag,h:hu||0,at:now()});
   rvSet(st,qid,ok,cf,hu);
@@ -1603,6 +1604,7 @@ function seed(){
     ov:{},
     peerDiscussions:[],
     classDoubts:[],
+    assignedWorksheets:[],
     activeChapters:{
       6:"Fractions",
       7:"Integers",
@@ -1632,6 +1634,7 @@ function load(){
   DB.ov=DB.ov||{};
   DB.asg=DB.asg||[];
   DB.cq=DB.cq||[];
+  DB.assignedWorksheets=DB.assignedWorksheets||[];
   DB.peerDiscussions=DB.peerDiscussions||[
     {id:1,author:"Anil",topic:"lin",text:"Why does the sign change when moving across '='? Can someone explain step by step?",replies:[{author:"Divya",text:"Think of a balance scale! If you remove +5 from one side, you have to subtract 5 from the other side too: x + 5 - 5 = 2 - 5."}]}
   ];
@@ -1730,6 +1733,7 @@ function begin(m,k){
   if(m=="doubts"){S.mode="doubts";R();return}
   if(m=="peers"){S.mode="peers";R();return}
   if(m=="conf-tracker"){S.mode="conf-tracker";R();return}
+  if(m=="worksheet"){S.mode="worksheet";S.selectedWsId=k;S.wsAnswers={};S.wsSubmitted=false;R();return}
 
   S.mode=m;S.sk=k||CLS[S.st.cls];S.done=[];S.streak=0;S.br=null;S.bn=0;S.path=[];S.res=[];S.pr=[];
   S.dl=Math.max(1,Math.min(3,1+(S.st.cls-(SK[k]?SK[k].c:S.st.cls))));
@@ -1877,7 +1881,7 @@ function tconf(c){
   save();
   if(S.br){S.br=null}
   else if(!r.ok){
-    var rt=MC[r.tag]&&MC[r.tag].r;
+    var rt=(MC[r.tag]&&MC[r.tag].r)||q.s;
     if(rt&&rt!=S.sk&&S.pr.indexOf(rt)<0){S.pr.push(rt);S.br=rt}
   }
   (S.dlog=S.dlog||[]).push(twhy(r,c));
@@ -3057,10 +3061,15 @@ function rHome(){
     }).join("")+'</div>';
   }
 
+  // Feature 14: Assigned AI Practice Worksheets for Student's Class
+  h+=rStudentWorksheetsCard(st);
+
   h+=reviseBtn(st);
   // Feature Tiles
   var due=dueList(st).length;
+  var stWsCount = (DB.assignedWorksheets||[]).filter(function(w){ return Number(w.class) === Number(st.cls); }).length;
   h+='<div class="tiles">';
+  h+='<button class="tile" onclick="begin(\'worksheet\')"><span class="e">📄</span><b>Worksheets</b><small>'+(stWsCount?stWsCount+" assigned":"class practice")+'</small></button>';
   h+='<button class="tile" onclick="begin(\'learn\',\''+w+'\')"><span class="e">📖</span><b>Learn</b><small>lessons & examples</small></button>';
   h+='<button class="tile" onclick="begin(\'solve\',\''+CLS[st.cls]+'\')"><span class="e">✏️</span><b>Practise</b><small>adaptive bridge mode</small></button>';
   h+='<button class="tile" onclick="begin(\'battle\')"><span class="e">⚔️</span><b>Battle</b><small>defeat Gap Monster</small></button>';
@@ -3085,9 +3094,150 @@ function practiceAssignedChapter(chapterName){
   begin("solve", sk);
 }
 
+function rStudentWorksheetsCard(st){
+  var assigned = (DB.assignedWorksheets || []).filter(function(w){
+    return Number(w.class) === Number(st.cls);
+  });
+
+  var h = '<div class="card" style="border:1px solid var(--pri);background:radial-gradient(ellipse at top left,rgba(99,102,241,0.08),transparent 70%);margin-bottom:14px">';
+  h += '<div class="row" style="justify-content:space-between"><span class="tag" style="background:var(--pri);color:#fff">📄 Assigned AI Practice Worksheets</span><span class="pill g">Class ' + st.cls + ' Curriculum</span></div>';
+
+  if(!assigned.length){
+    h += '<h4 style="margin:8px 0 2px 0">No AI worksheets assigned yet for Class ' + st.cls + '</h4>';
+    h += '<p class="mut" style="font-size:13px;margin:0">When your teacher generates and distributes a custom worksheet for Class ' + st.cls + ', it will appear here for practice.</p>';
+    h += '</div>';
+    return h;
+  }
+
+  h += '<h4 style="margin:8px 0 2px 0">Targeted Class Worksheets (' + assigned.length + ')</h4>';
+  h += '<p class="mut" style="font-size:13px;margin:0 0 10px 0">Practice custom worksheets prepared by your teacher specifically for Class ' + st.cls + '.</p>';
+  
+  assigned.forEach(function(ws){
+    var attempt = (st.worksheetAttempts && st.worksheetAttempts[ws.id]);
+    var qCount = (ws.questions && ws.questions.length) ? ws.questions.length : (ws.count || 5);
+    h += '<div class="card" style="border:1px solid var(--ln);margin-bottom:8px;padding:10px">';
+    h += '<div class="row" style="justify-content:space-between"><b>' + ws.title + '</b>' + (attempt ? '<span class="pill g">✅ Score: ' + attempt.score + '/' + attempt.total + '</span>' : '<span class="pill l">Pending Attempt</span>') + '</div>';
+    h += '<div class="row" style="justify-content:space-between;align-items:center;margin-top:6px">';
+    h += '<small class="mut">' + qCount + ' Questions · Assigned ' + (ws.distributedDate || 'Recently') + '</small>';
+    h += '<button class="btn sm p" onclick="begin(\'worksheet\',\'' + ws.id + '\')">' + (attempt ? 'Review / Retake 📝' : 'Open & Solve 📝') + '</button>';
+    h += '</div></div>';
+  });
+
+  h += '</div>';
+  return h;
+}
+
+function rStudentWorksheet(){
+  var st = S.st;
+  var wsId = S.selectedWsId;
+  var assigned = (DB.assignedWorksheets || []).filter(function(w){
+    return Number(w.class) === Number(st.cls);
+  });
+  var ws = assigned.find(function(x){ return x.id === wsId; }) || assigned[0];
+
+  if(!ws){
+    return '<div class="card"><div class="row" style="justify-content:space-between;align-items:center"><button class="btn sm" onclick="S.mode=null;R()">← Back to Dashboard</button><span class="pill g">Class ' + st.cls + '</span></div><h3 style="margin-top:12px">📄 Assigned Class Worksheets</h3><p class="mut">No worksheet available or assigned for Class ' + st.cls + ' yet. Worksheets distributed by your teacher will appear here.</p><button class="btn p" onclick="S.mode=null;R()">Return to Home</button></div>';
+  }
+
+  var attempt = (st.worksheetAttempts && st.worksheetAttempts[ws.id]);
+  var answers = S.wsAnswers = S.wsAnswers || {};
+  var isSubmitted = !!S.wsSubmitted;
+
+  var h = '<div class="card">';
+  h += '<div class="row" style="justify-content:space-between;align-items:center"><button class="btn sm" onclick="S.mode=null;R()">← Back to Dashboard</button><span class="pill g">Class ' + ws.class + ' Worksheet</span></div>';
+  h += '<h2 style="margin:10px 0 4px 0">' + ws.title + '</h2>';
+  h += '<p class="mut" style="font-size:13px;margin:0 0 14px 0">' + ws.questions.length + ' Questions · Target Practice Assignment</p>';
+
+  if(isSubmitted){
+    var score = S.wsScore || 0;
+    var total = ws.questions.length;
+    var passed = score >= Math.ceil(total * 0.6);
+    h += '<div class="card" style="border:2px solid ' + (passed ? 'var(--ok)' : 'var(--warn)') + ';background:' + (passed ? 'rgba(16,185,129,0.08)' : 'rgba(245,158,11,0.08)') + ';margin-bottom:14px">';
+    h += '<h3 style="margin:0 0 4px 0">' + (passed ? '🎉 Great Job!' : '📚 Practice Completed!') + '</h3>';
+    h += '<p style="margin:0">You scored <b>' + score + ' / ' + total + '</b> on this worksheet. ' + (passed ? '+15 XP awarded to your profile!' : 'Review the detailed explanations below to strengthen your understanding.') + '</p>';
+    h += '</div>';
+  }
+
+  ws.questions.forEach(function(q, qIdx){
+    h += '<div class="card" style="border:1px solid var(--ln);margin-bottom:12px;padding:12px">';
+    h += '<p style="font-weight:700;margin:0 0 8px 0">Q' + (qIdx + 1) + '. ' + q.text + '</p>';
+    
+    q.options.forEach(function(optText, optIdx){
+      var optClass = "opt";
+      var isPicked = answers[qIdx] === optIdx;
+      if(isSubmitted){
+        if(optIdx === q.correctIndex) optClass += " good";
+        else if(isPicked && optIdx !== q.correctIndex) optClass += " wrong";
+      } else if(isPicked){
+        optClass += " sel";
+      }
+      var clickHandler = isSubmitted ? "" : 'onclick="selectWsOpt(' + qIdx + ',' + optIdx + ')"';
+      h += '<button class="' + optClass + '" ' + clickHandler + ' style="cursor:' + (isSubmitted ? 'default' : 'pointer') + '">' + "ABCD"[optIdx] + ". " + optText + '</button>';
+    });
+
+    if(isSubmitted){
+      h += '<div class="lesson" style="margin-top:8px"><small><b>Explanation:</b> ' + (q.explanation || ('Correct Answer: Option ' + "ABCD"[q.correctIndex])) + '</small></div>';
+    }
+    h += '</div>';
+  });
+
+  if(!isSubmitted){
+    var answeredCount = Object.keys(answers).length;
+    var allAnswered = answeredCount === ws.questions.length;
+    h += '<div class="row" style="gap:10px;margin-top:14px">';
+    h += '<button class="btn p" onclick="submitWorksheet(\'' + ws.id + '\')">' + (allAnswered ? 'Submit Worksheet (' + answeredCount + '/' + ws.questions.length + ') ✅' : 'Submit Worksheet (' + answeredCount + '/' + ws.questions.length + ' answered)') + '</button>';
+    h += '<button class="btn" onclick="S.mode=null;R()">Save & Exit</button>';
+    h += '</div>';
+  } else {
+    h += '<div class="row" style="gap:10px;margin-top:14px">';
+    h += '<button class="btn p" onclick="S.mode=null;R()">Done & Return Home</button>';
+    h += '<button class="btn" onclick="retryWorksheet(\'' + ws.id + '\')">🔄 Retake Worksheet</button>';
+    h += '</div>';
+  }
+
+  h += '</div>';
+  return h;
+}
+
+function selectWsOpt(qIdx, optIdx){
+  S.wsAnswers = S.wsAnswers || {};
+  S.wsAnswers[qIdx] = optIdx;
+  R();
+}
+
+function retryWorksheet(wsId){
+  S.wsAnswers = {};
+  S.wsSubmitted = false;
+  S.wsScore = 0;
+  S.selectedWsId = wsId;
+  R();
+}
+
+function submitWorksheet(wsId){
+  var ws = (DB.assignedWorksheets||[]).find(function(x){ return x.id === wsId; });
+  if(!ws) return;
+  var correctCount = 0;
+  ws.questions.forEach(function(q, i){
+    if(S.wsAnswers && S.wsAnswers[i] === q.correctIndex) correctCount++;
+  });
+  S.wsSubmitted = true;
+  S.wsScore = correctCount;
+  S.st.worksheetAttempts = S.st.worksheetAttempts || {};
+  S.st.worksheetAttempts[wsId] = {
+    score: correctCount,
+    total: ws.questions.length,
+    submittedAt: Date.now()
+  };
+  S.st.xp = (S.st.xp || 0) + 15;
+  save();
+  toast("Worksheet completed! Score: " + correctCount + "/" + ws.questions.length + " (+15 XP)");
+  R();
+}
+
 function rStu(){
   if(!S)return rSel();
   if(!S.mode)return rHome();
+  if(S.mode=="worksheet")return rStudentWorksheet();
   if(S.mode=="cmap")return rConceptMap();
   if(S.mode=="conf-tracker")return rConfTracker();
   if(S.mode=="passport")return rPassport();
@@ -3692,8 +3842,21 @@ function rTeacherWorksheet(){
   
   if(DB.currentWorksheet){
     var ws=DB.currentWorksheet;
+    var isDistributed = (DB.assignedWorksheets||[]).some(function(x){
+      return (ws.id && x.id === ws.id) || (x.class === ws.class && x.title === ws.title);
+    });
     h+='<div class="card" style="border:2px solid var(--pri)">';
-    h+='<div class="row" style="justify-content:space-between"><h2>'+ws.title+' (Class '+ws.class+')</h2><button class="btn sm" onclick="window.print()">🖨️ Print Worksheet</button></div>';
+    h+='<div class="row" style="justify-content:space-between"><h2>'+ws.title+' (Class '+ws.class+')</h2>';
+    h+='<div class="row" style="gap:8px">';
+    h+='<button class="btn sm" onclick="window.print()">🖨️ Print Worksheet</button>';
+    if(isDistributed){
+      h+='<span class="pill g" style="align-self:center">✅ Distributed to Class '+ws.class+'</span>';
+      h+='<button class="btn sm p" onclick="distributeWorksheet()">Re-distribute / Update</button>';
+    } else {
+      h+='<button class="btn sm p" onclick="distributeWorksheet()">🚀 Distribute to Class '+ws.class+' Students</button>';
+    }
+    h+='</div></div>';
+    h+='<p class="mut" style="font-size:13px;margin:4px 0 10px 0">'+(isDistributed ? 'This worksheet is active and accessible to Class ' + ws.class + ' students in their dashboard.' : 'Draft worksheet: not yet distributed. Click "Distribute to Class ' + ws.class + ' Students" so students can view and solve it.')+'</p>';
     ws.questions.forEach(function(q,idx){
       h+='<div style="margin:10px 0"><b>Q'+(idx+1)+'. '+q.text+'</b><br>';
       q.options.forEach(function(o,oi){
@@ -3704,8 +3867,53 @@ function rTeacherWorksheet(){
     });
     h+='</div>';
   }
+
+  // Active Distributed Worksheets Table
+  var allDistributed = DB.assignedWorksheets || [];
+  if(allDistributed.length){
+    h+='<div class="card" style="margin-top:14px"><span class="tag">Distributed Class Worksheets</span><h3>Active Class Assignments ('+allDistributed.length+')</h3>';
+    h+='<p class="mut" style="font-size:13px;margin:2px 0 10px 0">Worksheets distributed to students. Students only see worksheets for their enrolled class.</p>';
+    h+='<div class="tbl"><table><tr><th>Title</th><th>Class</th><th>Questions</th><th>Distributed Date</th><th>Action</th></tr>';
+    allDistributed.forEach(function(item){
+      var dDate = item.distributedDate || (item.distributedAt ? new Date(item.distributedAt).toLocaleDateString() : 'Recent');
+      var qLen = (item.questions && item.questions.length) ? item.questions.length : (item.count || 5);
+      h+='<tr><td><b>'+item.title+'</b></td><td><span class="pill g">Class '+item.class+'</span></td><td>'+qLen+' Qs</td><td><small class="mut">'+dDate+'</small></td><td><button class="btn sm" onclick="removeDistributedWorksheet(\''+item.id+'\')">Remove</button></td></tr>';
+    });
+    h+='</table></div></div>';
+  }
+
   return h+'</div>';
 }
+
+function distributeWorksheet(){
+  if(!DB.currentWorksheet) return;
+  DB.assignedWorksheets = DB.assignedWorksheets || [];
+  var ws = JSON.parse(JSON.stringify(DB.currentWorksheet));
+  ws.id = ws.id || ('ws_' + Date.now());
+  ws.distributedAt = Date.now();
+  ws.distributedDate = new Date().toLocaleDateString();
+  DB.currentWorksheet.id = ws.id;
+
+  var existingIdx = DB.assignedWorksheets.findIndex(function(x){
+    return x.id === ws.id || (x.class === ws.class && x.title === ws.title);
+  });
+  if(existingIdx >= 0){
+    DB.assignedWorksheets[existingIdx] = ws;
+  } else {
+    DB.assignedWorksheets.unshift(ws);
+  }
+  save();
+  toast("Worksheet distributed to Class " + ws.class + " students!");
+  R();
+}
+
+function removeDistributedWorksheet(id){
+  DB.assignedWorksheets = (DB.assignedWorksheets || []).filter(function(x){ return x.id !== id; });
+  save();
+  toast("Worksheet assignment removed.");
+  R();
+}
+
 function generateWorksheet(){
   var top=document.getElementById("ws_topic").value;
   var cls=+document.getElementById("ws_cls").value;
@@ -3717,7 +3925,12 @@ function generateWorksheet(){
     body:JSON.stringify({topic:top,studentClass:cls,count:cnt})
   }).then(function(r){return r.json()}).then(function(d){
     if(d && d.worksheet && Array.isArray(d.worksheet.questions) && d.worksheet.questions.length){
-      DB.currentWorksheet=d.worksheet;
+      var ws = d.worksheet;
+      ws.class = cls;
+      ws.count = cnt;
+      ws.topic = top;
+      ws.id = 'ws_' + Date.now();
+      DB.currentWorksheet=ws;
       save();R();
     } else {
       throw new Error("Invalid worksheet response");
@@ -3747,8 +3960,11 @@ function generateWorksheet(){
       }
     }
     DB.currentWorksheet={
+      id:'ws_' + Date.now(),
       title:"Targeted Foundations Worksheet: "+((SK[top]&&SK[top].n)?SK[top].n[0]:"Mathematics"),
       class:cls,
+      count:cnt,
+      topic:top,
       questions:qs.slice(0, cnt)
     };
     save();R();
