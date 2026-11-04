@@ -23,7 +23,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Check if the numerator and denominator share any common factor greater than 1.",
       "exp": "7 and 11 are both prime numbers and share no common factors other than 1. 15/25 simplifies to 3/5, 18/24 simplifies to 3/4, and 9/27 simplifies to 1/3.",
-      "misconception": "Does not check for greatest common divisor."
+      "misconception": "Does not check for greatest common divisor.",
+      "q_te": "కింది వాటిలో ఏ భిన్నం అత్యంత సూక్ష్మ రూపంలో (simplest form) ఉంది?",
+      "q_hi": "निम्नलिखित में से कौन-सा भिन्न अपने सरलतम रूप में है?"
     },
     {
       "id": "c6_p2",
@@ -42,7 +44,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Find 10/20 and 25/50 in simplest form.",
       "exp": "Ramesh used 10/20 = 1/2. Sheelu used 25/50 = 1/2. Both used up exactly 1/2 of their respective pencil collections.",
-      "misconception": "Assumes different starting totals mean different fractions even when ratios are equal."
+      "misconception": "Assumes different starting totals mean different fractions even when ratios are equal.",
+      "q_te": "రమేష్ వద్ద 20 పెన్సిళ్లు, షీలు వద్ద 50 పెన్సిళ్లు ఉన్నాయి. రమేష్ 10 పెన్సిళ్లు, షీలు 25 పెన్సిళ్లు ఉపయోగించారు. ఒక్కొక్కరు ఉపయోగించిన పెన్సిళ్ల భిన్నం ఎంత?",
+      "q_hi": "रमेश के पास 20 पेंसिलें थीं। शीलू के पास 50 पेंसिलें थीं। रमेश ने 10 पेंसिलें और शीलू ने 25 पेंसिलें उपयोग कीं। प्रत्येक ने अपनी पेंसिलों का कितना भिन्न उपयोग किया?"
     },
     {
       "id": "c6_p3",
@@ -61,7 +65,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Convert 2/3 to an equivalent fraction with denominator 6: (2 × 2) / (3 × 2).",
       "exp": "2/3 = 4/6. Adding 4/6 + 1/6 = (4 + 1)/6 = 5/6.",
-      "misconception": "Adds numerators and denominators directly (3/9)."
+      "misconception": "Adds numerators and denominators directly (3/9).",
+      "q_te": "సాధించండి: 2/3 + 1/6 = ?",
+      "q_hi": "हल करें: 2/3 + 1/6 = ?"
     },
     {
       "id": "c6_p4",
@@ -80,7 +86,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Find common denominator 12: 3/4 = 9/12, 5/6 = 10/12, 7/12 = 7/12.",
       "exp": "Expressing with LCD 12: 3/4 = 9/12; 5/6 = 10/12; 7/12 = 7/12. Comparing numerators: 10 > 9 > 7, so 5/6 is the greatest.",
-      "misconception": "Thinks larger denominator automatically means smaller value without adjusting numerators."
+      "misconception": "Thinks larger denominator automatically means smaller value without adjusting numerators.",
+      "q_te": "3/4, 5/6, లేదా 7/12 లలో ఏ భిన్నం అత్యంత పెద్దది?",
+      "q_hi": "3/4, 5/6, या 7/12 में से कौन-सा भिन्न सबसे बड़ा है?"
     },
     {
       "id": "c6_p5",
@@ -99,7 +107,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Tenths place is the first digit after decimal, hundredths place is the second digit.",
       "exp": "7 tenths = 0.7; 5 hundredths = 0.05. Sum = 0.75.",
-      "misconception": "Confuses tenths and whole numbers."
+      "misconception": "Confuses tenths and whole numbers.",
+      "q_te": "దశాంశ రూపంలో రాయండి: 7 పదుల వంతులు మరియు 5 వందల వంతులు.",
+      "q_hi": "दशमलव रूप में लिखिए: 7 दशांश और 5 शतांश।"
     },
     {
       "id": "c6_p6",
@@ -118,7 +128,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Convert meters to km: 268 m = 0.268 km, 7 m = 0.007 km, 500 m = 0.500 km. Add to whole km.",
       "exp": "15.268 km + 7.007 km + 0.500 km = 22.775 km... wait: 15.268 + 7.007 = 22.275. 22.275 + 0.500 = 22.775 km.",
-      "misconception": "Writes 7 m as 0.7 km instead of 0.007 km."
+      "misconception": "Writes 7 m as 0.7 km instead of 0.007 km.",
+      "q_te": "సునీత తన పాఠశాలకు చేరుకోవడానికి బస్సులో 15 కి.మీ 268 మీ, కారులో 7 కి.మీ 7 మీ, నడక ద్వారా 500 మీ ప్రయాణించింది. ఆమె ఇంటి నుండి పాఠశాల ఎంత దూరంలో ఉంది?",
+      "q_hi": "सुनीता अपने स्कूल पहुँचने के लिए 15 किमी 268 मी बस से, 7 किमी 7 मी कार से और 500 मी पैदल चली। उसके घर से स्कूल कितनी दूरी पर है?"
     },
     {
       "id": "c6_p7",
@@ -137,7 +149,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Align decimal points: 9.756 - 6.280.",
       "exp": "9.756 - 6.280 = 3.476.",
-      "misconception": "Misaligns place values during subtraction."
+      "misconception": "Misaligns place values during subtraction.",
+      "q_te": "విలువను కనుగొనండి: 9.756 - 6.28",
+      "q_hi": "मान ज्ञात कीजिए: 9.756 - 6.28"
     },
     {
       "id": "c6_p8",
@@ -156,7 +170,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Divide 17 by 4: 17 = (4 × 4) + 1.",
       "exp": "17 ÷ 4 = 4 with a remainder of 1. So 17/4 = 4 1/4.",
-      "misconception": "Reverses quotient and remainder."
+      "misconception": "Reverses quotient and remainder.",
+      "q_te": "17/4 ను మిశ్రమ భిన్నంగా వ్యక్తపరచండి.",
+      "q_hi": "17/4 को मिश्रित भिन्न के रूप में व्यक्त कीजिए।"
     },
     {
       "id": "c6_p9",
@@ -175,7 +191,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "3 1/2 = 7/2 = 14/4. Subtract 7/4.",
       "exp": "14/4 - 7/4 = 7/4 = 1 3/4 litres.",
-      "misconception": "Subtracts whole numbers (3-1=2) and fractions separately without borrowing (1/2 - 3/4)."
+      "misconception": "Subtracts whole numbers (3-1=2) and fractions separately without borrowing (1/2 - 3/4).",
+      "q_te": "ఒక నీటి జగ్గులో 3 1/2 లీటర్ల నీరు ఉంది. గ్లాసుల్లోకి 1 3/4 లీటర్లు పోస్తే, ఇంకా ఎంత నీరు మిగిలి ఉంటుంది?",
+      "q_hi": "एक जग में 3 1/2 लीटर पानी है। यदि गिलासों में 1 3/4 लीटर डाला जाता है, तो कितना पानी शेष रहता है?"
     },
     {
       "id": "c6_p10",
@@ -194,7 +212,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Compare tenths digits: 0.5 has 5 tenths, 0.05 has 0 tenths.",
       "exp": "0.5 = 5/10 = 50/100, whereas 0.05 = 5/100. 50/100 > 5/100, so 0.5 is ten times greater.",
-      "misconception": "Thinks 0.05 is greater because it has more digits."
+      "misconception": "Thinks 0.05 is greater because it has more digits.",
+      "q_te": "ఏది పెద్దది: 0.5 లేదా 0.05?",
+      "q_hi": "कौन-सा बड़ा है: 0.5 या 0.05?"
     },
     {
       "id": "c6_p11",
@@ -213,7 +233,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Withdrawal is a decrease/removal of funds, represented by a negative sign.",
       "exp": "Deposits/increases are represented by positive integers (+), while withdrawals/decreases are represented by negative integers (−200).",
-      "misconception": "Confuses positive and negative financial directions."
+      "misconception": "Confuses positive and negative financial directions.",
+      "q_te": "బ్యాంకు ఖాతా నుండి ₹200 విత్‌డ్రా చేయడాన్ని ఏ పూర్ణాంకం సూచిస్తుంది?",
+      "q_hi": "बैंक खाते से ₹200 की निकासी को कौन-सा पूर्णांक दर्शाता है?"
     },
     {
       "id": "c6_p12",
@@ -232,7 +254,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Look at number line moving right from −3: −3, −2, −1.",
       "exp": "On the number line: ... −4, −3, −2, −1, 0, 1 ... The integer strictly between −3 and −1 is −2.",
-      "misconception": "Thinks −4 is between −3 and −1."
+      "misconception": "Thinks −4 is between −3 and −1.",
+      "q_te": "సంఖ్యా రేఖపై −3 మరియు −1 మధ్య ఏ పూర్ణాంకం ఉంటుంది?",
+      "q_hi": "संख्या रेखा पर −3 और −1 के बीच कौन-सा पूर्णांक स्थित है?"
     },
     {
       "id": "c6_p13",
@@ -251,7 +275,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Group negatives: (−9) + (−6) = −15. Group positives: (+4) + (+3) = +7. Combine: −15 + 7.",
       "exp": "Negative sum: −9 + (−6) = −15. Positive sum: 4 + 3 = 7. Total: −15 + 7 = −8.",
-      "misconception": "Ignores negative signs and adds all numbers together."
+      "misconception": "Ignores negative signs and adds all numbers together.",
+      "q_te": "లెక్కించండి: (−9) + (+4) + (−6) + (+3)",
+      "q_hi": "गणना कीजिए: (−9) + (+4) + (−6) + (+3)"
     },
     {
       "id": "c6_p14",
@@ -270,7 +296,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Subtracting a negative number is equivalent to adding its opposite: −13 + 18.",
       "exp": "(−13) − (−18) = −13 + 18 = +5.",
-      "misconception": "Treats double negative as negative (−13 − 18 = −31)."
+      "misconception": "Treats double negative as negative (−13 − 18 = −31).",
+      "q_te": "విలువను కనుగొనండి: (−13) − (−18)",
+      "q_hi": "ज्ञात कीजिए: (−13) − (−18)"
     },
     {
       "id": "c6_p15",
@@ -289,7 +317,9 @@ var PRACTICE_BANK = {
       "ans": 2,
       "hint": "Negative integers lie to the left of 0 on the number line, so they are always less than 0.",
       "exp": "Every negative integer is strictly less than 0 and less than all positive integers.",
-      "misconception": "Thinks −8 > −2 because 8 > 2."
+      "misconception": "Thinks −8 > −2 because 8 > 2.",
+      "q_te": "కింది వాటిలో ఏ ప్రకటన సత్యం?",
+      "q_hi": "निम्नलिखित में से कौन-सा कथन सत्य है?"
     },
     {
       "id": "c6_p16",
@@ -308,7 +338,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Dropping means moving further into the negative: −5°C − 2°C.",
       "exp": "Initial = −5°C. Drop of 2°C means −5 − 2 = −7°C.",
-      "misconception": "Adds 2 instead of subtracting (−5 + 2 = −3)."
+      "misconception": "Adds 2 instead of subtracting (−5 + 2 = −3).",
+      "q_te": "శ్రీనగర్‌లో సోమవారం ఉష్ణోగ్రత −5°C గా ఉండి, మంగళవారం 2°C తగ్గింది. మంగళవారం నాటి ఉష్ణోగ్రత ఎంత?",
+      "q_hi": "श्रीनगर में सोमवार को तापमान −5°C था और मंगलवार को 2°C गिर गया। मंगलवार को श्रीनगर का तापमान क्या था?"
     },
     {
       "id": "c6_p17",
@@ -327,7 +359,9 @@ var PRACTICE_BANK = {
       "ans": 2,
       "hint": "The additive inverse of a number a is −a such that a + (−a) = 0.",
       "exp": "−83 + (+83) = 0. So the additive inverse of −83 is +83.",
-      "misconception": "Confuses additive inverse with multiplicative reciprocal."
+      "misconception": "Confuses additive inverse with multiplicative reciprocal.",
+      "q_te": "−83 యొక్క సంకలన విలోమం (additive inverse) ఏమిటి?",
+      "q_hi": "−83 का योज्य प्रतिलोम (additive inverse) क्या है?"
     },
     {
       "id": "c6_p18",
@@ -346,7 +380,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Double negative signs become additions: 50 + 40 + 2.",
       "exp": "50 − (−40) − (−2) = 50 + 40 + 2 = 92.",
-      "misconception": "Carries minus sign through."
+      "misconception": "Carries minus sign through.",
+      "q_te": "విలువను కనుగొనండి: 50 − (−40) − (−2)",
+      "q_hi": "मान ज्ञात कीजिए: 50 − (−40) − (−2)"
     },
     {
       "id": "c6_p19",
@@ -365,7 +401,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "First convert both quantities to the same unit: 1.5 m = 150 cm.",
       "exp": "1.5 m = 150 cm. Ratio = 30 cm : 150 cm = 30/150 = 1/5 = 1 : 5.",
-      "misconception": "Computes ratio directly without converting units (30 : 1.5 = 20 : 1)."
+      "misconception": "Computes ratio directly without converting units (30 : 1.5 = 20 : 1).",
+      "q_te": "30 సెం.మీ కు 1.5 మీ కు గల నిష్పత్తిని సూక్ష్మ రూపంలో కనుగొనండి.",
+      "q_hi": "30 सेमी का 1.5 मी से सरलतम रूप में अनुपात ज्ञात कीजिए।"
     },
     {
       "id": "c6_p20",
@@ -384,7 +422,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Use unitary method: cost of 1 bowl = 90 / 6 = ₹15.",
       "exp": "Cost of 1 bowl = 90 / 6 = ₹15. Cost of 10 bowls = 15 × 10 = ₹150.",
-      "misconception": "Multiplies incorrectly."
+      "misconception": "Multiplies incorrectly.",
+      "q_te": "6 గిన్నెల ఖరీదు ₹90 అయితే, అటువంటి 10 గిన్నెల ఖరీదు ఎంత అవుతుంది?",
+      "q_hi": "यदि 6 कटोरियों का मूल्य ₹90 है, तो ऐसी 10 कटोरियों का मूल्य क्या होगा?"
     },
     {
       "id": "c6_p21",
@@ -403,7 +443,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Check if ratio of first two equals ratio of last two: 15 : 45 = 40 : 120.",
       "exp": "15/45 = 1/3 and 40/120 = 1/3. Since 15 : 45 = 40 : 120, the numbers are in proportion.",
-      "misconception": "Tests difference instead of ratio."
+      "misconception": "Tests difference instead of ratio.",
+      "q_te": "15, 45, 40, 120 సంఖ్యలు అనుపాతంలో (proportion) ఉన్నాయా?",
+      "q_hi": "क्या संख्याएँ 15, 45, 40, 120 समानुपात में हैं?"
     },
     {
       "id": "c6_p22",
@@ -422,7 +464,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Total parts = 3 + 2 = 5 parts. Sheela's share = 3/5 of 20.",
       "exp": "Total parts = 5. Value of 1 part = 20 / 5 = 4 pens. Sheela gets 3 × 4 = 12 pens, Sangeeta gets 2 × 4 = 8 pens.",
-      "misconception": "Gives Sangeeta's share or divides 20 by 2."
+      "misconception": "Gives Sangeeta's share or divides 20 by 2.",
+      "q_te": "షీలా మరియు సంగీత మధ్య 20 పెన్నులను 3 : 2 నిష్పత్తిలో పంచండి. షీలాకు ఎన్ని పెన్నులు వస్తాయి?",
+      "q_hi": "शीला और संगीता के बीच 20 पेनों को 3 : 2 के अनुपात में बाँटिए। शीला को कितने पेन मिलेंगे?"
     },
     {
       "id": "c6_p23",
@@ -441,7 +485,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Speed = 90 / 2.5 = 36 km/h. Time = Distance / Speed = 30 / 36 hours = (30/36) × 60 minutes.",
       "exp": "Speed = 90 / 2.5 = 36 km/h. Time = 30 / 36 = 5/6 hours = 5/6 × 60 = 50 minutes.",
-      "misconception": "Does not convert fractional hours to minutes correctly."
+      "misconception": "Does not convert fractional hours to minutes correctly.",
+      "q_te": "ఒక కారు 2 1/2 గంటల్లో 90 కి.మీ ప్రయాణిస్తుంది. అదే వేగంతో 30 కి.మీ దూరాన్ని కవర్ చేయడానికి ఎంత సమయం పడుతుంది?",
+      "q_hi": "एक कार 2 1/2 घंटे में 90 किमी की दूरी तय करती है। उसी गति से 30 किमी की दूरी तय करने में कितना समय लगेगा?"
     },
     {
       "id": "c6_p24",
@@ -460,7 +506,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Each row has 5 cadets, so 2 rows have 2 × 5, 3 rows have 3 × 5, n rows have n × 5.",
       "exp": "Number of cadets = 5 × n = 5n.",
-      "misconception": "Adds row count instead of multiplying (n + 5)."
+      "misconception": "Adds row count instead of multiplying (n + 5).",
+      "q_te": "కవాతులో ప్రతి వరుసలో 5 మంది క్యాడెట్లు ఉన్నారు. వరుసల సంఖ్య 'n' అయితే, మొత్తం క్యాడెట్ల సంఖ్యను తెలిపే నియమం ఏది?",
+      "q_hi": "एक परेड में कैडेट मार्च कर रहे हैं। एक पंक्ति में 5 कैडेट हैं। यदि पंक्तियों की संख्या 'n' हो तो कुल कैडेटों की संख्या का नियम क्या होगा?"
     },
     {
       "id": "c6_p25",
@@ -479,7 +527,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "y multiplied by −5 is −5y. Subtracting from 16 means 16 − (−5y).",
       "exp": "The product is −5y. Subtracting this product from 16 yields 16 − (−5y) = 16 + 5y.",
-      "misconception": "Reverses order of subtraction."
+      "misconception": "Reverses order of subtraction.",
+      "q_te": "సమీకరణ రూపం రాయండి: 'y ని −5 తో గుణించి, వచ్చిన ఫలితాన్ని 16 నుండి తీసివేయాలి'.",
+      "q_hi": "व्यंजक दीजिए: 'y को −5 से गुणा करके परिणाम को 16 में से घटाया जाता है'।"
     },
     {
       "id": "c6_p26",
@@ -498,7 +548,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Add 5 to both sides: x = 7 + 5.",
       "exp": "Transposing −5 to RHS: x = 7 + 5 = 12.",
-      "misconception": "Subtracts 5 instead of adding (x = 7 - 5 = 2)."
+      "misconception": "Subtracts 5 instead of adding (x = 7 - 5 = 2).",
+      "q_te": "x − 5 = 7 సమీకరణాన్ని x యొక్క ఏ విలువ సంతృప్తిపరుస్తుంది?",
+      "q_hi": "समीकरण x − 5 = 7 को x का कौन-सा मान संतुष्ट करता है?"
     },
     {
       "id": "c6_p27",
@@ -517,7 +569,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Divide both sides by 3: m = 21 / 3.",
       "exp": "m = 21 / 3 = 7.",
-      "misconception": "Subtracts 3 instead of dividing (21 - 3 = 18)."
+      "misconception": "Subtracts 3 instead of dividing (21 - 3 = 18).",
+      "q_te": "m కొరకు సాధించండి: 3m = 21",
+      "q_hi": "m के लिए हल कीजिए: 3m = 21"
     },
     {
       "id": "c6_p28",
@@ -536,7 +590,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Younger means subtract years from Radha's age.",
       "exp": "If Radha's age is x years, Leela being 4 years younger is (x − 4) years.",
-      "misconception": "Adds 4 instead of subtracting."
+      "misconception": "Adds 4 instead of subtracting.",
+      "q_te": "లీలా రాధ చెల్లెలు. లీలా రాధ కంటే 4 సంవత్సరాలు చిన్నది. రాధ వయస్సు 'x' ఆధారంగా లీలా వయస్సును రాయండి.",
+      "q_hi": "लीला राधा की छोटी बहन है। लीला राधा से 4 वर्ष छोटी है। राधा की आयु 'x' के पदों में लीला की आयु लिखिए।"
     },
     {
       "id": "c6_p29",
@@ -555,7 +611,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "A regular hexagon has 6 equal sides. Perimeter = 6 × side.",
       "exp": "Perimeter = 6 × 8 cm = 48 cm.",
-      "misconception": "Uses 4 sides (square) or 8 sides (octagon)."
+      "misconception": "Uses 4 sides (square) or 8 sides (octagon).",
+      "q_te": "ప్రతి భుజం 8 సెం.మీ కలిగిన క్రమ షడ్భుజి చుట్టుకొలతను కనుగొనండి.",
+      "q_hi": "8 सेमी भुजा वाले एक सम षट्भुज का परिमाप ज्ञात कीजिए।"
     },
     {
       "id": "c6_p30",
@@ -574,7 +632,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Perimeter = 2 × (0.7 + 0.5) = 2.4 km. For 4 rows, multiply perimeter by 4.",
       "exp": "Perimeter = 2 × (0.7 + 0.5) = 2 × 1.2 = 2.4 km. Total wire for 4 rows = 4 × 2.4 km = 9.6 km.",
-      "misconception": "Calculates area (0.7 × 0.5) or forgets the 4 rows."
+      "misconception": "Calculates area (0.7 × 0.5) or forgets the 4 rows.",
+      "q_te": "ఒక దీర్ఘచతురస్రాకార భూమి కొలతలు 0.7 కి.మీ × 0.5 కి.మీ. ప్రతి వైపు 4 వరుసల తీగతో కంచె వేయాలి. అవసరమైన తీగ మొత్తం పొడవు ఎంత?",
+      "q_hi": "एक आयताकार भूखंड की माप 0.7 किमी × 0.5 किमी है। प्रत्येक भुजा को 4 पंक्तियों के तार से घेरा जाना है। आवश्यक तार की कुल लंबाई क्या है?"
     },
     {
       "id": "c6_p31",
@@ -593,7 +653,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Side of square = Perimeter / 4 = 320 / 4 = 80 m. Area = side².",
       "exp": "Side = 320 / 4 = 80 m. Area = 80 m × 80 m = 6,400 m².",
-      "misconception": "Forgets to square the side or uses perimeter directly."
+      "misconception": "Forgets to square the side or uses perimeter directly.",
+      "q_te": "చుట్టుకొలత 320 మీటర్లు గల చతురస్రాకార పార్కు వైశాల్యం ఎంత?",
+      "q_hi": "एक वर्गाकार पार्क का क्षेत्रफल ज्ञात कीजिए जिसका परिमाप 320 मी है।"
     },
     {
       "id": "c6_p32",
@@ -612,7 +674,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Area of region = 100 × 144 = 14,400 cm². Area of 1 tile = 12 × 5 = 60 cm².",
       "exp": "Number of tiles = (100 × 144) / (12 × 5) = 14,400 / 60 = 240 tiles.",
-      "misconception": "Divides perimeters instead of areas."
+      "misconception": "Divides perimeters instead of areas.",
+      "q_te": "100 సెం.మీ మరియు 144 సెం.మీ గల దీర్ఘచతురస్రాకార ప్రాంతంలో అమర్చడానికి, 12 సెం.మీ పొడవు మరియు 5 సెం.మీ వెడల్పు గల ఎన్ని టైల్స్ అవసరం?",
+      "q_hi": "100 सेमी और 144 सेमी वाले एक आयताकार क्षेत्र में 12 सेमी लंबाई और 5 सेमी चौड़ाई वाली कितनी टाइलें लगेंगी?"
     },
     {
       "id": "c6_p33",
@@ -631,7 +695,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "A straight angle forms a straight line, which is equal to two right angles.",
       "exp": "A right angle is 90°. A straight angle is 2 × 90° = 180°.",
-      "misconception": "Confuses straight angle with complete angle (360°)."
+      "misconception": "Confuses straight angle with complete angle (360°).",
+      "q_te": "సరళ కోణం (straight angle) యొక్క కొలత ఎంత?",
+      "q_hi": "एक ऋजु कोण (straight angle) का माप क्या होता है?"
     },
     {
       "id": "c6_p34",
@@ -650,7 +716,9 @@ var PRACTICE_BANK = {
       "ans": 2,
       "hint": "Equilateral = 3 equal sides; Isosceles = 2 equal sides; Scalene = 0 equal sides.",
       "exp": "A triangle in which all 3 sides have different lengths is a scalene triangle.",
-      "misconception": "Confuses isosceles with scalene."
+      "misconception": "Confuses isosceles with scalene.",
+      "q_te": "మూడు భుజాల కొలతలు అసమానంగా ఉన్న త్రిభుజాన్ని ఏమంటారు?",
+      "q_hi": "वह त्रिभुज जिसकी तीनों भुजाएँ असमान लंबाई की हों, क्या कहलाता है?"
     },
     {
       "id": "c6_p35",
@@ -669,7 +737,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Divide total books by value per symbol: 75 / 15.",
       "exp": "Number of symbols = 75 / 15 = 5 symbols.",
-      "misconception": "Multiplies instead of dividing."
+      "misconception": "Multiplies instead of dividing.",
+      "q_te": "ఒక చిత్రలేఖనంలో, ఒక పుస్తక చిహ్నం 15 పుస్తకాలను సూచిస్తే, 75 పుస్తకాలను ఎన్ని చిహ్నాలు సూచిస్తాయి?",
+      "q_hi": "एक चित्रालेख में, यदि एक पुस्तक का प्रतीक 15 पुस्तकों को दर्शाता है, तो 75 पुस्तकों को कितने प्रतीक दर्शाएंगे?"
     },
     {
       "id": "c6_p36",
@@ -688,7 +758,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "730 rounds to 700; 998 rounds to 1000.",
       "exp": "730 rounds to 700. 998 rounds to 1000. Sum = 700 + 1000 = 1,700.",
-      "misconception": "Rounds 730 up to 800."
+      "misconception": "Rounds 730 up to 800.",
+      "q_te": "730 + 998 ను సమీప వందలకు సవరించి అంచనా వేయండి.",
+      "q_hi": "निकटतम सैकड़े तक सन्निकटन करके 730 + 998 का आकलन कीजिए।"
     },
     {
       "id": "c6_p37",
@@ -707,7 +779,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Factors of 24: 1, 2, 3, 4, 6, 8, 12, 24. Factors of 36: 1, 2, 3, 4, 6, 9, 12, 18, 36.",
       "exp": "The highest factor common to both 24 and 36 is 12.",
-      "misconception": "Finds LCM (72) instead of HCF or stops at smaller factor 6."
+      "misconception": "Finds LCM (72) instead of HCF or stops at smaller factor 6.",
+      "q_te": "24 మరియు 36 ల గసాభా (HCF) ను కనుగొనండి.",
+      "q_hi": "24 और 36 का म.स. (HCF) ज्ञात कीजिए।"
     },
     {
       "id": "c6_p38",
@@ -726,7 +800,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Multiples of 12: 12, 24, 36, 48... Multiples of 18: 18, 36, 54...",
       "exp": "The smallest positive integer divisible by both 12 and 18 is 36.",
-      "misconception": "Finds HCF (6) or multiplies them directly without reducing (216)."
+      "misconception": "Finds HCF (6) or multiplies them directly without reducing (216).",
+      "q_te": "12 మరియు 18 ల కసాగు (LCM) ను కనుగొనండి.",
+      "q_hi": "12 और 18 का ल.स. (LCM) ज्ञात कीजिए।"
     },
     {
       "id": "c6_p39",
@@ -745,7 +821,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Difference between sum of odd placed digits and sum of even placed digits must be 0 or multiple of 11.",
       "exp": "In 1331: (1 + 3) - (3 + 1) = 4 - 4 = 0. Therefore, 1331 is divisible by 11.",
-      "misconception": "Does not know alternating sum divisibility rule."
+      "misconception": "Does not know alternating sum divisibility rule.",
+      "q_te": "కింది సంఖ్యలలో ఏది 11 చే నిశ్శేషంగా భాగించబడుతుంది?",
+      "q_hi": "निम्नलिखित में से कौन-सी संख्या 11 से विभाज्य है?"
     },
     {
       "id": "c6_p40",
@@ -764,7 +842,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Ila read 25/100 = 1/4 = 25 pages. Lalita read 2/5 of 100 = 40 pages.",
       "exp": "Ila read 25 pages. Lalita read 2/5 × 100 = 40 pages. Since 25 < 40, Ila read less.",
-      "misconception": "Assumes 2/5 must be smaller than 25 because 2 < 25."
+      "misconception": "Assumes 2/5 must be smaller than 25 because 2 < 25.",
+      "q_te": "ఇలా 100 పేజీలున్న పుస్తకంలో 25 పేజీలు చదివింది. లలిత అదే పుస్తకంలో 2/5 భాగం చదివింది. ఎవరు తక్కువ చదివారు?",
+      "q_hi": "ईला ने 100 पृष्ठों वाली पुस्तक के 25 पृष्ठ पढ़े। ललिता ने उसी पुस्तक का 2/5 भाग पढ़ा। किसने कम पढ़ा?"
     }
   ],
   "7": [
@@ -785,7 +865,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "A negative number divided by a positive number yields a negative result.",
       "exp": "−30 ÷ 10 = −(30 ÷ 10) = −3.",
-      "misconception": "Drops negative sign."
+      "misconception": "Drops negative sign.",
+      "q_te": "విలువను కనుగొనండి: (−30) ÷ 10",
+      "q_hi": "मान ज्ञात कीजिए: (−30) ÷ 10"
     },
     {
       "id": "c7_p2",
@@ -804,7 +886,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Marks from correct = 12 × 5 = 60. She ended with 20, so lost 40 marks. Number of incorrect = 40 / 2.",
       "exp": "Correct marks = 12 × 5 = 60. Final score = 20. Loss = 60 − 20 = 40 marks. Each wrong answer deducts 2 marks, so 40 / 2 = 20 incorrect answers.",
-      "misconception": "Subtracts marks directly without dividing by penalty."
+      "misconception": "Subtracts marks directly without dividing by penalty.",
+      "q_te": "ఒక పరీక్షలో ప్రతి సరైన సమాధానానికి (+5) మార్కులు, ప్రతి తప్పుడు సమాధానానికి (−2) మార్కులు ఇవ్వబడతాయి. రాధిక 20 మార్కులు పొందింది. ఆమె 12 సరైన సమాధానాలు రాస్తే, ఎన్ని తప్పుడు సమాధానాలు రాసింది?",
+      "q_hi": "एक टेस्ट में प्रत्येक सही उत्तर के लिए (+5) अंक दिए जाते हैं और प्रत्येक गलत उत्तर के लिए (−2) अंक दिए जाते हैं। राधिका ने 20 अंक प्राप्त किए। यदि उसने 12 सही उत्तर दिए, तो उसने कितने प्रश्नों के गलत उत्तर दिए?"
     },
     {
       "id": "c7_p3",
@@ -823,7 +907,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Any number multiplied by 0 equals 0.",
       "exp": "Multiplication by zero makes the entire product zero regardless of how many factors or signs exist.",
-      "misconception": "Multiplies non-zero factors and ignores 0."
+      "misconception": "Multiplies non-zero factors and ignores 0.",
+      "q_te": "లబ్ధాన్ని కనుగొనండి: (−15) × 0 × (−18)",
+      "q_hi": "गुणनफल ज्ञात कीजिए: (−15) × 0 × (−18)"
     },
     {
       "id": "c7_p4",
@@ -842,7 +928,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Convert to improper fractions: 11/5 ÷ 6/5 = 11/5 × 5/6.",
       "exp": "2 1/5 = 11/5 and 1 1/5 = 6/5. Then (11/5) ÷ (6/5) = (11/5) × (5/6) = 11/6 = 1 5/6.",
-      "misconception": "Divides whole numbers and fractions separately."
+      "misconception": "Divides whole numbers and fractions separately.",
+      "q_te": "సాధించండి: 2 1/5 ÷ 1 1/5",
+      "q_hi": "हल कीजिए: 2 1/5 ÷ 1 1/5"
     },
     {
       "id": "c7_p5",
@@ -861,7 +949,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Speed = Distance / Time = 89.1 / 2.2 = 891 / 22.",
       "exp": "89.1 ÷ 2.2 = 891 ÷ 22 = 40.5 km per hour.",
-      "misconception": "Misplaces decimal point."
+      "misconception": "Misplaces decimal point.",
+      "q_te": "ఒక కారు 2.2 గంటల్లో 89.1 కి.మీ దూరం ప్రయాణిస్తుంది. అది 1 గంటలో ప్రయాణించే సగటు దూరం ఎంత?",
+      "q_hi": "एक कार 2.2 घंटे में 89.1 किमी की दूरी तय करती है। 1 घंटे में इसके द्वारा तय की गई औसत दूरी क्या है?"
     },
     {
       "id": "c7_p6",
@@ -880,7 +970,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Divide both sides by 4: m + 3 = 18/4 = 4.5. Then m = 4.5 − 3.",
       "exp": "m + 3 = 4.5 → m = 4.5 − 3 = 1.5.",
-      "misconception": "Does not distribute 4 or subtracts 3 before dividing."
+      "misconception": "Does not distribute 4 or subtracts 3 before dividing.",
+      "q_te": "సమీకరణాన్ని సాధించండి: 4(m + 3) = 18",
+      "q_hi": "समीकरण को हल कीजिए: 4(m + 3) = 18"
     },
     {
       "id": "c7_p7",
@@ -899,7 +991,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Let fruit trees = x. Equation: 3x + 2 = 77.",
       "exp": "3x + 2 = 77 → 3x = 75 → x = 25 fruit trees.",
-      "misconception": "Multiplies 77 by 3."
+      "misconception": "Multiplies 77 by 3.",
+      "q_te": "సుందర్‌గ్రామ్ ప్రజలు చెట్లు నాటారు. పండ్ల చెట్ల సంఖ్యకు మూడు రెట్లు కంటే పండ్లు కాని చెట్ల సంఖ్య రెండు ఎక్కువ. పండ్లు కాని చెట్లు 77 అయితే, నాటిన పండ్ల చెట్లు ఎన్ని?",
+      "q_hi": "सुंदरग्राम के निवासियों ने पेड़ लगाए। गैर-फलदार पेड़ों की संख्या फलदार पेड़ों की संख्या के तिगुने से दो अधिक थी। यदि गैर-फलदार पेड़ों की संख्या 77 थी, तो कितने फलदार पेड़ लगाए गए?"
     },
     {
       "id": "c7_p8",
@@ -918,7 +1012,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Supplementary angles add up to 180°.",
       "exp": "Supplementary sum = 180°. Other angle = 180° − 65° = 115°.",
-      "misconception": "Confuses supplementary (180°) with complementary (90°)."
+      "misconception": "Confuses supplementary (180°) with complementary (90°).",
+      "q_te": "రెండు కోణాలు సంపూరకాలు (supplementary). ఒక కోణం 65° అయితే, రెండవ కోణం కొలత ఎంత?",
+      "q_hi": "दो कोण संपूरक हैं। यदि एक कोण 65° है, तो दूसरे कोण का माप क्या है?"
     },
     {
       "id": "c7_p9",
@@ -937,7 +1033,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Alternate interior angles formed by parallel lines and a transversal are equal.",
       "exp": "Alternate interior angles are equal when lines are parallel, so the other angle is also 52°.",
-      "misconception": "Subtracts from 180° thinking they are supplementary."
+      "misconception": "Subtracts from 180° thinking they are supplementary.",
+      "q_te": "రెండు సమాంతర రేఖలను ఒక తిర్యగ్రేఖ ఖండించింది. ఒక ఏకాంతర అంతర కోణం 52° అయితే, రెండవ ఏకాంతర అంతర కోణం కొలత ఎంత?",
+      "q_hi": "दो समांतर रेखाओं को एक तिर्यक रेखा काटती है। यदि एक एकांतर अंतःकोण 52° है, तो दूसरे एकांतर अंतःकोण का माप क्या है?"
     },
     {
       "id": "c7_p10",
@@ -956,7 +1054,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Pythagoras theorem: a² + b² = c². 6² + 8² = 36 + 64 = 100.",
       "exp": "c = √(6² + 8²) = √(36 + 64) = √100 = 10 cm.",
-      "misconception": "Adds lengths directly: 6 + 8 = 14."
+      "misconception": "Adds lengths directly: 6 + 8 = 14.",
+      "q_te": "ఒక లంబకోణ త్రిభుజంలో రెండు భుజాల పొడవులు 6 సెం.మీ మరియు 8 సెం.మీ. కర్ణం పొడవును కనుగొనండి.",
+      "q_hi": "एक समकोण त्रिभुज में दो भुजाओं की लंबाई 6 सेमी और 8 सेमी है। कर्ण की लंबाई ज्ञात कीजिए।"
     },
     {
       "id": "c7_p11",
@@ -975,7 +1075,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Exterior angle = Sum of two interior opposite angles.",
       "exp": "Exterior angle = Angle1 + Angle2 → 110° = 30° + x → x = 110° − 30° = 80°.",
-      "misconception": "Adds 110 + 30 = 140."
+      "misconception": "Adds 110 + 30 = 140.",
+      "q_te": "త్రిభుజం యొక్క బాహ్య కోణం 110°, మరియు దాని అంతరాభిముఖ కోణాలలో ఒకటి 30°. రెండవ అంతరాభిముఖ కోణం కొలత ఎంత?",
+      "q_hi": "एक त्रिभुज का बाह्य कोण 110° है, और इसके सम्मुख अंतःकोणों में से एक 30° है। दूसरे सम्मुख अंतःकोण का माप ज्ञात कीजिए।"
     },
     {
       "id": "c7_p12",
@@ -994,7 +1096,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Discount = 250 − 200 = ₹50. Discount % = (50 / 250) × 100.",
       "exp": "Discount % = (50 / 250) × 100 = 1/5 × 100 = 20%.",
-      "misconception": "Calculates discount over selling price (50 / 200 = 25%)."
+      "misconception": "Calculates discount over selling price (50 / 200 = 25%).",
+      "q_te": "₹250 ముద్రిత ధర కలిగిన వస్తువును ₹200 కి విక్రయించారు. డిస్కౌంట్ శాతం ఎంత?",
+      "q_hi": "₹250 अंकित मूल्य वाली वस्तु ₹200 में बेची गई। बट्टे (छूट) का प्रतिशत क्या है?"
     },
     {
       "id": "c7_p13",
@@ -1013,7 +1117,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "SI = (P × R × T) / 100 = (5000 × 8 × 3) / 100.",
       "exp": "SI = (5000 × 8 × 3) / 100 = 50 × 24 = ₹1,200.",
-      "misconception": "Forgets to divide by 100."
+      "misconception": "Forgets to divide by 100.",
+      "q_te": "₹5,000 పై సంవత్సరానికి 8% వడ్డీ రేటుతో 3 సంవత్సరాలకు సాధారణ వడ్డీని కనుగొనండి.",
+      "q_hi": "₹5,000 पर 8% वार्षिक दर से 3 वर्ष का साधारण ब्याज ज्ञात कीजिए।"
     },
     {
       "id": "c7_p14",
@@ -1032,7 +1138,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Divide numerator and denominator by their HCF, which is 15.",
       "exp": "Dividing by 15: (−45 ÷ 15) / (30 ÷ 15) = −3/2.",
-      "misconception": "Drops negative sign."
+      "misconception": "Drops negative sign.",
+      "q_te": "−45 / 30 ను ప్రామాణిక రూపానికి తగ్గించండి.",
+      "q_hi": "−45 / 30 को मानक रूप में बदलिए।"
     },
     {
       "id": "c7_p15",
@@ -1051,7 +1159,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Product of two negative rational numbers is positive.",
       "exp": "(−9 × −7) / (2 × 4) = +63 / 8.",
-      "misconception": "Keeps negative sign."
+      "misconception": "Keeps negative sign.",
+      "q_te": "లబ్ధాన్ని కనుగొనండి: (−9/2) × (−7/4)",
+      "q_hi": "गुणनफल ज्ञात कीजिए: (−9/2) × (−7/4)"
     },
     {
       "id": "c7_p16",
@@ -1070,7 +1180,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "8 = 2³, so 8³ = (2³)³ = 2⁹. (2⁵)² = 2¹⁰. 2¹⁰ / 2⁹ = 2¹. 7³ / 7 = 7² = 49.",
       "exp": "(2¹⁰ × 7³) / (2⁹ × 7¹) = 2¹ × 7² = 2 × 49 = 98.",
-      "misconception": "Misapplies power of a power rule."
+      "misconception": "Misapplies power of a power rule.",
+      "q_te": "సూక్ష్మీకరించండి: (2⁵)² × 7³ / (8³ × 7)",
+      "q_hi": "सरल कीजिए: (2⁵)² × 7³ / (8³ × 7)"
     },
     {
       "id": "c7_p17",
@@ -1089,7 +1201,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Any non-zero number raised to the power 0 is equal to 1.",
       "exp": "3⁰ = 1, 4⁰ = 1, 5⁰ = 1. Product = 1 × 1 × 1 = 1.",
-      "misconception": "Thinks a⁰ = 0."
+      "misconception": "Thinks a⁰ = 0.",
+      "q_te": "3⁰ × 4⁰ × 5⁰ విలువ ఎంత?",
+      "q_hi": "3⁰ × 4⁰ × 5⁰ का मान क्या है?"
     },
     {
       "id": "c7_p18",
@@ -1108,7 +1222,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Circumference = 2πr = 2 × (22/7) × 14 = 88 m. Cost = 88 × 10.",
       "exp": "Circumference = 2 × (22/7) × 14 = 88 m. Cost = 88 m × ₹10/m = ₹880.",
-      "misconception": "Calculates area (πr²) instead of perimeter."
+      "misconception": "Calculates area (πr²) instead of perimeter.",
+      "q_te": "ఒక వృత్తాకార తోట వ్యాసార్థం 14 మీ. మీటరుకు ₹10 చొప్పున దానికి కంచె వేయడానికి అయ్యే ఖర్చు ఎంత? (π = 22/7)",
+      "q_hi": "एक वृत्ताकार बगीचे की त्रिज्या 14 मी है। ₹10 प्रति मीटर की दर से चारों ओर बाड़ लगाने का व्यय ज्ञात कीजिए। (π = 22/7)"
     },
     {
       "id": "c7_p19",
@@ -1127,7 +1243,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "(a + b) − (a − b) = a + b − a + b.",
       "exp": "(a + b) − (a − b) = a + b − a + b = 2b.",
-      "misconception": "Does not distribute negative sign: a + b - a - b = 0."
+      "misconception": "Does not distribute negative sign: a + b - a - b = 0.",
+      "q_te": "(a + b) నుండి (a − b) ని తీసివేయండి.",
+      "q_hi": "(a + b) में से (a − b) को घटाइए।"
     },
     {
       "id": "c7_p20",
@@ -1146,7 +1264,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Substitute x = −1: 2(−1)² − (−1) − 2 = 2(1) + 1 − 2.",
       "exp": "2(1) + 1 − 2 = 2 + 1 − 2 = 1.",
-      "misconception": "Evaluates (−1)² as −1."
+      "misconception": "Evaluates (−1)² as −1.",
+      "q_te": "x = −1 అయినప్పుడు 2x² − x − 2 సమాసం యొక్క విలువను కనుగొనండి.",
+      "q_hi": "x = −1 के लिए व्यंजक 2x² − x − 2 का मान ज्ञात कीजिए।"
     }
   ],
   "8": [
@@ -1167,7 +1287,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Expand RHS: 3x − 3 + 7 = 3x + 4. Equation is 8x + 4 = 3x + 4.",
       "exp": "8x + 4 = 3x + 4 → 8x − 3x = 4 − 4 → 5x = 0 → x = 0.",
-      "misconception": "Thinks x=0 means no solution."
+      "misconception": "Thinks x=0 means no solution.",
+      "q_te": "సాధించండి: 8x + 4 = 3(x − 1) + 7",
+      "q_hi": "हल कीजिए: 8x + 4 = 3(x − 1) + 7"
     },
     {
       "id": "c8_p2",
@@ -1186,7 +1308,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Let ages be 5x and 7x. In 4 years: (5x + 4) + (7x + 4) = 56.",
       "exp": "12x + 8 = 56 → 12x = 48 → x = 4. Rahul's age = 5 × 4 = 20 years.",
-      "misconception": "Gives Haroon's age (28) or value of x."
+      "misconception": "Gives Haroon's age (28) or value of x.",
+      "q_te": "రాహుల్ మరియు హారూన్ ల వయస్సుల నిష్పత్తి 5 : 7. నాలుగు సంవత్సరాల తర్వాత వారి వయస్సుల మొత్తం 56 సంవత్సరాలు అవుతుంది. రాహుల్ ప్రస్తుత వయస్సు ఎంత?",
+      "q_hi": "राहुल और हारून की वर्तमान आयु का अनुपात 5 : 7 है। चार वर्ष बाद उनकी आयु का योग 56 वर्ष होगा। राहुल की वर्तमान आयु क्या है?"
     },
     {
       "id": "c8_p3",
@@ -1205,7 +1329,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Cross multiply: 8(x + 1) = 3(2x + 3).",
       "exp": "8x + 8 = 6x + 9 → 8x − 6x = 9 − 8 → 2x = 1 → x = 1/2.",
-      "misconception": "Subtracts numerators and denominators directly."
+      "misconception": "Subtracts numerators and denominators directly.",
+      "q_te": "సాధించండి: (x + 1) / (2x + 3) = 3/8",
+      "q_hi": "हल कीजिए: (x + 1) / (2x + 3) = 3/8"
     },
     {
       "id": "c8_p4",
@@ -1224,7 +1350,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "The sum of the exterior angles of any convex polygon is always constant, regardless of sides.",
       "exp": "The sum of exterior angles of any polygon is always 360°.",
-      "misconception": "Uses interior angles sum formula (n-2)×180°."
+      "misconception": "Uses interior angles sum formula (n-2)×180°.",
+      "q_te": "ఏదైనా కుంభాకార బహుభుజి (convex polygon) బాహ్య కోణాల మొత్తం ఎంత?",
+      "q_hi": "किसी उत्तल बहुभुज (convex polygon) के सभी बाह्य कोणों का योग कितना होता है?"
     },
     {
       "id": "c8_p5",
@@ -1243,7 +1371,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Adjacent angles of a parallelogram are supplementary: 4x + 5x = 180°.",
       "exp": "9x = 180° → x = 20°. Smaller angle = 4 × 20° = 80°.",
-      "misconception": "Sets sum equal to 360°."
+      "misconception": "Sets sum equal to 360°.",
+      "q_te": "సమాంతర చతుర్భుజం యొక్క ఆసన్న కోణాలు 4 : 5 నిష్పత్తిలో ఉన్నాయి. చిన్న కోణం కొలతను కనుగొనండి.",
+      "q_hi": "एक समांतर चतुर्भुज के दो आसन्न कोणों का अनुपात 4 : 5 है। छोटे कोण का माप ज्ञात कीजिए।"
     },
     {
       "id": "c8_p6",
@@ -1262,7 +1392,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "(a + b)² = a² + 2ab + b². Don't forget the middle term 2ab!",
       "exp": "(2x)² + 2(2x)(3y) + (3y)² = 4x² + 12xy + 9y².",
-      "misconception": "Omits cross product term 2ab (Freshman's dream: a²+b²)."
+      "misconception": "Omits cross product term 2ab (Freshman's dream: a²+b²).",
+      "q_te": "ప్రామాణిక సర్వసమీకరణాన్ని ఉపయోగించి విస్తరించండి: (2x + 3y)²",
+      "q_hi": "सर्वसमिका का उपयोग करके मान ज्ञात कीजिए: (2x + 3y)²"
     },
     {
       "id": "c8_p7",
@@ -1281,7 +1413,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "(100 + 3)(100 − 3) = 100² − 3².",
       "exp": "100² − 3² = 10,000 − 9 = 9,991.",
-      "misconception": "Multiplies incorrectly."
+      "misconception": "Multiplies incorrectly.",
+      "q_te": "సర్వసమీకరణాన్ని ఉపయోగించి లెక్కించండి: (103) × (97)",
+      "q_hi": "सर्वसमिका का उपयोग करते हुए मूल्यांकन कीजिए: (103) × (97)"
     },
     {
       "id": "c8_p8",
@@ -1300,7 +1434,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Find two numbers whose product is +12 and sum is −7: (−3) and (−4).",
       "exp": "x² − 3x − 4x + 12 = x(x − 3) − 4(x − 3) = (x − 3)(x − 4).",
-      "misconception": "Uses wrong signs (x+3)(x+4)."
+      "misconception": "Uses wrong signs (x+3)(x+4).",
+      "q_te": "కారణాంకాలుగా విభజించండి: x² − 7x + 12",
+      "q_hi": "गुणनखंड कीजिए: x² − 7x + 12"
     },
     {
       "id": "c8_p9",
@@ -1319,7 +1455,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Divide each term in numerator by 11x².",
       "exp": "44x⁴/11x² − 88x³/11x² + 22x²/11x² = 4x² − 8x + 2.",
-      "misconception": "Divides only the first term."
+      "misconception": "Divides only the first term.",
+      "q_te": "భాగించండి: (44x⁴ − 88x³ + 22x²) ÷ (11x²)",
+      "q_hi": "भाग दीजिए: (44x⁴ − 88x³ + 22x²) ÷ (11x²)"
     },
     {
       "id": "c8_p10",
@@ -1338,7 +1476,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Area = 1/2 × (a + b) × h = 1/2 × (24 + 20) × 15.",
       "exp": "Area = 1/2 × 44 × 15 = 22 × 15 = 330 cm².",
-      "misconception": "Forgets 1/2 factor."
+      "misconception": "Forgets 1/2 factor.",
+      "q_te": "సమాంతర భుజాలు 24 సెం.మీ మరియు 20 సెం.మీ, వాటి మధ్య దూరం 15 సెం.మీ కలిగిన సమలంబ చతుర్భుజం (trapezium) వైశాల్యం ఎంత?",
+      "q_hi": "एक समलंब (trapezium) का क्षेत्रफल ज्ञात कीजिए जिसकी समांतर भुजाएँ 24 सेमी और 20 सेमी हैं तथा उनके बीच की दूरी 15 सेमी है।"
     },
     {
       "id": "c8_p11",
@@ -1357,7 +1497,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "TSA = 2πr(h + r) = 2 × (22/7) × 7 × (10 + 7).",
       "exp": "TSA = 44 × 17 = 748 m².",
-      "misconception": "Calculates Curved Surface Area (CSA = 440) instead of Total Surface Area."
+      "misconception": "Calculates Curved Surface Area (CSA = 440) instead of Total Surface Area.",
+      "q_te": "వ్యాసార్థం 7 మీ మరియు ఎత్తు 10 మీ కలిగిన స్థూపాకార ట్యాంక్ యొక్క సంపూర్ణతల వైశాల్యం ఎంత? (π = 22/7)",
+      "q_hi": "एक बेलनाकार टंकी की त्रिज्या 7 मी और ऊँचाई 10 मी है। इसका कुल पृष्ठीయ क्षेत्रफल ज्ञात कीजिए। (π = 22/7)"
     },
     {
       "id": "c8_p12",
@@ -1376,7 +1518,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Count the number of places to shift decimal to the right until 3.5.",
       "exp": "The decimal point is shifted 6 places to the right: 3.5 × 10⁻⁶.",
-      "misconception": "Counts zeroes instead of decimal shifts."
+      "misconception": "Counts zeroes instead of decimal shifts.",
+      "q_te": "0.0000035 ను ప్రామాణిక శాస్త్రీయ సంజ్ఞామానంలో (scientific notation) వ్యక్తపరచండి.",
+      "q_hi": "0.0000035 को मानक वैज्ञानिक रूप में व्यक्त कीजिए।"
     },
     {
       "id": "c8_p13",
@@ -1395,7 +1539,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Inverse proportion: Workers × Hours = Constant. 15 × 48 = x × 30.",
       "exp": "x = (15 × 48) / 30 = 720 / 30 = 24 workers.",
-      "misconception": "Applies direct proportion: (15 × 30) / 48."
+      "misconception": "Applies direct proportion: (15 × 30) / 48.",
+      "q_te": "15 మంది కార్మికులు 48 గంటల్లో గోడను నిర్మించగలిగితే, అదే పనిని 30 గంటల్లో పూర్తి చేయడానికి ఎంతమంది కార్మికులు అవసరం?",
+      "q_hi": "यदि 15 श्रमिक एक दीवार को 48 घंटे में बना सकते हैं, तो इसी कार्य को 30 घंटे में पूरा करने के लिए कितने श्रमिकों की आवश्यकता होगी?"
     },
     {
       "id": "c8_p14",
@@ -1414,7 +1560,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "LCM of 8, 15, 20 is 120 = 2³ × 3 × 5. To make it a perfect square, multiply by 2 × 3 × 5 = 30.",
       "exp": "LCM = 120. Prime factorisation: 2 × 2 × 2 × 3 × 5. Missing pairs: 2, 3, 5. Smallest square = 120 × 30 = 3,600.",
-      "misconception": "Selects LCM 120 which is not a perfect square."
+      "misconception": "Selects LCM 120 which is not a perfect square.",
+      "q_te": "8, 15 మరియు 20 లచే నిశ్శేషంగా భాగించబడే అతిచిన్న వర్గ సంఖ్యను కనుగొనండి.",
+      "q_hi": "वह सबसे छोटी वर्ग संख्या ज्ञात कीजिए जो 8, 15 और 20 प्रत्येक से विभाजित हो जाए।"
     },
     {
       "id": "c8_p15",
@@ -1433,7 +1581,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Last digit is 4, so unit digit is 4. 2³ = 8 < 13 < 3³ = 27, so tens digit is 2.",
       "exp": "Cube root of 13,824 = 24, since 24³ = 13,824.",
-      "misconception": "Confuses cube root with square root."
+      "misconception": "Confuses cube root with square root.",
+      "q_te": "13824 యొక్క ఘనమూలం (cube root) ను కనుగొనండి.",
+      "q_hi": "13824 का घनमूल ज्ञात कीजिए।"
     }
   ],
   "9": [
@@ -1454,7 +1604,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Multiply numerator and denominator by conjugate (√7 + √6).",
       "exp": "(√7 + √6) / ((√7)² − (√6)²) = (√7 + √6) / (7 − 6) = √7 + √6.",
-      "misconception": "Squares individual terms in denominator directly."
+      "misconception": "Squares individual terms in denominator directly.",
+      "q_te": "1 / (√7 − √6) యొక్క హారాన్ని అకరణీయం చేయండి.",
+      "q_hi": "1 / (√7 − √6) के हर का परिमेयकरण कीजिए।"
     },
     {
       "id": "c9_p2",
@@ -1473,7 +1625,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "By Factor Theorem, p(1) = 0. 2(1)² + k(1) + √2 = 0.",
       "exp": "2 + k + √2 = 0 → k = −(2 + √2).",
-      "misconception": "Substitutes x = −1 instead of x = 1."
+      "misconception": "Substitutes x = −1 instead of x = 1.",
+      "q_te": "p(x) = 2x² + kx + √2 కు (x − 1) ఒక కారణాంకం అయితే k విలువను కనుగొనండి.",
+      "q_hi": "यदि (x − 1), बहुपद p(x) = 2x² + kx + √2 का एक गुणनखंड है, तो k का मान ज्ञात कीजिए।"
     },
     {
       "id": "c9_p3",
@@ -1492,7 +1646,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Identity: x³ + y³ + z³ − 3xyz = (x + y + z)(x² + y² + z² − xy − yz − zx).",
       "exp": "When (x + y + z) = 0, the RHS becomes 0, so x³ + y³ + z³ = 3xyz.",
-      "misconception": "Thinks x³+y³+z³ must be 0."
+      "misconception": "Thinks x³+y³+z³ must be 0.",
+      "q_te": "x + y + z = 0 అయితే, x³ + y³ + z³ విలువ ఎంత?",
+      "q_hi": "यदि x + y + z = 0 हो, तो x³ + y³ + z³ का मान क्या होगा?"
     },
     {
       "id": "c9_p4",
@@ -1511,7 +1667,9 @@ var PRACTICE_BANK = {
       "ans": 2,
       "hint": "A linear equation in two variables represents a straight line in the Cartesian plane.",
       "exp": "Every point (x, y) lying on the line 2x + 3y = 6 is a solution, giving infinitely many real solutions.",
-      "misconception": "Confuses single linear equation in 2 variables with a system of equations."
+      "misconception": "Confuses single linear equation in 2 variables with a system of equations.",
+      "q_te": "రేఖీయ సమీకరణం 2x + 3y = 6 కు ఎన్ని సాధనలు ఉంటాయి?",
+      "q_hi": "रैखिक समीकरण 2x + 3y = 6 के कितने हल हैं?"
     },
     {
       "id": "c9_p5",
@@ -1530,7 +1688,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "x is negative, y is positive: (−, +).",
       "exp": "Quadrant I (+, +), Quadrant II (−, +), Quadrant III (−, −), Quadrant IV (+, −). (−3, 5) is in Quadrant II.",
-      "misconception": "Confuses quadrant numbering order."
+      "misconception": "Confuses quadrant numbering order.",
+      "q_te": "(−3, 5) బిందువు ఏ పాదం (quadrant) లో ఉంటుంది?",
+      "q_hi": "बिंदु (−3, 5) किस चतुर्थांश में स्थित है?"
     },
     {
       "id": "c9_p6",
@@ -1549,7 +1709,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Express ∠A and ∠C in terms of ∠B: ∠A = ∠B + 33°, ∠C = ∠B − 18°. Sum = 180°.",
       "exp": "(∠B + 33°) + ∠B + (∠B − 18°) = 180° → 3∠B + 15° = 180° → 3∠B = 165° → ∠B = 55°.",
-      "misconception": "Arithmetic error in angle sum."
+      "misconception": "Arithmetic error in angle sum.",
+      "q_te": "త్రిభుజం ABC లో, ∠A − ∠B = 33° మరియు ∠B − ∠C = 18° అయితే, ∠B కొలతను కనుగొనండి.",
+      "q_hi": "त्रिभुज ABC में, यदि ∠A − ∠B = 33° और ∠B − ∠C = 18° है, तो ∠B का माप ज्ञात कीजिए।"
     },
     {
       "id": "c9_p7",
@@ -1568,7 +1730,9 @@ var PRACTICE_BANK = {
       "ans": 2,
       "hint": "Equal angles mean triangles have the same shape (similar) but not necessarily the same size (congruent).",
       "exp": "AAA guarantees similarity, not congruence. A tiny triangle and a huge triangle can have identical angles.",
-      "misconception": "Believes AAA proves congruence."
+      "misconception": "Believes AAA proves congruence.",
+      "q_te": "రెండు త్రిభుజాలు సర్వసమానమని నిరూపించడానికి కింది వాటిలో ఏ నియమం ఉపయోగపడదు?",
+      "q_hi": "निम्नलिखित में से कौन-सी सर्वांगसमता कसौटी दो त्रिभुजों को सर्वांगसम सिद्ध करने के लिए लागू नहीं होती?"
     },
     {
       "id": "c9_p8",
@@ -1587,7 +1751,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Recall the Mid-Point Theorem for triangles.",
       "exp": "Mid-Point Theorem: The line joining the midpoints of two sides is parallel to the third side and half its length.",
-      "misconception": "Thinks it equals the third side."
+      "misconception": "Thinks it equals the third side.",
+      "q_te": "త్రిభుజం యొక్క రెండు భుజాల మధ్య బిందువులను కలిపే రేఖాఖండం మూడవ భుజానికి:",
+      "q_hi": "किसी त्रिभुज की दो भुजाओं के मध्य-बिंदुओं को मिलाने वाला रेखाखंड:"
     },
     {
       "id": "c9_p9",
@@ -1606,7 +1772,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Standard circle theorem: Angle at centre = 2 × Angle at circumference.",
       "exp": "By circle theorem, the angle subtended at the centre is twice (double) the angle at the circumference.",
-      "misconception": "Reverses relationship (thinks centre is half)."
+      "misconception": "Reverses relationship (thinks centre is half).",
+      "q_te": "వృత్త కేంద్రం వద్ద ఒక చాపం చేసే కోణం, మిగిలిన పరిధిపై చేసే కోణానికి ______ ఉంటుంది.",
+      "q_hi": "किसी चाप द्वारा केंद्र पर अंतरित कोण, वृत्त के शेष भाग के किसी बिंदु पर अंतरित कोण का ______ होता है।"
     },
     {
       "id": "c9_p10",
@@ -1625,7 +1793,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "s = (13 + 14 + 15)/2 = 21. Area = √(s(s-a)(s-b)(s-c)) = √(21 × 8 × 7 × 6).",
       "exp": "s = 21. Area = √(21 × 8 × 7 × 6) = √(7056) = 84 cm².",
-      "misconception": "Arithmetic error in square root."
+      "misconception": "Arithmetic error in square root.",
+      "q_te": "13 సెం.మీ, 14 సెం.మీ, మరియు 15 సెం.మీ భుజాలు కలిగిన త్రిభుజ వైశాల్యాన్ని కనుగొనండి.",
+      "q_hi": "भुजाओं 13 सेमी, 14 सेमी और 15 सेमी वाले त्रिभुज का क्षेत्रफल ज्ञात कीजिए।"
     },
     {
       "id": "c9_p11",
@@ -1644,7 +1814,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "Total surface area of solid hemisphere = Curved area (2πr²) + Flat base (πr²) = 3πr².",
       "exp": "TSA = 3πr² = 3 × 3.14 × 100 = 942 cm².",
-      "misconception": "Uses CSA formula (2πr² = 628) and forgets the circular base."
+      "misconception": "Uses CSA formula (2πr² = 628) and forgets the circular base.",
+      "q_te": "వ్యాసార్థం 10 సెం.మీ కలిగిన అర్ధగోళం యొక్క సంపూర్ణతల వైశాల్యం ఎంత? (π = 3.14)",
+      "q_hi": "10 सेमी त्रिज्या वाले एक अर्धगोले का कुल पृष्ठीయ क्षेत्रफल ज्ञात कीजिए। (π = 3.14)"
     },
     {
       "id": "c9_p12",
@@ -1663,7 +1835,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "First arrange in ascending order: 14, 14, 17, 18, 22, 25, 27. Middle value (4th of 7).",
       "exp": "Sorted: 14, 14, 17, 18, 22, 25, 27. Median is the middle (4th) value = 18.",
-      "misconception": "Picks middle item without sorting first."
+      "misconception": "Picks middle item without sorting first.",
+      "q_te": "దత్తాంశం 14, 25, 17, 18, 14, 22, 27 యొక్క మధ్యగతం (median) కనుగొనండి.",
+      "q_hi": "आँकड़ों 14, 25, 17, 18, 14, 22, 27 की माध्यिका ज्ञात कीजिए।"
     }
   ],
   "10": [
@@ -1684,7 +1858,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "HCF is product of smallest powers of each common prime factor.",
       "exp": "Smallest power of x is x¹. Smallest power of y is y². HCF = xy².",
-      "misconception": "Finds LCM (x³y³) instead of HCF."
+      "misconception": "Finds LCM (x³y³) instead of HCF.",
+      "q_te": "రెండు ధన పూర్ణాంకాలు a మరియు b లను a = x³y² మరియు b = xy³ గా రాస్తే (ఇక్కడ x, y ప్రధాన సంఖ్యలు), HCF(a, b) ఎంత?",
+      "q_hi": "यदि दो धनात्मक पूर्णांकों a और b को a = x³y² और b = xy³ के रूप में लिखा जाए, जहाँ x, y अभाज्य संख्याएँ हैं, तो HCF(a, b) क्या होगा?"
     },
     {
       "id": "c10_p2",
@@ -1703,7 +1879,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "1/α + 1/β = (α + β) / (αβ). Here α + β = −(−5)/1 = 5, and αβ = 6/1 = 6.",
       "exp": "(α + β) / (αβ) = 5 / 6.",
-      "misconception": "Uses wrong sign for sum of roots."
+      "misconception": "Uses wrong sign for sum of roots.",
+      "q_te": "వర్గ బహుపది p(x) = x² − 5x + 6 యొక్క శూన్యాలు α మరియు β అయితే, (1/α + 1/β) విలువను కనుగొనండి.",
+      "q_hi": "यदि α और β द्विघात बहुपद p(x) = x² − 5x + 6 के शून्यक हैं, तो (1/α + 1/β) का मान ज्ञात कीजिए।"
     },
     {
       "id": "c10_p3",
@@ -1722,7 +1900,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Condition: a1/a2 = b1/b2 = c1/c2. k/12 = 3/k = (k−3)/k. k² = 36 → k = ±6. Check c1/c2.",
       "exp": "For k = 6: 6/12 = 3/6 = 3/6 = 1/2 (consistent). For k = −6: −6/12 = −1/2, but (−6−3)/(−6) = 9/6 = 3/2 ≠ −1/2. Thus k = 6 only.",
-      "misconception": "Selects k = ±6 without verifying third equality."
+      "misconception": "Selects k = ±6 without verifying third equality.",
+      "q_te": "kx + 3y = k − 3 మరియు 12x + ky = k సమీకరణాల వ్యవస్థకు అనంతమైన సాధనలు ఉండాలంటే k విలువ ఎంత ఉండాలి?",
+      "q_hi": "k के किस मान के लिए समीकरण युग्म kx + 3y = k − 3 और 12x + ky = k के अनंत हल होंगे?"
     },
     {
       "id": "c10_p4",
@@ -1741,7 +1921,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "D = b² − 4ac = (−4)² − 4(2)(3) = 16 − 24.",
       "exp": "D = 16 − 24 = −8 < 0. Since D < 0, the equation has no real roots.",
-      "misconception": "Computes (−4)² as −16 or miscalculates sign of D."
+      "misconception": "Computes (−4)² as −16 or miscalculates sign of D.",
+      "q_te": "2x² − 4x + 3 = 0 సమీకరణం యొక్క విచక్షణి (discriminant) ని కనుగొని, మూలాల స్వభావాన్ని వివరించండి.",
+      "q_hi": "2x² − 4x + 3 = 0 का विविक्तकर (discriminant) ज्ञात कीजिए और मूलों की प्रकृति बताइए।"
     },
     {
       "id": "c10_p5",
@@ -1760,7 +1942,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Multiply by 12x: 12x² − 25x + 12 = 0. Factor: (4x − 3)(3x − 4) = 0.",
       "exp": "12x² − 25x + 12 = 0 → (4x − 3)(3x − 4) = 0 → x = 3/4 or x = 4/3.",
-      "misconception": "Guesses without factorising quadratic."
+      "misconception": "Guesses without factorising quadratic.",
+      "q_te": "సాధించండి: x + 1/x = 25/12 (x ≠ 0)",
+      "q_hi": "हल कीजिए: x + 1/x = 25/12 (x ≠ 0)"
     },
     {
       "id": "c10_p6",
@@ -1779,7 +1963,9 @@ var PRACTICE_BANK = {
       "ans": 1,
       "hint": "a = 21, d = 18 − 21 = −3. Formula: an = a + (n − 1)d = −81.",
       "exp": "21 + (n − 1)(−3) = −81 → (n − 1)(−3) = −102 → n − 1 = 34 → n = 35.",
-      "misconception": "Uses d = +3 instead of d = −3."
+      "misconception": "Uses d = +3 instead of d = −3.",
+      "q_te": "అంకశ్రేఢి 21, 18, 15... లో ఎన్నవ పదం −81 అవుతుంది?",
+      "q_hi": "समानांतर श्रेणी (AP): 21, 18, 15... का कौन-सा पद −81 है?"
     },
     {
       "id": "c10_p7",
@@ -1798,7 +1984,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "a = 7, d = 7, n = 20. Last term l = 20 × 7 = 140. S = (n/2)(a + l) = 10(7 + 140).",
       "exp": "S20 = 10 × 147 = 1,470.",
-      "misconception": "Forgets to divide n by 2."
+      "misconception": "Forgets to divide n by 2.",
+      "q_te": "7 యొక్క మొదటి 20 గుణిజాల మొత్తాన్ని కనుగొనండి.",
+      "q_hi": "7 के प्रथम 20 गुणजों का योग ज्ञात कीजिए।"
     },
     {
       "id": "c10_p8",
@@ -1817,7 +2005,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "By Thales Theorem: AD/AB = AE/AC. AD/AB = 3/(3+5) = 3/8.",
       "exp": "AE = (3/8) × AC = (3/8) × 5.6 = 3 × 0.7 = 2.1 cm.",
-      "misconception": "Uses AD/DB = AE/AC directly with wrong denominator."
+      "misconception": "Uses AD/DB = AE/AC directly with wrong denominator.",
+      "q_te": "త్రిభుజం ABC లో, DE || BC మరియు AD/DB = 3/5. AC = 5.6 సెం.మీ అయితే, AE పొడవు ఎంత?",
+      "q_hi": "त्रिभुज ABC में, DE || BC इस प्रकार है कि AD/DB = 3/5। यदि AC = 5.6 सेमी है, तो AE ज्ञात कीजिए।"
     },
     {
       "id": "c10_p9",
@@ -1836,7 +2026,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Section formula: x = (m1*x2 + m2*x1)/(m1+m2); y = (m1*y2 + m2*y1)/(m1+m2).",
       "exp": "x = (2(4) + 3(−1))/5 = (8 − 3)/5 = 1. y = (2(−3) + 3(7))/5 = (−6 + 21)/5 = 3. Point is (1, 3).",
-      "misconception": "Reverses m1 and m2."
+      "misconception": "Reverses m1 and m2.",
+      "q_te": "(−1, 7) మరియు (4, −3) బిందువులను కలిపే రేఖాఖండాన్ని 2 : 3 నిష్పత్తిలో విభజించే బిందువు నిరూపకాలను కనుగొనండి.",
+      "q_hi": "बिंदुओं (−1, 7) और (4, −3) को मिलाने वाले रेखाखंड को 2 : 3 के अनुपात में विभाजित करने वाले बिंदु के निर्देशांक ज्ञात कीजिए।"
     },
     {
       "id": "c10_p10",
@@ -1855,7 +2047,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Divide numerator and denominator by cos θ: (tan θ + 1) / (tan θ − 1).",
       "exp": "(4/3 + 1) / (4/3 − 1) = (7/3) / (1/3) = 7.",
-      "misconception": "Computes hyp and makes arithmetic slip."
+      "misconception": "Computes hyp and makes arithmetic slip.",
+      "q_te": "tan θ = 4/3 అయితే, (sin θ + cos θ) / (sin θ − cos θ) విలువ ఎంత?",
+      "q_hi": "यदि tan θ = 4/3 है, तो (sin θ + cos θ) / (sin θ − cos θ) का मान क्या होगा?"
     },
     {
       "id": "c10_p11",
@@ -1874,7 +2068,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Substitute standard values: sin 30°=1/2, tan 45°=1, cosec 60°=2/√3, sec 30°=2/√3, cos 60°=1/2, cot 45°=1.",
       "exp": "Numerator = 3/2 − 2/√3 = (3√3 − 4)/(2√3). Denominator = (3√3 + 4)/(2√3). Ratio = (3√3 − 4)/(3√3 + 4) = (3√3 − 4)² / 11 = (43 − 24√3) / 11.",
-      "misconception": "Recalls incorrect trigonometric table value."
+      "misconception": "Recalls incorrect trigonometric table value.",
+      "q_te": "విలువను కనుగొనండి: (sin 30° + tan 45° − cosec 60°) / (sec 30° + cos 60° + cot 45°)",
+      "q_hi": "मान ज्ञात कीजिए: (sin 30° + tan 45° − cosec 60°) / (sec 30° + cos 60° + cot 45°)"
     },
     {
       "id": "c10_p12",
@@ -1893,7 +2089,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "sin 60° = Opposite / Hypotenuse = 60 / L. L = 60 / sin 60°.",
       "exp": "L = 60 / (√3 / 2) = 120 / √3 = 40√3 meters.",
-      "misconception": "Uses tan 60° instead of sin 60°."
+      "misconception": "Uses tan 60° instead of sin 60°.",
+      "q_te": "నేల నుండి 60 మీ ఎత్తులో ఒక గాలిపటం ఎగురుతోంది. దారం క్షితిజ సమాంతరంతో 60° కోణం చేస్తుంది. దారంలో ఎటువంటి వదులు లేదని భావిస్తే, దారం పొడవును కనుగొనండి.",
+      "q_hi": "भूमि से 60 मी की ऊँचाई पर एक पतंग उड़ रही है। डोरी क्षैतिज के साथ 60° का कोण बनाती है। डोरी में कोई ढील नहीं मानते हुए, डोरी की लंबाई ज्ञात कीजिए।"
     },
     {
       "id": "c10_p13",
@@ -1912,7 +2110,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Radius is perpendicular to tangent at point of contact: ∠OAP = ∠OBP = 90°. In quadrilateral OAPB, ∠AOB + ∠APB = 180°.",
       "exp": "∠AOB = 180° − 80° = 100°.",
-      "misconception": "Thinks ∠AOB equals ∠APB."
+      "misconception": "Thinks ∠AOB equals ∠APB.",
+      "q_te": "బాహ్య బిందువు P నుండి O కేంద్రంగా గల వృత్తానికి PA మరియు PB స్పర్శరేఖలు గీయబడ్డాయి. ∠APB = 80° అయితే, ∠AOB ఎంత?",
+      "q_hi": "एक बाह्य बिंदु P से केंद्र O वाले वृत्त पर दो स्पर्श रेखाएँ PA और PB खींची गई हैं। यदि ∠APB = 80° है, तो ∠AOB ज्ञात कीजिए।"
     },
     {
       "id": "c10_p14",
@@ -1931,7 +2131,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Area = (θ / 360) × πr² = (60 / 360) × (22/7) × 36.",
       "exp": "Area = 1/6 × (22/7) × 36 = 6 × 22 / 7 = 132/7 cm² (approx 18.86 cm²).",
-      "misconception": "Calculates arc length instead of area."
+      "misconception": "Calculates arc length instead of area.",
+      "q_te": "వ్యాసార్థం 6 సెం.మీ మరియు సెక్టార్ కోణం 60° కలిగిన వృత్త సెక్టార్ వైశాల్యాన్ని కనుగొనండి. (π = 22/7)",
+      "q_hi": "त्रिज्या 6 सेमी वाले एक वृत्त के एक त्रिज्यखंड (sector) का क्षेत्रफल ज्ञात कीजिए, जिसका कोण 60° है। (π = 22/7)"
     },
     {
       "id": "c10_p15",
@@ -1950,11 +2152,9 @@ var PRACTICE_BANK = {
       "ans": 0,
       "hint": "Doublets are (1,1), (2,2), (3,3), (4,4), (5,5), (6,6). Total outcomes = 36.",
       "exp": "Number of favorable outcomes = 6. Total = 36. Probability = 6/36 = 1/6.",
-      "misconception": "Counts only (1,1) giving 1/36."
+      "misconception": "Counts only (1,1) giving 1/36.",
+      "q_te": "రెండు పాచికలను ఒకేసారి దొర్లించినప్పుడు, డబ్లెట్ (రెండు పాచికలపై ఒకే సంఖ్య) వచ్చే సంభావ్యత ఎంత?",
+      "q_hi": "दो पासों को एक साथ फेंका जाता है। एक द्विक (दोनों पासों पर समान संख्या) आने की प्रायिकता क्या है?"
     }
   ]
 };
-
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = PRACTICE_BANK;
-}

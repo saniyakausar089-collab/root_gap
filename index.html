@@ -1212,7 +1212,7 @@ function loadPracticeBankIntoQS(){
         cls:parseInt(cls),
         topic:item.topic,
         chapter:item.chapter,
-        t:[item.q,item.q,item.q],
+        t:[item.q, item.q_te || item.q, item.q_hi || item.q],
         o:opts,
         a:item.ans,
         d:item.difficulty||2,
@@ -1363,41 +1363,83 @@ function translateMathQuestion(enText, lang) {
   if (!enText || !lang || lang === 0) return enText;
   var txt = String(enText).trim();
 
+  // 1. Direct lookup from loaded Practice Bank or QS
+  if (typeof PRACTICE_BANK !== 'undefined') {
+    for (var c in PRACTICE_BANK) {
+      var arr = PRACTICE_BANK[c];
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].q === txt) {
+          if (lang === 1 && arr[i].q_te) return arr[i].q_te;
+          if (lang === 2 && arr[i].q_hi) return arr[i].q_hi;
+        }
+      }
+    }
+  }
+  if (typeof QS !== 'undefined') {
+    for (var j = 0; j < QS.length; j++) {
+      if (QS[j].t && QS[j].t[0] === txt && QS[j].t[lang] && QS[j].t[lang] !== txt) {
+        return QS[j].t[lang];
+      }
+    }
+  }
+
+  // 2. Pattern-based translation engine
   // Telugu (lang === 1)
   if (lang === 1) {
     if (/^Which of the following fractions is in its simplest/i.test(txt)) {
       return 'కింది వాటిలో ఏ భిన్నం అత్యంత సూక్ష్మ రూపంలో (simplest form) ఉంది?';
     }
+    if (/^Which fraction is the greatest:\s*(.*)\?/i.test(txt)) {
+      var m = txt.match(/^Which fraction is the greatest:\s*(.*)\?/i);
+      return m[1] + ' లలో ఏ భిన్నం అత్యంత పెద్దది?';
+    }
     if (/^Which fraction is equivalent to (.*)\?/i.test(txt)) {
       var m = txt.match(/^Which fraction is equivalent to (.*)\?/i);
       return m[1] + ' కు సమానమైన భిన్నం ఏది?';
     }
-    if (/^Which is (larger|greater): (.*) or (.*)\?/i.test(txt)) {
-      var m = txt.match(/^Which is (larger|greater): (.*) or (.*)\?/i);
+    if (/^Which is (larger|greater):\s*(.*)\s+or\s+(.*)\?/i.test(txt)) {
+      var m = txt.match(/^Which is (larger|greater):\s*(.*)\s+or\s+(.*)\?/i);
       return 'ఏది పెద్దది: ' + m[2] + ' లేదా ' + m[3] + '?';
+    }
+    if (/^Express (.*) as a mixed fraction/i.test(txt)) {
+      var m = txt.match(/^Express (.*) as a mixed fraction/i);
+      return m[1] + ' ను మిశ్రమ భిన్నంగా వ్యక్తపరచండి.';
+    }
+    if (/^Write as a decimal:\s*(.*)/i.test(txt)) {
+      var m = txt.match(/^Write as a decimal:\s*(.*)/i);
+      return 'దశాంశ రూపంలో రాయండి: ' + m[1];
     }
     if (/^Solve for ([a-z]): (.*)/i.test(txt)) {
       var m = txt.match(/^Solve for ([a-z]): (.*)/i);
       return m[1] + ' కొరకు సాధించండి: ' + m[2];
     }
-    if (/^Solve: (.*)/i.test(txt)) {
+    if (/^Solve the equation:\s*(.*)/i.test(txt)) {
+      return 'సమీకరణాన్ని సాధించండి: ' + txt.replace(/^Solve the equation:\s*/i, '');
+    }
+    if (/^Solve:\s*(.*)/i.test(txt)) {
       return 'సాధించండి: ' + txt.replace(/^Solve:\s*/i, '');
     }
-    if (/^Calculate: (.*)/i.test(txt)) {
+    if (/^Calculate:\s*(.*)/i.test(txt)) {
       return 'లెక్కించండి: ' + txt.replace(/^Calculate:\s*/i, '');
     }
-    if (/^Evaluate: (.*)/i.test(txt)) {
+    if (/^Compute:\s*(.*)/i.test(txt)) {
+      return 'లెక్కించండి: ' + txt.replace(/^Compute:\s*/i, '');
+    }
+    if (/^Evaluate:\s*(.*)/i.test(txt)) {
       return 'విలువను కనుగొనండి: ' + txt.replace(/^Evaluate:\s*/i, '');
     }
-    if (/^Simplify: (.*)/i.test(txt)) {
+    if (/^Simplify:\s*(.*)/i.test(txt)) {
       return 'సూక్ష్మీకరించండి: ' + txt.replace(/^Simplify:\s*/i, '');
+    }
+    if (/^Divide:\s*(.*)/i.test(txt)) {
+      return 'భాగించండి: ' + txt.replace(/^Divide:\s*/i, '');
     }
     if (/^What are the roots of (.*)\?/i.test(txt)) {
       var m = txt.match(/^What are the roots of (.*)\?/i);
       return m[1] + ' యొక్క మూలాలు ఏమిటి?';
     }
-    if (/^Factorize: (.*)/i.test(txt)) {
-      return 'కారణాంకాలుగా విభజించండి: ' + txt.replace(/^Factorize:\s*/i, '');
+    if (/^Factorise:\s*(.*)/i.test(txt) || /^Factorize:\s*(.*)/i.test(txt)) {
+      return 'కారణాంకాలుగా విభజించండి: ' + txt.replace(/^Factori[sz]e:\s*/i, '');
     }
     if (/^What is the value of (.*)\?/i.test(txt)) {
       var m = txt.match(/^What is the value of (.*)\?/i);
@@ -1405,6 +1447,26 @@ function translateMathQuestion(enText, lang) {
     }
     if (/^Find the value of (.*)/i.test(txt)) {
       return txt.replace(/^Find the value of\s*/i, '').replace(/\?$/, '') + ' విలువ ఎంత?';
+    }
+    if (/^Find the perimeter of (.*)/i.test(txt)) {
+      return txt.replace(/^Find the perimeter of\s*/i, '').replace(/\?$/, '') + ' చుట్టుకొలతను కనుగొనండి.';
+    }
+    if (/^Find the area of (.*)/i.test(txt)) {
+      return txt.replace(/^Find the area of\s*/i, '').replace(/\?$/, '') + ' వైశాల్యాన్ని కనుగొనండి.';
+    }
+    if (/^Find the product:\s*(.*)/i.test(txt)) {
+      return 'లబ్ధాన్ని కనుగొనండి: ' + txt.replace(/^Find the product:\s*/i, '');
+    }
+    if (/^Find:\s*(.*)/i.test(txt)) {
+      return 'విలువను కనుగొనండి: ' + txt.replace(/^Find:\s*/i, '');
+    }
+    if (/^What is the measure of (.*)\?/i.test(txt)) {
+      var m = txt.match(/^What is the measure of (.*)\?/i);
+      return m[1] + ' కొలత ఎంత?';
+    }
+    if (/^What is the sum of (.*)\?/i.test(txt)) {
+      var m = txt.match(/^What is the sum of (.*)\?/i);
+      return m[1] + ' మొత్తం ఎంత?';
     }
     if (/^What is (.*)\?/i.test(txt)) {
       return txt.replace(/^What is\s*/i, '').replace(/\?$/, '') + ' విలువ ఎంత?';
@@ -1420,36 +1482,57 @@ function translateMathQuestion(enText, lang) {
     if (/^Which of the following fractions is in its simplest/i.test(txt)) {
       return 'निम्नलिखित में से कौन-सा भिन्न अपने सरलतम रूप में है?';
     }
+    if (/^Which fraction is the greatest:\s*(.*)\?/i.test(txt)) {
+      var m = txt.match(/^Which fraction is the greatest:\s*(.*)\?/i);
+      return m[1] + ' में से कौन-सा भिन्न सबसे बड़ा है?';
+    }
     if (/^Which fraction is equivalent to (.*)\?/i.test(txt)) {
       var m = txt.match(/^Which fraction is equivalent to (.*)\?/i);
       return m[1] + ' के समतुल्य कौन-सा भिन्न है?';
     }
-    if (/^Which is (larger|greater): (.*) or (.*)\?/i.test(txt)) {
-      var m = txt.match(/^Which is (larger|greater): (.*) or (.*)\?/i);
+    if (/^Which is (larger|greater):\s*(.*)\s+or\s+(.*)\?/i.test(txt)) {
+      var m = txt.match(/^Which is (larger|greater):\s*(.*)\s+or\s+(.*)\?/i);
       return 'कौन-सा बड़ा है: ' + m[2] + ' या ' + m[3] + '?';
+    }
+    if (/^Express (.*) as a mixed fraction/i.test(txt)) {
+      var m = txt.match(/^Express (.*) as a mixed fraction/i);
+      return m[1] + ' को मिश्रित भिन्न के रूप में व्यक्त कीजिए।';
+    }
+    if (/^Write as a decimal:\s*(.*)/i.test(txt)) {
+      var m = txt.match(/^Write as a decimal:\s*(.*)/i);
+      return 'दशमलव रूप में लिखिए: ' + m[1];
     }
     if (/^Solve for ([a-z]): (.*)/i.test(txt)) {
       var m = txt.match(/^Solve for ([a-z]): (.*)/i);
       return m[1] + ' के लिए हल करें: ' + m[2];
     }
-    if (/^Solve: (.*)/i.test(txt)) {
+    if (/^Solve the equation:\s*(.*)/i.test(txt)) {
+      return 'समीकरण को हल कीजिए: ' + txt.replace(/^Solve the equation:\s*/i, '');
+    }
+    if (/^Solve:\s*(.*)/i.test(txt)) {
       return 'हल करें: ' + txt.replace(/^Solve:\s*/i, '');
     }
-    if (/^Calculate: (.*)/i.test(txt)) {
+    if (/^Calculate:\s*(.*)/i.test(txt)) {
       return 'गणना करें: ' + txt.replace(/^Calculate:\s*/i, '');
     }
-    if (/^Evaluate: (.*)/i.test(txt)) {
+    if (/^Compute:\s*(.*)/i.test(txt)) {
+      return 'गणना कीजिए: ' + txt.replace(/^Compute:\s*/i, '');
+    }
+    if (/^Evaluate:\s*(.*)/i.test(txt)) {
       return 'मान ज्ञात कीजिए: ' + txt.replace(/^Evaluate:\s*/i, '');
     }
-    if (/^Simplify: (.*)/i.test(txt)) {
+    if (/^Simplify:\s*(.*)/i.test(txt)) {
       return 'सरल करें: ' + txt.replace(/^Simplify:\s*/i, '');
+    }
+    if (/^Divide:\s*(.*)/i.test(txt)) {
+      return 'भाग दीजिए: ' + txt.replace(/^Divide:\s*/i, '');
     }
     if (/^What are the roots of (.*)\?/i.test(txt)) {
       var m = txt.match(/^What are the roots of (.*)\?/i);
       return m[1] + ' के मूल क्या हैं?';
     }
-    if (/^Factorize: (.*)/i.test(txt)) {
-      return 'गुणनखंड करें: ' + txt.replace(/^Factorize:\s*/i, '');
+    if (/^Factorise:\s*(.*)/i.test(txt) || /^Factorize:\s*(.*)/i.test(txt)) {
+      return 'गुणनखंड करें: ' + txt.replace(/^Factori[sz]e:\s*/i, '');
     }
     if (/^What is the value of (.*)\?/i.test(txt)) {
       var m = txt.match(/^What is the value of (.*)\?/i);
@@ -1457,6 +1540,26 @@ function translateMathQuestion(enText, lang) {
     }
     if (/^Find the value of (.*)/i.test(txt)) {
       return txt.replace(/^Find the value of\s*/i, '').replace(/\?$/, '') + ' का मान ज्ञात कीजिए';
+    }
+    if (/^Find the perimeter of (.*)/i.test(txt)) {
+      return txt.replace(/^Find the perimeter of\s*/i, '').replace(/\?$/, '') + ' का परिमाप ज्ञात कीजिए।';
+    }
+    if (/^Find the area of (.*)/i.test(txt)) {
+      return txt.replace(/^Find the area of\s*/i, '').replace(/\?$/, '') + ' का क्षेत्रफल ज्ञात कीजिए।';
+    }
+    if (/^Find the product:\s*(.*)/i.test(txt)) {
+      return 'गुणनफल ज्ञात कीजिए: ' + txt.replace(/^Find the product:\s*/i, '');
+    }
+    if (/^Find:\s*(.*)/i.test(txt)) {
+      return 'ज्ञात कीजिए: ' + txt.replace(/^Find:\s*/i, '');
+    }
+    if (/^What is the measure of (.*)\?/i.test(txt)) {
+      var m = txt.match(/^What is the measure of (.*)\?/i);
+      return m[1] + ' का माप क्या है?';
+    }
+    if (/^What is the sum of (.*)\?/i.test(txt)) {
+      var m = txt.match(/^What is the sum of (.*)\?/i);
+      return m[1] + ' का योग कितना है?';
     }
     if (/^What is (.*)\?/i.test(txt)) {
       return txt.replace(/^What is\s*/i, '').replace(/\?$/, '') + ' क्या है?';
@@ -1634,6 +1737,21 @@ function load(){
   DB.ov=DB.ov||{};
   DB.asg=DB.asg||[];
   DB.cq=DB.cq||[];
+  DB.cq.forEach(function(q){
+    q.cls = q.cls || (SK[q.s] ? SK[q.s].c : 6);
+    q.chapter = q.chapter || (SK[q.s] ? SK[q.s].n[0] : "");
+    q.topic = q.topic || (SK[q.s] ? SK[q.s].n[0] : "");
+    q.isTeacher = true;
+    if(!q.t || q.t.length < 3){
+      var txt = (q.t && q.t[0]) || "";
+      var te = typeof translateMathQuestion === 'function' ? translateMathQuestion(txt, 1) : txt;
+      var hi = typeof translateMathQuestion === 'function' ? translateMathQuestion(txt, 2) : txt;
+      q.t = [txt, te || txt, hi || txt];
+    }
+    if(!QS.some(function(x){ return x.id == q.id; })){
+      QS.push(q);
+    }
+  });
   DB.assignedWorksheets=DB.assignedWorksheets||[];
   DB.peerDiscussions=DB.peerDiscussions||[
     {id:1,author:"Anil",topic:"lin",text:"Why does the sign change when moving across '='? Can someone explain step by step?",replies:[{author:"Divya",text:"Think of a balance scale! If you remove +5 from one side, you have to subtract 5 from the other side too: x + 5 - 5 = 2 - 5."}]}
@@ -1789,7 +1907,12 @@ function nextQ(){
   }else{
     var dl=S.dl||1;
     if(S.mode=="revise")pool.sort(function(a,b){return S.rq.indexOf(a.id)-S.rq.indexOf(b.id)});
-    else pool.sort(function(a,b){return Math.abs((a.d||2)-dl)-Math.abs((b.d||2)-dl)||a.id-b.id});
+    else pool.sort(function(a,b){
+      var aT = a.isTeacher ? 1 : 0;
+      var bT = b.isTeacher ? 1 : 0;
+      if(aT !== bT) return bT - aT;
+      return Math.abs((a.d||2)-dl)-Math.abs((b.d||2)-dl)||a.id-b.id;
+    });
     S.cur=pool[0];
     if(S.mode=="revise")S.sk=S.cur.s;
     if(S.cur && typeof applyQuestionTranslation === 'function'){
@@ -2819,6 +2942,11 @@ async function connectElevenLabsRooty(initialQuestion){
       elevenLabsErrorMsg = err.message || "Failed to connect to ElevenLabs Conversational AI.";
       chatLoading = false;
       updateRootyStatusUI();
+      if(pendingUserText){
+        var pending = pendingUserText;
+        pendingUserText = null;
+        fallbackToGeminiTutor(pending);
+      }
       throw err;
     } finally {
       elevenLabsConnectPromise = null;
@@ -2873,26 +3001,7 @@ function sendChat(customText){
     }
   }
 
-  // 2. If connection is in progress, queue text
-  if(elevenLabsConnectPromise){
-    pendingUserText = txt;
-    return;
-  }
-
-  // 3. If not yet connected, initiate connection and send message upon connect
-  if(elevenLabsStatus !== "connected"){
-    pendingUserText = txt;
-    connectElevenLabsRooty().then(function(conv){
-      if(conv && conv.isOpen && conv.isOpen()){
-        conv.sendUserMessage(txt);
-      }
-    }).catch(function(err){
-      console.warn("ElevenLabs connect failed, falling back to Gemini tutor:", err);
-      fallbackToGeminiTutor(txt);
-    });
-    return;
-  }
-
+  // 2. Direct AI Tutor fallback (Google Gemini) - handles text queries reliably without hanging or stalling
   fallbackToGeminiTutor(txt);
 }
 
@@ -3349,7 +3458,7 @@ function hint(){if(!S.fb&&(S.hu||0)<3){S.hu=(S.hu||0)+1;R()}}
 function qwhy(){
   return S.mode=="revise"?"due for review":S.br?(S.mode=="test"?"prerequisite check":"bridge practice"):S.mode=="test"?"test question":"chosen for your level";
 }
-function tryLang(i){S.prevL=L;L=i;S.fb=null;S.pick=null;S.rt=1;R()}
+function tryLang(i){S.prevL=L;L=i;if(S.cur&&typeof applyQuestionTranslation==='function')applyQuestionTranslation(S.cur,L);S.fb=null;S.pick=null;S.rt=1;R()}
 function rtconf(c){
   var q=S.cur,ok=S.pick==q.a,st=S.st;
   S.rt=null;
@@ -4167,7 +4276,22 @@ function addQ(){
   }
   if(!txt){alert("Type the question.");return}
   var id=Math.max.apply(null,QS.map(function(q){return q.id}))+1;
-  var q={id:id,s:s,t:[txt],o:o,a:a};
+  var qClass = SK[s] ? SK[s].c : 6;
+  var chapterName = SK[s] ? SK[s].n[0] : "";
+  var teTxt = typeof translateMathQuestion === 'function' ? translateMathQuestion(txt, 1) : txt;
+  var hiTxt = typeof translateMathQuestion === 'function' ? translateMathQuestion(txt, 2) : txt;
+  var q={
+    id: id,
+    s: s,
+    cls: qClass,
+    chapter: chapterName,
+    topic: chapterName,
+    isTeacher: true,
+    d: 1,
+    t: [txt, teTxt || txt, hiTxt || txt],
+    o: o,
+    a: a
+  };
   QS.push(q);
   (DB.cq=DB.cq||[]).push(q);
   save();
