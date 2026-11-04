@@ -1356,6 +1356,135 @@ function stopAllAudio(){
 }
 
 function t(k){return (T[k]&&T[k][L])||(T[k]&&T[k][0])||k}
+
+// Dynamic Mathematics Question Translation System (Telugu & Hindi)
+function translateMathQuestion(enText, lang) {
+  if (!enText || !lang || lang === 0) return enText;
+  var txt = String(enText).trim();
+
+  // Telugu (lang === 1)
+  if (lang === 1) {
+    if (/^Which of the following fractions is in its simplest/i.test(txt)) {
+      return 'కింది వాటిలో ఏ భిన్నం అత్యంత సూక్ష్మ రూపంలో (simplest form) ఉంది?';
+    }
+    if (/^Which fraction is equivalent to (.*)\?/i.test(txt)) {
+      var m = txt.match(/^Which fraction is equivalent to (.*)\?/i);
+      return m[1] + ' కు సమానమైన భిన్నం ఏది?';
+    }
+    if (/^Which is (larger|greater): (.*) or (.*)\?/i.test(txt)) {
+      var m = txt.match(/^Which is (larger|greater): (.*) or (.*)\?/i);
+      return 'ఏది పెద్దది: ' + m[2] + ' లేదా ' + m[3] + '?';
+    }
+    if (/^Solve for ([a-z]): (.*)/i.test(txt)) {
+      var m = txt.match(/^Solve for ([a-z]): (.*)/i);
+      return m[1] + ' కొరకు సాధించండి: ' + m[2];
+    }
+    if (/^Solve: (.*)/i.test(txt)) {
+      return 'సాధించండి: ' + txt.replace(/^Solve:\s*/i, '');
+    }
+    if (/^Calculate: (.*)/i.test(txt)) {
+      return 'లెక్కించండి: ' + txt.replace(/^Calculate:\s*/i, '');
+    }
+    if (/^Evaluate: (.*)/i.test(txt)) {
+      return 'విలువను కనుగొనండి: ' + txt.replace(/^Evaluate:\s*/i, '');
+    }
+    if (/^Simplify: (.*)/i.test(txt)) {
+      return 'సూక్ష్మీకరించండి: ' + txt.replace(/^Simplify:\s*/i, '');
+    }
+    if (/^What are the roots of (.*)\?/i.test(txt)) {
+      var m = txt.match(/^What are the roots of (.*)\?/i);
+      return m[1] + ' యొక్క మూలాలు ఏమిటి?';
+    }
+    if (/^Factorize: (.*)/i.test(txt)) {
+      return 'కారణాంకాలుగా విభజించండి: ' + txt.replace(/^Factorize:\s*/i, '');
+    }
+    if (/^What is the value of (.*)\?/i.test(txt)) {
+      var m = txt.match(/^What is the value of (.*)\?/i);
+      return m[1] + ' యొక్క విలువ ఎంత?';
+    }
+    if (/^Find the value of (.*)/i.test(txt)) {
+      return txt.replace(/^Find the value of\s*/i, '').replace(/\?$/, '') + ' విలువ ఎంత?';
+    }
+    if (/^What is (.*)\?/i.test(txt)) {
+      return txt.replace(/^What is\s*/i, '').replace(/\?$/, '') + ' విలువ ఎంత?';
+    }
+    if (/=\s*\?/.test(txt)) {
+      return txt.replace(/=\s*\?/, '= ? (విలువ ఎంత?)');
+    }
+    return 'ప్రశ్న: ' + txt;
+  }
+
+  // Hindi (lang === 2)
+  if (lang === 2) {
+    if (/^Which of the following fractions is in its simplest/i.test(txt)) {
+      return 'निम्नलिखित में से कौन-सा भिन्न अपने सरलतम रूप में है?';
+    }
+    if (/^Which fraction is equivalent to (.*)\?/i.test(txt)) {
+      var m = txt.match(/^Which fraction is equivalent to (.*)\?/i);
+      return m[1] + ' के समतुल्य कौन-सा भिन्न है?';
+    }
+    if (/^Which is (larger|greater): (.*) or (.*)\?/i.test(txt)) {
+      var m = txt.match(/^Which is (larger|greater): (.*) or (.*)\?/i);
+      return 'कौन-सा बड़ा है: ' + m[2] + ' या ' + m[3] + '?';
+    }
+    if (/^Solve for ([a-z]): (.*)/i.test(txt)) {
+      var m = txt.match(/^Solve for ([a-z]): (.*)/i);
+      return m[1] + ' के लिए हल करें: ' + m[2];
+    }
+    if (/^Solve: (.*)/i.test(txt)) {
+      return 'हल करें: ' + txt.replace(/^Solve:\s*/i, '');
+    }
+    if (/^Calculate: (.*)/i.test(txt)) {
+      return 'गणना करें: ' + txt.replace(/^Calculate:\s*/i, '');
+    }
+    if (/^Evaluate: (.*)/i.test(txt)) {
+      return 'मान ज्ञात कीजिए: ' + txt.replace(/^Evaluate:\s*/i, '');
+    }
+    if (/^Simplify: (.*)/i.test(txt)) {
+      return 'सरल करें: ' + txt.replace(/^Simplify:\s*/i, '');
+    }
+    if (/^What are the roots of (.*)\?/i.test(txt)) {
+      var m = txt.match(/^What are the roots of (.*)\?/i);
+      return m[1] + ' के मूल क्या हैं?';
+    }
+    if (/^Factorize: (.*)/i.test(txt)) {
+      return 'गुणनखंड करें: ' + txt.replace(/^Factorize:\s*/i, '');
+    }
+    if (/^What is the value of (.*)\?/i.test(txt)) {
+      var m = txt.match(/^What is the value of (.*)\?/i);
+      return m[1] + ' का मान क्या है?';
+    }
+    if (/^Find the value of (.*)/i.test(txt)) {
+      return txt.replace(/^Find the value of\s*/i, '').replace(/\?$/, '') + ' का मान ज्ञात कीजिए';
+    }
+    if (/^What is (.*)\?/i.test(txt)) {
+      return txt.replace(/^What is\s*/i, '').replace(/\?$/, '') + ' क्या है?';
+    }
+    if (/=\s*\?/.test(txt)) {
+      return txt.replace(/=\s*\?/, '= ? (मान क्या है?)');
+    }
+    return 'प्रश्न: ' + txt;
+  }
+
+  return enText;
+}
+
+function applyQuestionTranslation(q, lang){
+  if(!q || !q.t) return;
+  if(lang === 0) return;
+  if(!q.t[lang] || q.t[lang] === q.t[0]){
+    q.t[lang] = translateMathQuestion(q.t[0], lang);
+  }
+}
+
+function setLanguage(newLang){
+  L = newLang;
+  if(S && S.cur){
+    applyQuestionTranslation(S.cur, L);
+  }
+  toast("Language: " + (L===1?"తెలుగు (Telugu)":L===2?"हिन्दी (Hindi)":"English"));
+  R();
+}
 function cl(x){return Math.max(0,Math.min(1,x))}
 function now(){return Date.now()+((DB&&DB.off)||0)*864e5}
 
@@ -1617,9 +1746,10 @@ function nextQ(){
     pool=QS.filter(function(q){return S.rq.indexOf(q.id)>=0&&S.done.indexOf(q.id)<0});
     if(!pool.length){S.end=true;S.cur=null;return}
   }else{
-    // Prioritize questions matching student's class curriculum or active chapter
+    // Filter questions matching target chapter or active class curriculum
     pool=QS.filter(function(q){
       if(S.done.indexOf(q.id)>=0)return false;
+      if(S.targetChapter && (q.chapter === S.targetChapter || q.topic === S.targetChapter)) return true;
       if(S.br)return q.s==sk;
       var qClass=q.cls||(SK[q.s]?SK[q.s].c:null);
       if(qClass){
@@ -1632,9 +1762,20 @@ function nextQ(){
     if(!pool.length){
       pool=QS.filter(function(q){return q.s==sk&&S.done.indexOf(q.id)<0});
     }
-    // Fallback 2: Recycle pool excluding current question so session never freezes midway
+    // Fallback 2: Any un-attempted question for student's class
     if(!pool.length){
-      pool=QS.filter(function(q){return q.s==sk&&(q.id!==(S.cur&&S.cur.id))});
+      pool=QS.filter(function(q){
+        var qClass=q.cls||(SK[q.s]?SK[q.s].c:null);
+        return qClass==studentCls && S.done.indexOf(q.id)<0;
+      });
+    }
+    // Fallback 3: Any un-attempted question across the entire bank
+    if(!pool.length){
+      pool=QS.filter(function(q){return S.done.indexOf(q.id)<0});
+    }
+    // Fallback 4: Recycle questions excluding current question so session NEVER freezes midway before 6 questions
+    if(!pool.length){
+      pool=QS.filter(function(q){return !S.cur || q.id !== S.cur.id});
     }
   }
 
@@ -1647,18 +1788,22 @@ function nextQ(){
     else pool.sort(function(a,b){return Math.abs((a.d||2)-dl)-Math.abs((b.d||2)-dl)||a.id-b.id});
     S.cur=pool[0];
     if(S.mode=="revise")S.sk=S.cur.s;
+    if(S.cur && typeof applyQuestionTranslation === 'function'){
+      applyQuestionTranslation(S.cur, L);
+    }
   }
 }
 
 function pick(i){if(!S.fb){S.pick=i;R()}}
 
 function conf(c){
+  if(!S || !S.cur || S.pick === null) return;
   if(S.mode=="test"||S.mode=="battle")return tconf(c);
   if(S.rt)return rtconf(c);
   var q=S.cur,r=ans(S.st,q.id,S.pick,c,S.hu),msg="";
   save();
-  S.done.push(q.id);
-  S.path.push({k:q.s,ok:r.ok,c:c,b:!!S.br});
+  (S.done=S.done||[]).push(q.id);
+  (S.path=S.path||[]).push({k:q.s,ok:r.ok,c:c,b:!!S.br});
   // Track genuine practice results in S.res
   S.res=S.res||[];
   S.res.push({k:q.s,ok:r.ok,c:c,tag:r.tag,q:q.id});
@@ -1681,10 +1826,6 @@ function conf(c){
   if(S.streak>=3&&!S.br&&S.mode=="solve"){
     toast("⭐ Level Up! 3 Sure & Correct in a row!");
   }
-  // Complete the full intended 6 practice questions
-  if(S.mode=="solve"&&S.res.length>=6){
-    S.end=true;
-  }
   S.fb={ok:r.ok,tag:r.tag,c:c,msg:msg,ask:!r.ok&&L==0&&q.t.length>1&&S.mode=="solve",why:why(r,c)};
   xpFx(r,c);
   R();
@@ -1696,7 +1837,12 @@ function nxt(){
     L = S.prevL;
     delete S.prevL;
   }
-  if(S.skip){S.end=true;S.cur=null}else nextQ();
+  if(S.skip || ((S.mode=="solve"||S.mode=="battle") && S.res && S.res.length >= 6)){
+    S.end=true;
+    S.cur=null;
+  }else{
+    nextQ();
+  }
   R();
 }
 
@@ -1717,23 +1863,27 @@ function why(r,c){
 }
 
 function tconf(c){
+  if(!S || !S.cur || S.pick === null) return;
   var q=S.cur,r=ans(S.st,q.id,S.pick,c);
   S.dl=Math.max(1,Math.min(3,(S.dl||1)+(r.ok&&c==2?1:(!r.ok?-1:0))));
-  save();
   (S.done=S.done||[]).push(q.id);
   (S.path=S.path||[]).push({k:q.s,ok:r.ok,c:c,b:!!S.br});
   (S.res=S.res||[]).push({k:q.s,ok:r.ok,c:c,tag:r.tag,q:q.id});
+  if(r.ok){
+    toast("💥 Hit! -" + (c==2?25:20) + "% Boss HP!");
+  }else{
+    toast("🛡️ Boss blocked your attack!");
+  }
+  save();
   if(S.br){S.br=null}
   else if(!r.ok){
     var rt=MC[r.tag]&&MC[r.tag].r;
     if(rt&&rt!=S.sk&&S.pr.indexOf(rt)<0){S.pr.push(rt);S.br=rt}
   }
+  (S.dlog=S.dlog||[]).push(twhy(r,c));
   // Complete the full intended 6 diagnostic questions in battle session
   if(S.res.length>=6){
     S.end=true;
-  }
-  (S.dlog=S.dlog||[]).push(twhy(r,c));
-  if(S.end){
     S.cur=null;
     var okCount=S.res.filter(function(x){return x.ok}).length;
     if(okCount>=4){
@@ -1741,9 +1891,13 @@ function tconf(c){
       S.st.xp=(S.st.xp||0)+30;
       boom();
       toast("🏆 Gap Monster Defeated! +30 XP");
+    }else{
+      toast("⚔️ Battle completed! 4+ correct hits needed to defeat the monster.");
     }
     save();
-  }else nextQ();
+  }else{
+    nextQ();
+  }
   R();
 }
 
@@ -1862,8 +2016,27 @@ function rConfTracker(){
 // FEATURE 5: LEARNING BATTLES
 // ==========================================
 function startBattle(){
-  S.streak=0;S.res=[];S.dlog=[];S.done=[];S.path=[];S.pr=[];S.cur=null;
-  nextQ();R();
+  S.mode="battle";
+  S.sk=CLS[S.st.cls]||"frac";
+  S.done=[];
+  S.streak=0;
+  S.br=null;
+  S.bn=0;
+  S.path=[];
+  S.res=[];
+  S.pr=[];
+  S.dl=1;
+  S.dlog=[];
+  S.rt=null;
+  S.fast=0;
+  S.skip=false;
+  S.end=false;
+  S.fb=null;
+  S.pick=null;
+  S.lesson=null;
+  S.cur=null;
+  nextQ();
+  R();
 }
 function rBattle(){
   return rStu(); // Uses boss() battle HUD with battle XP rewards
@@ -2841,6 +3014,30 @@ function rHome(){
   h+='<div class="ring" style="--p:'+Math.min(100,todayN(st)/5*100)+'"><b>'+Math.min(todayN(st),5)+'/5</b><small>today</small></div>';
   h+='</div>';
 
+  // Feature 4: Teacher-Controlled Active Syllabus Chapter for Student's Class
+  var assignedChapter = (DB.activeChapters && DB.activeChapters[st.cls]);
+  if(assignedChapter){
+    var chLogs = (st.log||[]).filter(function(l){
+      var q = QS.find(function(x){ return x.id == l.q; });
+      return (l.chapter === assignedChapter) || (q && q.chapter === assignedChapter);
+    });
+    var chSolved = chLogs.filter(function(l){ return l.ok; }).length;
+    var chAcc = chLogs.length ? Math.round((chSolved / chLogs.length) * 100) : 0;
+    h+='<div class="card" style="border:2px solid var(--pri);background:radial-gradient(ellipse at top left,rgba(124,58,237,0.15),transparent 70%);margin-bottom:14px">';
+    h+='<div class="row" style="justify-content:space-between"><span class="tag" style="background:var(--pri);color:#fff">📚 Active Class Syllabus Chapter</span><span class="pill g">Class '+st.cls+' Coursework</span></div>';
+    h+='<h3 style="margin:6px 0 2px 0">'+assignedChapter+'</h3>';
+    h+='<p class="mut" style="font-size:13px;margin:0 0 10px 0">Assigned by your teacher for Class '+st.cls+'. Focus your practice on this chapter for upcoming school assessments.</p>';
+    h+='<div class="row" style="gap:16px;font-size:13px;margin-bottom:12px">';
+    h+='<div><b>'+chLogs.length+'</b> <span class="mut">questions attempted</span></div>';
+    h+='<div><b>'+chSolved+'</b> <span class="mut">correct</span></div>';
+    h+='<div><b>'+chAcc+'%</b> <span class="mut">chapter accuracy</span></div>';
+    h+='</div>';
+    h+='<div class="row" style="gap:8px"><button class="btn p" onclick="practiceAssignedChapter(\''+assignedChapter.replace(/'/g, "\\'")+'\')">Practice This Chapter ✏️</button><button class="btn" onclick="begin(\'doubts\')">Ask Doubt on This Chapter 💡</button></div>';
+    h+='</div>';
+  } else {
+    h+='<div class="card" style="border:1px dashed var(--ln);padding:14px;margin-bottom:14px"><span class="tag">📚 Class Syllabus Chapter</span><p class="mut" style="margin:4px 0 0 0">No active chapter assigned yet by your teacher for Class '+st.cls+'.</p></div>';
+  }
+
   // Feature 17: Daily Missions Card
   h+='<div class="card"><div class="row" style="justify-content:space-between"><b>🎯 Daily Learning Missions</b>'+(ms.m1&&ms.m2&&!ms.claimed?'<button class="btn gold sm" onclick="claimMissionBonus()">Claim +50 XP</button>':ms.claimed?'<span class="pill g">Claimed</span>':'')+'</div>';
   h+='<div style="margin-top:6px;font-size:13px">';
@@ -2879,6 +3076,15 @@ function rHome(){
   return h+bars(st.m);
 }
 
+function practiceAssignedChapter(chapterName){
+  if(!S || !S.st) return;
+  var skillMap = { 6: "frac", 7: "neg", 8: "lin", 9: "quad", 10: "quad" };
+  var sk = skillMap[S.st.cls] || "frac";
+  S.targetChapter = chapterName;
+  toast("Starting practice for: " + chapterName);
+  begin("solve", sk);
+}
+
 function rStu(){
   if(!S)return rSel();
   if(!S.mode)return rHome();
@@ -2898,7 +3104,8 @@ function rStu(){
 
   var h='<div class="card">';
   h+='<div class="row" style="justify-content:space-between"><span class="tag">'+(S.br?"🔧 "+t("br")+": "+SK[S.br].n[L]:(S.mode=="revise"?"🔁 Revise · ":"")+SK[S.sk].n[L]+" · Class "+SK[S.sk].c)+'</span><span class="mut">'+S.st.name+'</span></div>';
-  h+='<h3>'+(q.t[L]||q.t[0])+'</h3>';
+  var qDisplay = (q.t && q.t[L] && q.t[L] !== q.t[0]) ? q.t[L] : (L === 0 ? q.t[0] : translateMathQuestion(q.t[0], L));
+  h+='<h3>'+qDisplay+'</h3>';
   h+='<p class="mut">Difficulty: Level '+(q.d||2)+' of 3</p>';
   
   if(S.mode=="solve"&&!S.fb){
@@ -2940,7 +3147,8 @@ function rStu(){
     if(S.fb.why){
       h+='<div class="lesson">🧭 <b>Root-Gap Decision Log</b><ul>'+S.fb.why.map(function(x){return"<li>"+x+"</li>"}).join("")+'</ul></div>';
     }
-    h+='<button class="btn p" onclick="nxt()">'+t("nx")+' →</button>';
+    var nextLabel = ((S.mode=="solve"||S.mode=="battle") && S.res && S.res.length >= 6) ? "View Results & Summary 🏆 →" : (t("nx")+" →");
+    h+='<button class="btn p" onclick="nxt()">'+nextLabel+'</button>';
   }
 
   return boss()+h+'</div>'+pathHtml()+bars(S.st.m)+'<p><button class="btn" onclick="S.end=true;S.cur=null;R()">Finish &amp; Summary</button></p>';
@@ -2998,6 +3206,9 @@ function rtconf(c){
     ts:Date.now()
   });
   st.ts=Date.now();
+  (S.done=S.done||[]).push(q.id);
+  (S.res=S.res||[]).push({k:q.s,ok:ok,c:c,tag:ok?null:"conceptGap",q:q.id});
+  (S.path=S.path||[]).push({k:q.s,ok:ok,c:c,b:!!S.br});
   save();
   if(ok){S.br=null;S.bn=0}
   S.fb={
@@ -3031,8 +3242,8 @@ function declog(){
 function rEndSummary(){
   var Q=S.res,f=function(p){return Q.filter(p).length},ok=f(function(x){return x.ok}),gp=[];
   Q.forEach(function(x){if(!x.ok&&x.tag){var r=MC[x.tag]&&MC[x.tag].r;if(r&&gp.indexOf(r)<0)gp.push(r)}});
-  var isDefeated = ok>=4||(Q.length&&Q.length<6);
-  var h='<div class="card"><h3>📝 Battle & Diagnostic Result</h3>'+(isDefeated?'<p style="color:var(--good);font-weight:700">🏆 Gap Monster Defeated!</p>':'<p style="color:var(--bad);font-weight:700">👾 The Gap Monster survived. Master the recommended lessons and try again!</p>')+'<p><b>'+ok+' / '+Q.length+'</b> correct answers'+(Q.length&&Q.length<6?' · ended early because mastery was confirmed!':'')+'</p>';
+  var isDefeated = ok>=4;
+  var h='<div class="card"><h3>📝 Battle & Diagnostic Result</h3>'+(isDefeated?'<p style="color:var(--good);font-weight:700">🏆 Gap Monster Defeated!</p>':'<p style="color:var(--bad);font-weight:700">👾 The Gap Monster survived. Master the recommended lessons and try again!</p>')+'<p><b>'+ok+' / '+Q.length+'</b> correct answers</p>';
   h+='<div class="m4" style="margin:12px 0"><div><span class="stat">'+f(function(x){return x.ok&&x.c==2})+'</span><br><small class="mut">Mastered (Sure & Correct)</small></div><div><span class="stat">'+f(function(x){return x.ok&&x.c==0})+'</span><br><small class="mut">Fragile (Lucky Guess)</small></div><div><span class="stat">'+f(function(x){return !x.ok&&x.c==2})+'</span><br><small class="mut">Deep Misconception</small></div></div>';
   if(gp.length){
     h+='<div class="lesson" style="margin:10px 0"><b>Root Gap Identified:</b> We traced mistakes to <b>'+SK[gp[0]].n[0]+'</b> (Class '+SK[gp[0]].c+'). Recommended next step: review this prerequisite foundation.<div style="margin-top:8px"><button class="btn p" onclick="S.mode=null;S.end=false;S.res=[];begin(\'learn\',\''+gp[0]+'\')">Study '+SK[gp[0]].n[0]+' →</button></div></div>';
@@ -3773,27 +3984,146 @@ function delAsg(id){
 // FEATURE 9: PARENT PROGRESS DASHBOARD
 // ==========================================
 function rParent(){
-  var h='<div class="card"><span class="tag">Feature 9: Parent Progress Dashboard</span><h3>Parent Overview Portal</h3><p class="mut">Plain-language insights for parents to understand and support their child’s learning at home.</p>';
-  h+='<p>Select Student: <select id="par_sel" onchange="S0.parId=this.value;R()">'+DB.st.map(function(s){
+  var allStudents = DB.st || [];
+  if(!S0.parId && S && S.st){
+    S0.parId = S.st.id;
+  }
+  if(!S0.parId && allStudents.length){
+    S0.parId = allStudents[0].id;
+  }
+
+  var h='<div class="card"><span class="tag">Feature 9: Parent Progress Dashboard</span><h3>Parent Overview Portal</h3><p class="mut">Comprehensive, student-specific insights for parents to understand and support their child\'s learning and practice at home.</p>';
+
+  if(!allStudents.length){
+    return h+'<div class="card" style="text-align:center;padding:24px"><p class="mut">No student records found in the system.</p><small class="mut">Once student accounts are created or enrolled, their individual academic reports will appear here.</small></div></div>';
+  }
+
+  h+='<div class="row" style="margin:12px 0 16px 0;align-items:center;gap:10px">';
+  h+='<label style="font-weight:600">Select Child / Student:</label>';
+  h+='<select id="par_sel" style="padding:8px 12px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);font-size:14px" onchange="S0.parId=this.value;R()">'+allStudents.map(function(s){
     return'<option value="'+s.id+'"'+(s.id==S0.parId?' selected':'')+'>'+s.name+' (Class '+s.cls+')</option>';
-  }).join("")+'</select></p>';
-
-  var s=DB.st.find(function(x){return x.id==S0.parId})||DB.st[0];
-  if(!s)return h+'<p>No student records.</p></div>';
-
-  var weakK=weakest(s);
-  h+='<div class="card" style="border-left:4px solid var(--pri)">';
-  h+='<h3>'+s.name+'’s Academic Summary</h3>';
-  h+='<p><b>Learning Consistency:</b> Active on '+Math.min(s.n||0,5)+' practice tasks this week. Total XP: '+(s.xp||0)+' (Level '+lvOf(s)+').</p>';
-  h+='<p><b>Strongest Area:</b> '+(s.m.frac>=.7?'Fractions':s.m.neg>=.7?'Negative numbers':'Linear equations')+' — demonstrates high confidence and accuracy.</p>';
-  h+='<p><b>Area Needing Home Practice:</b> '+SK[weakK].n[0]+'. Currently at '+Math.round(s.m[weakK]*100)+'% mastery.</p>';
-  h+='<div class="lesson"><b>💡 Fun 5-minute Activity to Do Together at Home:</b><br>'+({
-    frac:"When slicing pizza, cake, or paratha, ask: 'If we cut into 6 slices and you take 2, what fraction is left?'",
-    neg:"Look at your refrigerator temperature (-4°C) vs room temperature (+25°C) and discuss the difference on the number line.",
-    lin:"At the vegetable shop: '3 bunches of coriander plus Rs 10 is Rs 25. How much is 1 bunch?'",
-    quad:"Challenge them to find two numbers that multiply to 12 and add up to 7 (3 and 4)."
-  })[weakK]+'</div>';
+  }).join("")+'</select>';
   h+='</div>';
+
+  var s = allStudents.find(function(x){return x.id==S0.parId});
+  if(!s){
+    return h+'<div class="card" style="text-align:center;padding:24px"><p class="mut">Linked student not found.</p><small class="mut">Please choose an active student from the dropdown above.</small></div></div>';
+  }
+
+  // Student specific metrics
+  var logs = s.log || [];
+  var totalQuestions = logs.length;
+  var correctQuestions = logs.filter(function(l){ return l.ok; }).length;
+  var accuracy = totalQuestions ? Math.round((correctQuestions / totalQuestions) * 100) : 0;
+  var sureCorrect = logs.filter(function(l){ return l.ok && l.cf === 2; }).length;
+  var xp = s.xp || 0;
+  var lvl = lvOf(s);
+  var bossDefeats = s.boss || 0;
+
+  // Student specific skill analysis
+  var relevantSkills = ORD.slice(0, ORD.indexOf(CLS[s.cls]) + 1);
+  if(!relevantSkills.length) relevantSkills = ORD;
+  var weakK = weakest(s);
+  var strongK = relevantSkills.reduce(function(best, k){
+    return ((s.m[k] || 0) > (s.m[best] || 0)) ? k : best;
+  }, relevantSkills[0]);
+
+  // Child Header Banner
+  h+='<div class="card" style="border-left:4px solid var(--pri);background:radial-gradient(ellipse at top left,rgba(124,58,237,0.18),transparent 70%)">';
+  h+='<div class="row" style="justify-content:space-between;align-items:center">';
+  h+='<div><div class="row" style="align-items:center;gap:10px"><div class="av big">'+avOf(s)+'</div><div><h2 style="margin:0 0 2px 0">'+s.name+'</h2><span class="pill g">Class '+s.cls+' Student</span> · <span class="pill l">Level '+lvl+' Explorer</span></div></div></div>';
+  h+='<div style="text-align:right"><h1 style="margin:0;font-size:32px;color:var(--gold)">'+xp+'</h1><small class="mut">Total Learning XP</small></div>';
+  h+='</div>';
+
+  // Key KPI grid
+  h+='<div class="m4" style="margin:16px 0 8px 0">';
+  h+='<div><span class="stat">'+totalQuestions+'</span><br><small class="mut">Questions Solved</small></div>';
+  h+='<div><span class="stat" style="color:var(--ok)">'+accuracy+'%</span><br><small class="mut">Overall Accuracy</small></div>';
+  h+='<div><span class="stat" style="color:var(--gold)">'+sureCorrect+'</span><br><small class="mut">Mastered (Sure &amp; Correct)</small></div>';
+  h+='<div><span class="stat" style="color:var(--accent)">'+bossDefeats+'</span><br><small class="mut">Boss Defeats</small></div>';
+  h+='</div>';
+  h+='</div>';
+
+  // Topic Mastery Breakdown
+  h+='<div class="card"><h4>Topic Mastery Breakdown for '+s.name+'</h4>';
+  h+='<div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">';
+  relevantSkills.forEach(function(k){
+    var m = Math.round((s.m[k] || 0) * 100);
+    var color = m >= 75 ? 'var(--ok)' : m >= 50 ? 'var(--gold)' : 'var(--bad)';
+    h+='<div><div class="row" style="justify-content:space-between;margin-bottom:3px"><b>'+SK[k].icon+' '+SK[k].n[0]+'</b><span>'+m+'%</span></div>';
+    h+='<div class="bar"><i style="width:'+m+'%;background:'+color+'"></i></div></div>';
+  });
+  h+='</div>';
+  h+='<div class="row" style="margin-top:14px;gap:12px;flex-wrap:wrap">';
+  h+='<div style="flex:1;min-width:200px;padding:10px;background:rgba(16,185,129,0.08);border-left:3px solid var(--ok);border-radius:6px"><b style="color:var(--ok)">🌟 Strongest Area:</b> '+SK[strongK].n[0]+' ('+Math.round((s.m[strongK]||0)*100)+'%)<br><small class="mut">Demonstrates consistent confidence and prerequisite mastery.</small></div>';
+  h+='<div style="flex:1;min-width:200px;padding:10px;background:rgba(244,63,94,0.08);border-left:3px solid var(--bad);border-radius:6px"><b style="color:var(--bad)">🎯 Focus Area for Home:</b> '+SK[weakK].n[0]+' ('+Math.round((s.m[weakK]||0)*100)+'%)<br><small class="mut">Prerequisite foundation needs reinforcement before exams.</small></div>';
+  h+='</div></div>';
+
+  // Recent Quiz and Practice History (Student specific)
+  h+='<div class="card"><h4>Recent Practice &amp; Quiz Attempts for '+s.name+' ('+logs.length+')</h4>';
+  if(!logs.length){
+    h+='<div class="card" style="text-align:center;padding:18px;background:var(--soft)"><p class="mut" style="margin:0 0 4px 0">No quiz attempts recorded yet for '+s.name+'.</p><small class="mut">Encourage your child to complete a Practice or Battle session in their student dashboard to generate real performance data!</small></div>';
+  }else{
+    h+='<div class="tbl"><table><tr><th>Question</th><th>Result</th><th>Confidence</th><th>Date</th></tr>';
+    logs.slice(-6).reverse().forEach(function(l){
+      var q = QS.find(function(x){ return x.id == l.q; });
+      var qText = q ? q.t[0] : ("Question #" + l.q);
+      var status = l.ok ? '<span class="pill g">✅ Correct</span>' : '<span class="pill c">❌ Incorrect</span>';
+      var confText = ["Unsure", "Okay", "Sure"][l.cf] || "Standard";
+      var dStr = l.ts ? new Date(l.ts).toLocaleDateString() : "Recent";
+      h+='<tr><td style="max-width:260px;word-break:break-word"><b>'+qText+'</b></td><td>'+status+'</td><td>'+confText+'</td><td><small class="mut">'+dStr+'</small></td></tr>';
+    });
+    h+='</table></div>';
+  }
+  h+='</div>';
+
+  // Language Gap Analysis (Student specific)
+  var lgl = s.lgl || [];
+  h+='<div class="card"><h4>Language vs Mathematics Comprehension for '+s.name+'</h4>';
+  if(!lgl.length){
+    h+='<p class="mut" style="font-size:13px;line-height:1.5">No bilingual comprehension difficulties flagged for '+s.name+'. '+s.name+' is comfortable with English mathematical terminology.</p>';
+  }else{
+    lgl.slice(-3).forEach(function(item){
+      var isBarrier = item.type === "barrier" || item.ok === true;
+      h+='<div class="card" style="border:1px solid '+(isBarrier?'rgba(16,185,129,0.3)':'rgba(244,63,94,0.3)')+';background:'+(isBarrier?'rgba(16,185,129,0.06)':'rgba(244,63,94,0.06)')+';margin-bottom:8px;padding:10px">';
+      h+='<div class="row" style="justify-content:space-between"><b>'+(isBarrier?'🌐 Language Phrasing Difficulty (Math Understood)':'⚠️ Mathematical Concept Gap')+'</b><span class="pill '+(isBarrier?'g':'c')+'">'+item.lang+' Attempt</span></div>';
+      h+='<p style="margin:4px 0;font-size:13px"><b>Question:</b> "'+item.qEng+'"</p>';
+      if(isBarrier){
+        h+='<small style="color:var(--ok)">💡 <b>Parent Note:</b> '+s.name+' understands the math concept but struggled with English wording. Practicing math terms in English at home will build fluency.</small>';
+      }else{
+        h+='<small style="color:var(--bad)">🔧 <b>Parent Note:</b> '+s.name+' struggled with this foundational math concept in both languages. Review the prerequisite concept together.</small>';
+      }
+      h+='</div>';
+    });
+  }
+  h+='</div>';
+
+  // Practical Home Activity tailored to this child
+  var activities = {
+    frac: {
+      title: "Pizza & Paratha Fractions",
+      act: "When eating pizza, dosa, or paratha, ask: 'If we cut this into 6 equal slices and you eat 2 slices, what fraction did you eat (2/6 = 1/3) and what fraction is left (4/6 = 2/3)?'"
+    },
+    neg: {
+      title: "Thermometer & Elevator Signs",
+      act: "Explore temperature differences or elevator basements: 'If an elevator goes down 2 floors from Ground (0 to -2) and then down 3 more, what floor is it on (-5)?'"
+    },
+    lin: {
+      title: "Grocery Shop Equation",
+      act: "At the store: '3 notebooks plus a Rs 10 pen cost Rs 70. How much is one notebook? (3x + 10 = 70 => x = Rs 20).'"
+    },
+    quad: {
+      title: "Area & Tile Riddle",
+      act: "Challenge "+s.name+": 'A square garden has an area of 49 square meters. What is the length of each side? (x² = 49 => x = 7 meters).'"
+    }
+  };
+  var chosenAct = activities[weakK] || activities.frac;
+  h+='<div class="card" style="border:1px solid var(--accent);background:rgba(217,70,239,0.05)">';
+  h+='<h4>🏠 Recommended 5-Minute Family Activity for '+s.name+': '+chosenAct.title+'</h4>';
+  h+='<p style="font-size:14px;line-height:1.6;margin:6px 0">'+chosenAct.act+'</p>';
+  h+='<small class="mut">Parent-child micro-learning builds intuitive math confidence without lecture pressure.</small>';
+  h+='</div>';
+
   return h+'</div>';
 }
 
@@ -4289,7 +4619,7 @@ function R(){
     '<button class="tab'+(view=="tea"?" on":"")+'" onclick="stopAllAudio();view=\'tea\';R()">'+t("tea")+'</button>'+
     '<button class="tab'+(view=="par"?" on":"")+'" onclick="stopAllAudio();view=\'par\';R()">'+t("par")+'</button>'+
     '<button class="btn" onclick="toggleChat()" title="AI Tutor" style="font-weight:700">✨ Rooty AI</button>'+
-    '<button class="btn" onclick="L=(L+1)%3;R()">'+["తెలుగు","हिन्दी","English"][L]+'</button>';
+    '<button class="btn" onclick="setLanguage((L+1)%3)">'+["తెలుగు","हिन्दी","English"][L]+'</button>';
 
   if(document.body && document.body.classList){
     document.body.classList.toggle('is-landing', view === 'landing');
