@@ -1802,7 +1802,7 @@ function pick(i){if(!S.fb){S.pick=i;R()}}
 
 function conf(c){
   if(!S || !S.cur || S.pick === null) return;
-  if(S.mode=="test"||S.mode=="battle")return tconf(c);
+  if(S.mode=="test")return tconf(c);
   if(S.rt)return rtconf(c);
   var q=S.cur,r=ans(S.st,q.id,S.pick,c,S.hu),msg="";
   save();
@@ -1812,6 +1812,14 @@ function conf(c){
   S.res=S.res||[];
   S.res.push({k:q.s,ok:r.ok,c:c,tag:r.tag,q:q.id});
   S.dl=Math.max(1,Math.min(3,(S.dl||1)+(r.ok&&c==2?1:(!r.ok?-1:0))));
+  if(S.mode=="battle"){
+    if(r.ok){
+      toast("💥 Hit! -" + (c==2?25:20) + "% Boss HP!");
+    }else{
+      toast("🛡️ Boss blocked your attack!");
+    }
+    (S.dlog=S.dlog||[]).push(twhy(r,c));
+  }
   if(r.ok){
     S.streak=c==2?S.streak+1:0;
     if(S.br){
@@ -1820,17 +1828,17 @@ function conf(c){
     }
   }else{
     S.streak=0;
-    var rt=MC[r.tag]&&MC[r.tag].r;
+    var rt=(MC[r.tag]&&MC[r.tag].r)||q.s;
     if(rt){
       S.lesson=rt;
-      if(rt!=S.sk&&!S.br&&S.mode=="solve"){S.br=rt;S.bn=0;S.dl=1}
+      if(rt!=S.sk&&!S.br&&(S.mode=="solve"||S.mode=="battle")){S.br=rt;S.bn=0;S.dl=1}
     }
   }
   // Celebrate 3 sure streak without aborting practice session
   if(S.streak>=3&&!S.br&&S.mode=="solve"){
     toast("⭐ Level Up! 3 Sure & Correct in a row!");
   }
-  S.fb={ok:r.ok,tag:r.tag,c:c,msg:msg,ask:!r.ok&&L==0&&q.t.length>1&&S.mode=="solve",why:why(r,c)};
+  S.fb={ok:r.ok,tag:r.tag,c:c,msg:msg,ask:!r.ok&&L==0&&q.t.length>1&&S.mode=="solve",why:(S.mode=="battle"?[twhy(r,c)]:why(r,c))};
   xpFx(r,c);
   R();
 }
@@ -1844,6 +1852,18 @@ function nxt(){
   if(S.skip || ((S.mode=="solve"||S.mode=="battle") && S.res && S.res.length >= 6)){
     S.end=true;
     S.cur=null;
+    if(S.mode=="battle"){
+      var okCount=S.res.filter(function(x){return x.ok}).length;
+      if(okCount>=4){
+        S.st.boss=(S.st.boss||0)+1;
+        S.st.xp=(S.st.xp||0)+30;
+        boom();
+        toast("🏆 Gap Monster Defeated! +30 XP");
+      }else{
+        toast("⚔️ Battle completed! 4+ correct hits needed to defeat the monster.");
+      }
+      save();
+    }
   }else{
     nextQ();
   }
@@ -3271,7 +3291,10 @@ function rStu(){
       if(i==q.a)c+=" good";
       else if(i==S.pick)c+=" wrong";
     }else if(i==S.pick)c+=" sel";
-    h+='<button class="'+c+'" onclick="pick('+i+')">'+"ABC"[i]+". "+o[0]+"</button>";
+    var optLetter="ABCD"[i]||String.fromCharCode(65+i);
+    var rawText=(o&&o[0]!==undefined)?String(o[0]):"";
+    var cleanText=rawText.replace(/^[A-D]\.\s*/i,"");
+    h+='<button class="'+c+'" onclick="pick('+i+')">'+optLetter+". "+cleanText+"</button>";
   });
 
   if(S.pick!=null&&!S.fb){
@@ -3280,9 +3303,10 @@ function rStu(){
     }).join("")+'</div>';
   }
 
-  if(S.fb&&S.fb.ask){
-    h+='<div class="card" style="border:1px solid var(--accent);margin:12px 0;background:rgba(217,70,239,0.06)"><p><b>❌ '+t("bad")+'</b> Is the English the hard part? Read it in your language and try once more.</p><div class="row" style="gap:8px"><button class="btn p" onclick="tryLang(1)">తెలుగులో (Telugu)</button><button class="btn p" onclick="tryLang(2)">हिन्दी में (Hindi)</button><button class="btn" onclick="S.fb.ask=false;R()">No, show me why</button></div></div>';
-  }else if(S.fb){
+  if(S.fb){
+    if(S.fb.ask){
+      h+='<div class="card" style="border:1px solid var(--accent);margin:12px 0;background:rgba(217,70,239,0.06)"><p><b>❌ '+t("bad")+'</b> Is the English the hard part? Read it in your language and try once more.</p><div class="row" style="gap:8px"><button class="btn p" onclick="tryLang(1)">తెలుగులో (Telugu)</button><button class="btn p" onclick="tryLang(2)">हिन्दी में (Hindi)</button><button class="btn" onclick="S.fb.ask=false;R()">No, continue</button></div></div>';
+    }
     h+='<p><b>'+(S.fb.ok?"✅ "+t("good"):"❌ "+t("bad"))+'</b> '+(S.fb.ok&&S.fb.c==0?t("fr"):"")+(S.fb.msg=="back"?t("back"):"")+'</p>';
     if(S.fb.lang){
       h+='<p style="color:var(--accent)">🌐 <b>Home language mastery:</b> You got it right in your home language! The English wording was the hard part, not the maths. Language flag recorded for your teacher.</p>';
